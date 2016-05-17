@@ -10,6 +10,9 @@
 (defn get-stopwords []
   (set (re-seq #"[a-zA-Z']+" (slurp "resources/stopwords.res"))))
 
+(defn get-idioms []
+  (map #(nth (string/split % #"-") 0) (string/split-lines (slurp "resources/idioms.res"))))
+
 (def friends-names
   #{"ross"
     "monica"
@@ -32,8 +35,19 @@
        (remove-stopwords-from-srt stopwords))
   )
 
+(defn insert-phrase-into-tree [tree phrase]
+  (if (= phrase ())
+    tree
+    (let [character (first phrase)
+          tail (get tree character)]
+      (assoc tree character (insert-phrase-into-tree tail (rest phrase))))))
+
+(defn make-search-tree [phrases]
+  (reduce (fn [acc phrase] (insert-phrase-into-tree acc phrase)) {} phrases))
+
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (println (string/join "\n" (get-all-words-from-srt (get-srt) (get-stopwords)))))
+  (println (make-search-tree (get-idioms))))
+  ;(println (string/join "\n" (get-all-words-from-srt (get-srt) (get-stopwords)))))
   ;(println (set/intersection (set (get-stopwords)) (get-all-words-from-srt (get-srt) (get-stopwords)))))
