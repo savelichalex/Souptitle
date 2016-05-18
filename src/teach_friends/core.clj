@@ -45,9 +45,19 @@
 (defn make-search-tree [phrases]
   (reduce (fn [acc phrase] (insert-phrase-into-tree acc phrase)) {} phrases))
 
+(def CHAR #"[a-zA-Z']")
+(def END_OF_WORD #"\s,\n")
+(def LINE_BREAKER #"\n")
+
+(defn character? [x] )
+
+(defn analyze-symbol [])
+
+(defn lexer [] )
+
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (println (make-search-tree (get-idioms))))
+  (println (make-search-tree (get-stopwords))))
   ;(println (string/join "\n" (get-all-words-from-srt (get-srt) (get-stopwords)))))
   ;(println (set/intersection (set (get-stopwords)) (get-all-words-from-srt (get-srt) (get-stopwords)))))
