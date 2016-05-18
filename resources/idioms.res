@@ -397,3 +397,598 @@ Chink in one’s armor-брешь в броне, слабое место
 Chip in (on something) / chip in something on something/ chip something in (on something)-сбрасываться деньгами, давать небольшую сумму денег на какие-либо цели
 Chisel someone out of something-обманывать кого-то, чтобы завладеть деньгами или имуществом
 Choke someone up-растрогать до слёз
+Clam up-закрыть рот
+Clean as a hound’s tooth-чистый, невиновный
+Clean as a whistle-чистый
+Clear as a bell-четкий, ясный
+Clear as crystal-прозрачный, понятный
+Clear as mud-неясный, непонятный
+Clear someone’s name-оправдать кого-либо
+Climb the wall(s)-"лезь на стену"
+Clip someone’s wings-"подрезать крылья", ущемить в привилегиях, приструнить кого-то
+Cloak-and-dagger-секретный, связаный с интригами
+Close as two coats of paint-близкие люди, закадычные друзья
+Close one’s eyes to something-закрывать глаза на что-то
+Close shave-почти неминуемая гибель
+Close up shop-закончить работу
+Cloud up-нахмуриться
+Clue someone in (on something)-проинформировать
+Clutch at straws-хвататься за соломинку, продолжать попытки решить что-либо
+Cock of the walk-петушиться
+Cock-and-bull story-глупая, придуманая история
+Cocky as the king of spades-горд собой
+Coffee-table book-книга, в которой оформление лучше, чем содержание
+Cold as a witch’s caress-очень холодный, пугающий
+Cold comfort-слабое утешение
+Cold fish-неэмоциональный, холодный человек
+Cold, hard cash-наличность, не чек и не карточка
+Come a cropper-провалиться, потерпеть неудачу
+Come along!-идём (вместе)!
+Come apart at the seams-потерять контроль над эмоциями
+Come away empty-handed-вернуться не с чем
+Come clean (with someone)-сознаться
+Come down in the world-потерять социальное положение
+Come down to earth-спутиться с небес на землю, быть реалистом
+Come down with something-слечь с чем-либо
+Come from nowhere-появиться из ниоткуда
+Come full circle-вернуться на изначальное положение
+Come hell or high water-будь что будет
+Come home to someone-осознать
+Come in a body / arrive in a body-появиться группой
+Come in handy-быть полезным или удобным в использовании
+Come in out of the rain-вернуться с небес на землю
+Come into one’s own and come into its own-получить признание
+Come off one's feet-оторваться ногами
+Come off second-best-получить второе место, прийти вторым
+Come on like gangbusters-вести себя очень грубо
+Come out (of the closet)-признаться в тайных интересах; признать свою гомосексуальность
+Come out ahead-завершить с прибылью, улучшить ситуацию
+Come out in the wash-всё будет хорошо
+Come out of left field-появиться откуда не ждали
+Come out of one’s shell-быть более дружелюбным, общительным; вылезти из скорлупы
+Come out of the blue-внезапно возникнуть, упасть с неба
+Come through something with flying colors-успешно перенести, пережить что-то
+Come to a bad end-плохо закончить
+Come to a dead end-зайти в тупик
+Come to a head-дойти до точки, когда проблему нужно решать; дойти до края
+Come to a standstill-остановиться временно или постоянно
+Come to an end-закончиться
+Come to grips with something-осознать, понять, смириться
+Come to light-стать известным другим людям, открыться
+Come to mind-прийти в голову
+Come to nothing / come to naught-сойти на нет, уменьшиться до нуля
+Come to one’s senses-прийти в себя, очнуться
+Come to terms with someone or something-договориться
+Come to the fore-стать знаменитым, важным
+Come to the point / get to the point-перейти к делу
+Come to think of it-я вспомнил...
+Come true-сбыться
+Come what may-будь что будет
+Comfortable as an old shoe-очень удобный
+Common as dirt-вульгарный, с плохими манерами
+Con someone out of something-выманить что-либо ценное
+Conceited as a barber’s cat-самодовольный
+Conk out-сдохнуть (о вещах), поломаться
+Control the purse strings-управлять бюджетом
+Cook someone’s goose-навредить кому-либо
+Cook something up-замыслить, придумать
+Cook the accounts-жульничать со счетами, обманывать
+Cooking with gas-делать что-либо правильным образом
+Cool as a cucumber-спокойный
+Cool off / cool down-охладеть
+Cool one’s heels-ждать кого-либо
+Cop a plea-признаться в преступлении, в надежде на смягчение наказазания
+Cop out-выскользнуть из трудной ситуации
+Copy-book maxims-прописные истины
+Copycat-человек, копирующий поведение другого
+Cost a pretty penny-стоить очень дорого
+Cost an arm and a leg-стоить очень дорого
+Cough something up-сделать то, о чем просят, без желания
+Could do with someone or something-хотеть, нуждаться в чем-либо
+Count noses-посчитать людей
+Cover a lot of ground /cover a lot of territory-проехать большое растояние; охватить большой материал
+Cover for someone-прикрыть кого-либо
+Cozy up (to someone)-быть слишком любезным с кем-либо, в надежде на особые уступки
+Crack a book-открыть книгу, учиться (обычно в негативном смысле)
+Crack a joke-шутить
+Crack a smile-выдушить улыбку
+Crack a smile-расплыться в улыбке
+Crank something out-производить что-либо
+Crazy as a betsy bug-сумашедший
+Crazy as a peach-orchard boar-сумашедший
+Cream of the crop-лучшее из лучшего
+Create an uproar / make an uproar-производить шум
+Crooked as a barrel of fishhooks-нечестный, подлый
+Crooked as a dog’s hind leg-подлый, лживый
+Cross swords (with someone) (on something)-начать спор
+Cross the Rubicon-перейти Рубикон; начать действие, которое неминуемо приведет к черте, за которой нет возврата
+Crux of the matter-сущность проблемы
+Cry over spilled milk-плакать над пролитым молоком; грустить о том, что нельзя изменить
+Cry wolf-поднимать ошибочную тревогу
+Curdle someone’s blood-лединить кровь ( от ужаса, отвращения)
+Cut a wide swath / cut a big swath-казаться важным; привлекать внимание
+Cut class-пропускать уроки
+Cut from the same cloth / made from the same mold-иметь много общего, быть похожими
+Cut no ice (with someone)-не изменить чьё-либо мнение, не иметь влияния на кого-то
+Cut one’s (own) throat [for someone]-вредить себе; терпеть поражение
+Cut one’s eyeteeth on something-иметь большой опыт в чем-либо; делать что-либо с раннего возраста
+Cut out the deadwood-сократить сотрудника, который не приносит пользы
+Cut out to be something-быть рожденным для какой-либо профессии
+Cut someone dead-полностью игнорировать кого-либо
+Cut someone down (to size) / take someone down (to size)-поставить кого-либо на место
+Cut someone off without a penny-оставить без гроша
+Cut someone or something up-сильно критиковать кого-либо, что-либо
+Cut someone to the quick-оскорбить чьи-либо чувства
+Cut teeth-прорезываться (о зубах)
+Cut the ground out from under someone-выбить почву под ногами
+Cut to the chase-перейти к делу
+Cut up-вести себя плохо; вести себя как клоун
+Daily grind-ежедневная рутина
+Damn someone or something with faint praise-косвенно критиковать
+Dance to another tune-изменить поведение, отношение
+Dance with death-танцевать со смертью, рисковать
+Dark horse-тёмная лошадка, неожиданный кандидат
+Dart in and out-метаться
+Davy Jones’s locker-на дне моря
+Daylight robbery-вымагательство
+Dead ( stale) air-удушливый воздух
+Dead as a dodo-устаревший
+Dead as a doornail-мёртвый
+Dead duck-потерпевший неудачу
+Dead in someone’s or something’s tracks-замереть на месте
+Dead on its feet / dead on one’s feet-истощенный
+Dead set against someone or something-быть полностью против чего-то
+Dead to the world-уставший; тот, кто крепко спит
+Deaf as a post-глухой как тетерев
+Deem it (to be) necessary / deem that it is necessary-верить, что что-либо является необходимым
+Deep-six someone or something-избавиться от чего-либо
+Den of iniquity-пещера зла; лежбище зла
+Desert a sinking ship / leave a sinking ship-покинуть тонущий корабль
+Devil of a job /devil’s own job-самое сложное задание
+Devil-may-care attitude / devil-maycare manner-легкомысленное отношение
+Diamond in the rough-неотшлифованый алмаз; человек, имеющий много достоинств, но грубый внешне
+Die in one’s boots / die with one’s boots on-умереть в борьбе, в ходу
+Die laughing-умереть смеясь, умереть от смеха
+Die of boredom-умерать от скуки
+Different as night and day-абсолютно разные
+Dig in-приступить к еде; принятся за работу
+Dig one’s heels in-отказаться изменить своё поведение, отношение; быть упёртым
+Dig one’s own grave-копать себе могилу; быть ответсвенным за свою неудачу
+Dig some dirt up on someone-найти компромат на кого-либо
+Dime a dozen-дешевый, обычный; (10 центов за дюжину)
+Dine with Duke Humphrey-остаться без обеда
+Dirt cheap-очень дешевый
+Dirty old man-озабоченый сексом
+Dirty work-грязная работа
+Divide and conquer-разделяй и властвуй
+Divide something fifty-fifty / split something fifty-fifty-разделить поровну
+Do a double take-выражать крайнее удивление
+Do a flip-flop (on something) / do an about-face-внезапно поменять решение
+Do a job on someone or something-повредить что-либо, кого-либо; сходить по-большому
+Do a land-office business-преуспеть за короткий период времени
+Do a number on someone or something-повредить что-либо, кого-либо; навредить кому-либо
+Do a snow job on someone-обманывать
+Do away with someone or something-избавиться, убить кого-то
+Do credit to someone / do someone credit-улучшать репутацию
+Do justice to something-правильно изображать что-либо; съедать или выпивать всё
+Do not have a care in the world-быть полностью беззаботным
+Do not have a leg to stand on-не иметь поддержки, аргументов
+Do not have all one’s marbles-быть умственно неполноценным
+Do or die-жизненно важное дело
+Do someone a good turn-сделать услугу
+Do someone or something in-утомить, обмануть, убить, поломать
+Do something fair and square-честно
+Do something for a living-зарабатывать чем-либо на жизнь
+Do something in a heartbeat-делать что-либо мгновенно
+Do something in person-делать что-либо лично
+Do something on the fly-делать на бегу, на ходу
+Do something on the sly-делать что-либо тайно
+Do something up brown-делать что-либо правильно
+Do the dishes-мыть и вытирать посуду
+Do the honors-обслуживать гостей как хозяин или хозяйка дома
+Dog and pony show-демонстрация чего-либо с целью продажи
+Dog in the manger-собака на сене
+Dog-eat-dog-ситуация, где каждый сам за себя
+Done to a T / done to a turn-вкусно приготовленный
+Dose of one’s own medicine-отношение, идентичное тому, как человек ведет себя с другими людьми
+Double in brass-делать два дела
+Double-cross someone-обмануть кого-либо, не сдержав обещание
+Doubting Thomas-Фома неверующий; человек, который никому не верит
+Down in the dumps-грустный, подавленный
+Down in the mouth-с грустным лицом, не улыбающийся
+Down on one’s luck-без денег, банкрот
+Down on someone or something-быть против чего-либо
+Down the drain-потерянный навсегда, потраченный зря
+Down the hatch-проглотить что-либо (обычно об алкоголе)
+Down the tubes-разрушенный, испорченный
+Down to the wire-в последнюю минуту, до конца
+Down with some disease-слечь с чем-либо
+Down-and-dirty-нечестный, низкий
+Down-and-out-без средств к существованию
+Down-at-the-heels-оборваный, изношенный
+Down-to-earth-прямой, открытый, практичный
+Downhill all the way-все время легкий
+Drag one’s feet-волочить ноги, замедлять что-либо
+Draw a bead on someone or something-нацеливаться на кого-либо, что-либо
+Draw a blank-не получить ответа, забыть о чем-то
+Draw a line between something and something else / draw the line between something and something else-разграничить две вещи, разделять понятия
+Draw blood-оскорбить кого-то, поранить
+Draw fire-навлечь критику
+Draw interest-вызывать интерес
+Draw lots / draw straws-тянуть жребий
+Draw someone or something out-вызвать на разговор, тянуть время
+Drawn and quartered-вести себя очень жестко с кем-либо (четвертовать)
+Dream come true-сбывшаяся мечта
+Dressed to kill-очень модно одеться
+Dressed to the nines-быть очень хорошо одетым
+Dribs and drabs-в маленьких, нерегулярных количествах
+Drink to excess-выпить лишнего
+Drive a hard bargain-усиленно торговаться в свою пользу
+Drive at something-намекать на что-то
+Drive someone crazy / drive someone mad-сводить с ума
+Drive someone up the wall-свести с ума
+Drop a bomb(shell) / explode a bombshell/ drop a brick-сообщить шокирующую новость
+Drop dead-внезапно умереть
+Drop in (on someone) / drop in (to say hello)-зайти/ заглянуть
+Drop in one’s tracks-умереть, остановиться от изнеможения
+Drop in the ocean / a drop in the bucket-капля в море
+Drop names-упоминать имена известных людей в качестве своих друзей
+Drop someone-бросить девушку (парня)
+Drop someone a line / drop someone a few lines-написать пару строк
+Drop the bal-совершить ошибку, провалиться
+Drop the other shoe-доделать что-то, завершить что-либо
+Drown one’s troubles/ drown one’s sorrows-утопить в алкоголе свои беды и печали
+Drown someone or something out-заглушать что-то
+Drug on the market-быть в переизбытке на рынке
+Drum some business up-стимулировать людей покупать то, что вы продаёте
+Drum something into someone(‘s head)-вбить в голову, зазубрить
+Dry as dust-сухой, скучный
+Dry run-попытка, репетиция
+Dry someone out-отрезвить
+Dry up-замолчать
+Duck and cover-увертываться от неприятных вопросов
+Dull as dishwater-скучный, неинтересный
+Dutch courage-необычайная смелость, возникшая под действием алкоголя
+Dutch treat-поход в ресторан, где каждый платит сам за себя
+Dutch uncle-человек, который даёт резкие советы, считая себя чьим-либо родственником
+Dyed-in-the-wool-постоянный, упертый человек
+Dying to do something-очень хотеть сделать что-либо
+Eager beaver-человек много и охотно работающий, "трудоголик"
+Eagle eye-зоркий глаз, "орлиный глаз"
+Early bird-человек, встающий рано, "ранняя пташка", "жаворонок"
+Earn one's keep-оправдывать своё содержание работой
+Easy as (apple) pie-очень лёгкий
+Easy as duck soup-очень лёгкий
+Easy does it.-вести себя с осторожностью
+Eat away at someone or something-съедать частями; очень волноваться
+Eat high on the hog-кушать дорогую еду
+Eat humble pie-принимать оскорбления и унижения
+Eat like a bird-кушать как птичка (очень мало)
+Eat like a horse-много кушать
+Eat one’s heart out-быть очень грустным; завидовать кому-то
+Eat one’s words-забрать свои слова обратно
+Eat out of (someone's) hand-безоговорочно подчиняться кому-либо, "плясать под чью-либо дудку"
+Eat something up-наслаждаться, увлекаться чем-либо
+Ebb and flow-взлёт и падение
+Edge someone out-вытеснить кого-то с работы
+Egg someone on-подначивать кого-либо сделать что-то (обычно неразумное)
+Either feast or famine-то переизбыток, то недостача
+Elbow someone out (of something)-вытолкать кого-то из какого-то учреждения
+Eleventh-hour decision-решение, принятое в последний момент
+Engage in small talk-говорить о чем-то не очень важном
+Enjoy your meal.-Приятного аппетита!
+Enter one’s mind-прийти в голову
+Escape someone’s notice-остаться не замеченным
+Even steven-быть равным
+Every nook and cranny-обыскать каждый закуток
+Every Tom, Dick, and Harry-обычные люди
+Every which way-во всех направлениях
+Everything but the kitchen sink-всё, о чем можно подумать
+Everything from soup to nuts / everything from A to Z-всё
+Everything’s coming up roses.-всё прекрасно
+Exciting as watching (the) paint dry-очень скучный
+Extend one’s sympathy (to someone)-выражать соболезнование
+Extenuating circumstances-смягчающие обстоятельства
+Eye of the storm-корень проблемы
+Eyeball-to-eyeball-лицом к лицу
+Face the music-понести заслуженное наказание
+Facts of life-информация о размножении (обычно людей); правда жизни
+Fair game-легкая мишень (обычно так говорят о людях, в чью личную жизнь вторгаются журналисты)
+Fair-haired boy-любимчик
+Fair-weather friend-друг, который остаётся с тобой только в радости и исчезает, когда у тебя проблемы
+Fall afoul of someone or something / run afoul of someone or something-попасть в беду
+Fall all over someone-упадать за кем-то, уделять слишком много внимания
+Fall apart at the seams-распадаться на куски, трещать по швам
+Fall asleep-уснуть
+Fall between two stools-не соответствовать требованиям ни одной из сторон
+Fall by the wayside / drop by the wayside-остановиться на полпути
+Fall down on the job-не справляться с работой
+Fall flat (on one’s face) / fall flat (on its face)-быть полной неудачей
+Fall from grace-перестать быть любимчиком, пасть в немилость
+Fall head over heels in love (with someone)-влюбиться до беспамятства
+Fall ill-заболеть
+Fall in-построиться в шеренгу
+First aid-неотложная помощь
+Fit (someone) to a T-прекрасно подходить кому-либо
+Fit as a fiddle-здоровый, в хорошем состоянии
+Fit the axe into the helve-преодолеть трудность, достичь цели
+Flat as a pancake-плоский как блин
+For all intents and purposes-фактически, на самом деле
+Free as a bird-беззаботный, абсолютно свободный
+Fresh as a daisy-свежий как роза
+From afar-издалека
+Full ahead!-Полный вперёд
+Full blast-на всю громкость
+Full-fledged-полноценный, вполне развитый
+Funny as a barrel of monkeys-весёлый, смешной
+Funny as a crutch-несмешной
+Gaudy as a butterfly-разноцветный
+Get a word in edgewise-встрять в разговор
+Get around to doing something-собраться делать что-то
+Get off the hook-освободиться от обязательства, "сорваться с крючка"
+Give (someone) an earful-поругать кого-либо
+Give credence to (someone or something)-поверить кому-либо чему-либо
+Give somebody the bag to hold-оставить в беде
+Go aloft-умереть
+Go back from one's word-отказываться от обещания
+Go through the roof-взлететь (о ценах)
+Good as gold-искренний, настоящий
+Grasp at straws-пытаться что-либо делать без надежды на успех; "хвататься за соломенку"
+Grounds for (something)-основание для чего-либо
+Gruff as a bear-хмурый, молчаливый
+Hang out (somewhere/with someone)-слоняться, болтаться где-либо с кем-либо
+Hang up one's axe-отойти от дел
+Happy as a lark-весёлый
+Hard as a rock-твёрдый как камень
+Hard as nails-жесткий
+Have (something) up one's sleeve-держать что-либо в тайне до подходящего времени; иметь что-либо про запас
+Have a crush on (someone)-сильно увлечься кем-либо
+Have an affair-иметь любовный роман
+Have an axe to grind-преследовать личные цели; затаить злость
+Have it-найти ответ, понять
+Have mixed feelings about (someone or something)-иметь смешанные чувства по поводу кого-либо чего-либо
+Have one`s nose in (something)-проявлять непрошенный интерес любопытство к чему-либо
+Have rat's in the attic-человек с мухами в голове, странный человек
+Have the ball at one's feet-бытьхазяином положения
+Hear (someone) out-выслушать кого-либо
+High as a kite-1.высокий 2. пьяный
+Hit the dirt-лечь на землю и укрыться от огня
+Hit the road-смотаться, переезжать с места на место
+Hoarse as a crow-хриплый
+How about/ What about...?-как насчет...?
+Hungry as a hunter-голодный как волк
+Idiot box-телевизор
+If looks could kill-убийственный злобный взгляд; "если бы взглядом можно было убить"
+If the shoe fits, wear it-если вы принимаете замечание на свой счёт, пусть будет так; "на воре шапка горит"
+Ill at ease-чувствовать себя неловко, нервничать
+Impudent baggage-нахалка, мошенница
+In abject poverty-в крайней нужде
+In practice-подготовленный
+In the buff/raw-без одежды, нагишом
+In the chips-(быть) состоятельным
+In the mainstream-главное течение, основное направление, современные тенденции, (быть) в русле
+In the nick of time-в самый последний момент
+In the prime of life-во цвете лет, в расцвете сил
+It is above me!-Это выше моего понимания!
+Jack up (something)-поднять цены; поднять что-либо при помощи домкрата
+Jack-of-all-trades-мастер на все руки
+Jam-packed-переполненный
+Jekyll and Hyde-кто-либо, сочетающий в себе хорошее и плохое
+Jockey for position-не стесняться в средствах для достижения цели
+John Doe-воображаемый истец в судебном процессе
+Jump out of one`s skin-вздрогнуть, подскочить (от испуга, неожиданности)
+Jump( swallow) at the bait-попасться на удочку
+Kangaroo court-неправедный суд, незаконное разбирательство
+Keep a tight/close rein on (someone or something)-держать в узде, в ежовых рукавицах, строго контролировать
+Keep at arm's length-держать на растоянии
+Keep body and soul together-жить впроголодь, едва сводить концы с концами
+Keep up appearances-соблюдать приличия
+Kettle of fish-неудовлетворительная ситуация, неразбериха
+Kickback-незаконно выплаченные деньги, взятка
+Know-it-all-всезнайка
+Lace into (someone)-резко критиковать, набрасываться на кого-либо
+Lady killer-красавчик, любимец женщин
+Lady’s man-дамский угодник, ловелас
+Lame duck-неудачник, "несчастненький"
+Land of Nod-сонное царство
+Last but not least-последний по счёту, но не последний по значению
+Last-ditch effort-последнее усилие
+Laugh up one's sleeve-тихо посмеяться (сам с собой), "смеяться в кулак"
+Law unto oneself-сам себе закон
+Left-handed compliment-неуклюжий, двусмысленный комплимент
+Let alone-дать покой
+Light as a feather-легкий как пух
+Little bird told me-мне стало известно по секрету, "сорока на хвосте принесла"
+Loudmouth-болтун, трепло
+Luck out-внезапно повести
+Lull (someone) into a false sense of security-усыпить чью-либо бдительность
+Lull before the storm-затишье перед бурей
+Mad as a hatter-спятивший, не в своём уме
+Make a comeback-возвратиться (к прежней успешной карьере, власти, популярности)
+Make a difference-существенно менять дело, быть важным
+Make a fast/quick buck-быстро и легко заработать деньги
+Make a fool out of (someone)-выставить кого-либо дураком
+Make a go of (something)-добиваться успеха, преуспевать
+Make an apology-извинится
+Make an ass of oneself-поставить себя в глупое положение
+Make arrangements (with somebody)-договариваться с кем-либо
+Man-about-town-светский человек
+Match for (someone)-быть под стать кому-либо
+Matter of life and death-вопрос жизни и смерти, жизненно важный вопрос
+Meant to be-предназначать, быть начертанным судьбой
+Meat-and-potatoes-безыскусный, простой
+Meet the requirements (for something)-соответствовать требованиям для чего-либо
+Mend fences with (someone)-стараться подружиться, установить дружеские отношения
+Mess around/about-тусоваться, бездельничать
+Mess up-испортить, доставлять неприятности
+Milestone in someone's life-очень важное событие в чьей-либо жизни
+Mince (one's) words-говорить нечётко, жевать слова
+Mind your own affairs!-Не лезьте не в своё дело!
+Miss the point-не понять важность чего-либо
+Mistake (someone) for (someone) else-ошибочно принять кого-либо за кого-либо
+Much ado about nothing-много шума из ничего
+Must have-насущная потребность
+Nail down (someone or something)-требовать от кого-либо выполнения чего-либо
+Naked eye-невооружённый глаз
+Name (someone) after (someone or something)-назвать кого-либо в честь кого-либо или чего-либо
+Neat as a pin-аккуратный, с иголочки
+Neck of the woods-район, местность где живёшь
+Need (something) like (one needs) a hole in the head-совершенно ненужная (вещь), "как собаке пятая нога"
+Neither fish nor fowl-не рыба, ни мясо (о безвольном человеке); ни то ни сё
+Never mind-не важно, не беспокойся
+New blood-свежая кровь (люди с новыми идеями)
+Nickel and dime (someone)-постоянно просить у кого-либо денег или тратить небольшие суммы
+Night owl-сова (человек, который поздно ложиться спать)
+Nine day's wonder-кратковременная сенсация, предмет недолгих толков
+Nine-to-five-job-нормированный рабочий день (с 9 до 5)
+No bed of roses-трудная или плохая ситуация
+No kidding-без шуток
+No-show-не явившийся (человек, который делает заказ, а затем не является за ним)
+Not a moment to spare-ни минуты свободной
+Not lift a finger/hand (to help someone)-пальцем не пошевелить (чтобы помочь кому-либо)
+Not move a muscle-не двигаться, не шевелиться
+Not see past/farther than the end of one's nose-быть не дальновидным, не видеть дальше своего носа
+Not sleep a wink-глаз не сомкнуть
+Not to touch alcohol-быть трезвенником
+Not worth a cent-не стоить ни гроша
+Not worth mentioning-не стоит упоминания
+Now and again-иногда
+Nurse a grudge-иметь зуб на кого-либо
+Nuts about (someone or something)-сходить с ума по кому-либо чему-либо
+Nuts and bolts (of something)-основные сведения о чём-либо
+Odd man out-третий лишний
+Odds and ends-остатки, обрезки, разные мелочи
+Old as the hills-очень старый
+On the anvil-в работе, в процессе обсуждения
+Once and for all-раз и навсегда
+One's lucky stars-чья-либо счастливая звезда
+One's name is mud-плохая, подмоченная репутация
+One-armed bandit-игровой автомат, однорукий бандит
+One-night stand-одноразовое мероприятие
+One-track mind-думать только об одном, заклиниться на одном
+Pale as death-бледный как смерть
+Patient as Job-терпеливый
+Phony as a three-dollar bill-фальшивый
+Pillar of strength/support-сильный, могущественный человек; опора, поддержка.
+Plain as a pikestaff-очевидный
+Plain as the nose on one’s face-очевидный
+Poor as a church mouse-очень бедный
+Proud as a peacock-гордый как павлин
+Put on airs-напускать важность, вести себя надменно
+Quake in one's boots-трястись от страха
+Queer as a three-dollar bill-очень странный (как банкнота в 3 доллара)
+Quick and dirty-сделанный на скорую руку, тяп-ляп
+Quick as a flash-с быстротой молнии, в мгновение ока
+Quick as greased lightning-очень быстро
+Quick on the draw-быстро реагирующий, прыткий
+Quiet as a mouse-тихий как мышь
+Race against time-стремление выиграть время
+Read the handwriting on the wall-предвидеть что-либо (подмечая детали и намёки)
+Read the riot act (to someone)-строго предупредить кого-либо
+Real McCoy-подлинная вещь
+Rear its ugly head-(что-либо неприятное) вновь становиться очевидным
+Receive/welcome (someone) with open arms-встретить кого-либо с распростертыми объятиями
+Regular as clockwork-регулярно
+Rest in peace-покоиться с миром
+Return the favor-ответить добром на добро
+Right as rain-правильный, настоящий
+Rude awakening-горькое разочарование
+Run rain or shine-работать при любой погоде
+Save one's bacon-спасать свою шкуру
+Say amen to sth-соглашаться с чем-либо
+Second to none-непревзойденный
+Set one's bag for-заигрывать
+Sharp as a razor-острый как бритва
+Sharp as a tack-умный, смышлённый
+Sick as a dog-больной
+Silent as the dead and (as) silent as the grave-тихий, молчаливый, берегущий тайну
+Silly as a goose-глупый как гусь
+Slick as a whistle-быстро и четко
+Slippery as an eel-скользкий как уж
+Slow as molasses in January-медленный
+Sly as a fox-хитрый как лис
+Smooth as silk-гладкий как шелк
+Snug as a bug in a rug-уютный
+Sober as a judge-трезвый, формальный
+Soft as velvet-нежный как бархат
+Solid as a rock-твёрдый как камень, надёжный
+Sound as a dollar-надёжный
+Sour as vinegar-кислый как лимон
+Steady as a rock-твёрдый, неподвижный
+Stiff as a poker-тугой, негнущийся
+Straight as an arrow-прямой, честный
+Strong as a horse-сильный как слон
+Strong as a lion-сильный как лев
+Stubborn as a mule-упёртый как осёл
+Sure as death-точно, непременно
+Sweet as honey and (as) sweet as sugar-сладкий как мёд
+Take the airs-прогулятся
+Take the wind out of one's sails-ставить в безвыходное положение
+Talk billingsgate-ругаться как уличная торговка
+That's the way the cookie crumbles-Вот такие пироги с котятами (букв: "Вот так вот печенька и крошится").
+The ace of aces-лучший из лучших
+The name of the game-главное, основное дело
+Thick as pea soup-очень густой
+Thick as thieves-близкие люди, закадычные друзья
+Tight as a drum-тугой, натянутый
+Tight as a drum-жадный
+Tight as a tick-накормленный до отвала
+Tight as Dick’s hatband-тугой, натянутый
+To abjure a claim-отказываться от претензии, иска
+To be ablaze with anger-полыхать от гнева
+To be able to do sth-уметь, иметь возможность
+To be hoisted by one's own petard-За что боролись, на то и напоролись (букв: "Подорваться на собственной петарде")
+To be taken aback-быть удивлённым, быть ошарашенным
+To be tired to one's wife's apron-string-быть под каблуком у жены
+To the backbone-до мозга костей, полностью
+To the best of one's abilities-в меру сил, способностей
+Tough as an old boot-твёрдый
+Tread upon air-триумфовать
+True as steel-надёжный
+Turn to dust and ashes-розлететься в пух и прах
+Ugly as a toad-уродливый как жаба
+Ugly duckling-гадкий утёнок
+Unaccustomed to (someone or something)-быть непривычным для кого-либо чего-либо
+Under (close) scrutiny-под пристальным вниманием
+Under a cloud-быть в подавленном состоянии
+Vanish into thin air-исчезнуть, раствориться в воздухе
+Variety is the spice of life-разнообразие – острота жизни
+Vent one's spleen-избавиться от раздражения или злобы
+Verge on (something)-граничить с чем-либо
+Vicious circle-заколдованный круг, порочный круг
+Vim and vigor-настойчивость, сила и энергия
+Vote down-отклонить что-либо при голосовании
+Wait on (someone) hand and foot-делать всё возможное для кого-либо, служить верой и правдой
+Wait with bated breath-ждать с нетерпением; ждать, затаив дыхание
+Wait-and-see attitude-нерешительная, выжидательная позиция
+Warm as toast-тёплый и уютный
+Weak as a kitten-слабый как котёнок
+White as a sheet-бледный как смерть
+Wise as an owl-мудрый как сова
+Wise as Solomon-мудрый
+Word to the wise-умный понимает с полуслова
+Work out-тренироваться
+Work out (for the best)-успешно закончиться, принести результаты
+Work over-угрожать или избить (кого-либо)
+Work up-возбуждать, доводить до (какого-либо эмоционального состояния)
+Work wonders (with someone or something)-творить чудеса, быть благоприятным для кого-либо чего-либо
+Worked up-взволнованный, обеспокоенный
+World is one's oyster-всё возможно для кого-либо, всё достижимо
+Worm one's way out of something-(с трудом) находить выход из затруднительного положения
+Worse for wear-поношенный, истрёпанный
+Worth one's while-стоить затраченного времени или труда
+Worthy of the name-достойный имени
+X marks the spot-обозначение точного места
+Xfiles-секретные материалы
+Yakety-yak-праздная болтовня
+Year after year-год за годом, много лет
+Yellow journalism-жёлтая пресса
+Yellow streak-трусость (как черта характера)
+Yellow-bellied-чрезвычайно робкий или трусливый
+Yes-man-подхалим, подпевала, лизоблюд
+Yoke around someone's neck-ярмо на чьей-либо шее, обуза
+Zero hour-решающий момент
+Zero in on-сосредоточиться
+Zero-sum game-выигрышно-проигрышная ситуация при которой, если выигрывает один, то неизменно проигрывает другой
+Zonk out-быстро заснуть, “вырубиться”
+Zoom in on (someone or something)-электронное увеличение изображения во время фотографирования
