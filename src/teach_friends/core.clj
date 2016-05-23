@@ -55,9 +55,48 @@
 
 (defn lexer [] )
 
+(def time-regex #"(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})[\r\n]([^\r]+)[\r\n]([^\r]+)")
+
+(defn time-to-ms [time]
+  (let [parts (re-seq #"\d+" time)]
+    (+
+      (* (Integer. (nth parts 0)) 3600000)
+      (* (Integer. (nth parts 1)) 60000)
+      (* (Integer. (nth parts 2)) 1000)
+         (Integer. (nth parts 3)))))
+
+(defn parse-sentence [number from to sentence]
+  {:number number
+   :from from
+   :to to
+   :sentence sentence})
+
+(defn sentence? [sentence]
+  (let [last-three-chars (subs (string/reverse sentence) 0 3)
+        last-char (subs last-three-chars 0 1)]
+    (if (or (= last-char "!") (= last-char "?"))
+      true
+      (if (not (= last-char "."))
+        false
+        (if (= last-three-chars "...")
+          false
+          true)))))
+
+(defn parse-time-block [acc [_ from to first-sentence second-sentence]]
+  (let [acc-count (count acc)]
+    (if (string/blank? second-sentence)
+      (conj acc (parse-sentence (+ acc-count 1) (time-to-ms from) (time-to-ms to) first-sentence))
+      (if (sentence? first-sentence)
+        (-> (conj acc (parse-sentence (+ acc-count 1) (time-to-ms from) (time-to-ms to) first-sentence))
+            (conj (parse-sentence (+ acc-count 2) (time-to-ms from) (time-to-ms to) second-sentence)))
+        (conj acc (parse-sentence (+ acc-count 1) (time-to-ms from) (time-to-ms to) (str first-sentence " " second-sentence)))))))
+
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (println (make-search-tree (get-stopwords))))
+  ;(println (string/split (slurp "resources/Friends.S02E05.srt") time-regex)))
+  ;(println (->> (re-seq time-regex (slurp "resources/Friends.S02E05.srt")) (take 4))))
+  (println (->> (re-seq time-regex (slurp "resources/Friends.S02E05.srt")) (take 5) (reduce parse-time-block []))))
+  ;(println (make-search-tree (get-stopwords))))
   ;(println (string/join "\n" (get-all-words-from-srt (get-srt) (get-stopwords)))))
   ;(println (set/intersection (set (get-stopwords)) (get-all-words-from-srt (get-srt) (get-stopwords)))))
