@@ -1,0 +1,16 @@
+{
+  "name": "TeachByFriends",
+  "interface": "reagent6",
+  "androidHost": "localhost",
+  "iosHost": "localhost",
+  "envRoots": {
+    "dev": "env/dev",
+    "prod": "env/prod"
+  },
+  "modules": [
+    "nlp_compromise/src/index.js"
+  ],
+  "imageDirs": [
+    "images"
+  ]
+}

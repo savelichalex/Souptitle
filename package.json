@@ -1,0 +1,14 @@
+{
+  "name": "TeachByFriends",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node_modules/react-native/packager/packager.sh --nonPersistent"
+  },
+  "dependencies": {
+    "babel-preset-es2015": "^6.9.0",
+    "nlp_compromise": "^4.10.6",
+    "react": "^0.14.8",
+    "react-native": "0.25.1"
+  }
+}
