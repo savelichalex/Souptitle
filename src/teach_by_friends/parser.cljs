@@ -27,12 +27,26 @@
 
 (def exclude (set/union stop-words friends-names))
 
+(defn parse-term [number from to index term]
+	{:sentence-number number
+	 :in-sentence-number index
+	 :from from
+	 :to to
+	 :raw term
+	 :normalized (string/lower-case term)})
+
+(defn parse-to-terms [sentence number from to]
+	(->> sentence
+			 (re-seq #"[a-zA-Z']+")
+			 (map-indexed (partial parse-term number from to))
+			 (filter #(not (contains? exclude %)))))
+
 (defn parse-sentence [number from to sentence]
 	{:number number
 	 :from from
 	 :to to
 	 :sentence sentence
-	 :terms (remove exclude (map string/lower-case (re-seq #"[a-zA-Z']+" sentence)))})
+	 :terms (parse-to-terms sentence number from to)})
 
 (defn sentence? [sentence]
 	(let [last-three-chars (subs (string/reverse sentence) 0 3)
