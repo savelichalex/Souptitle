@@ -27,8 +27,9 @@
 
 (def exclude (set/union stop-words friends-names))
 
-(defn parse-term [number from to index term]
-	{:sentence-number number
+(defn parse-term [sentence number from to index term]
+	{:sentence sentence
+	 :sentence-number number
 	 :in-sentence-number index
 	 :from from
 	 :to to
@@ -37,16 +38,12 @@
 
 (defn parse-to-terms [sentence number from to]
 	(->> sentence
-			 (re-seq #"[a-zA-Z']+")
-			 (map-indexed (partial parse-term number from to))
-			 (filter #(not (contains? exclude %)))))
+			 (re-seq #"the\s[a-zA-Z]+|a\s[a-zA-Z]+|an\s[a-zA-Z]+|[a-zA-Z']+")
+			 (map-indexed (partial parse-term sentence number from to))
+			 (filter #(not (contains? exclude (:normalized %))))))
 
 (defn parse-sentence [number from to sentence]
-	{:number number
-	 :from from
-	 :to to
-	 :sentence sentence
-	 :terms (parse-to-terms sentence number from to)})
+	(parse-to-terms sentence number from to))
 
 (defn sentence? [sentence]
 	(let [last-three-chars (subs (string/reverse sentence) 0 3)
@@ -68,5 +65,14 @@
 						(conj (parse-sentence (+ acc-count 2) (time-to-ms from) (time-to-ms to) second-sentence)))
 				(conj acc (parse-sentence (+ acc-count 1) (time-to-ms from) (time-to-ms to) (str first-sentence " " second-sentence)))))))
 
+(defn accumulate-terms [acc term]
+	(let [{normalized :normalized} term]
+		(if (contains? acc normalized)
+			(update acc normalized #(conj % term))
+			(assoc acc normalized [term]))))
+
 (defn parse-srt [srt]
-	(->> (re-seq time-regex srt) (reduce parse-time-block []) (reduce (fn [acc {:keys [terms]}] (into acc terms)) #{})))
+	(->> (re-seq time-regex srt)
+			 (reduce parse-time-block [])
+			 (mapcat identity)
+			 (reduce accumulate-terms {})))

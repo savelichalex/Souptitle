@@ -31,7 +31,7 @@
 																			:padding-bottom 10
 																			:align-items "center"}
 															:on-press #(alert (. js/JSON (stringify row)))}
-				 [text {:style {:font-size 20 :color "#000"}} row]]))))
+				 [text {:style {:font-size 20 :color "#000"}} (aget row "raw")]]))))
 
 (defn app-root []
   (let [chapter (subscribe [:get-chapter])]
