@@ -31,12 +31,16 @@
 																			:padding-bottom 10
 																			:align-items "center"}
 															:on-press #(alert (. js/JSON (stringify row)))}
-				 [text {:style {:font-size 20 :color "#000"}} (aget row "raw")]]))))
+				 [text {:style {:font-size 20 :color "#000"}} row]]))))
 
 (defn app-root []
   (let [chapter (subscribe [:get-chapter])]
     (fn []
-      [list-view {:dataSource (.cloneWithRows ds (clj->js @chapter))
+      [list-view {:dataSource (.cloneWithRows ds (clj->js
+																									 (->> @chapter
+																												(map (fn [[key [first-val]]] {:term key :rank (:overall-number first-val)}))
+																												(sort-by :rank)
+																												(map :term))))
 									:render-row (fn [row] (.createElement React row-comp #js{:row row}))
 									:style {:flex 1}}])))
 

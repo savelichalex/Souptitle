@@ -75,4 +75,5 @@
 	(->> (re-seq time-regex srt)
 			 (reduce parse-time-block [])
 			 (mapcat identity)
+			 (map-indexed (fn [index term] (assoc term :overall-number index)))
 			 (reduce accumulate-terms {})))
