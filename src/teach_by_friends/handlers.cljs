@@ -22,3 +22,8 @@
   ;validate-schema-mw
   (fn [db [_ value]]
     (assoc db :greeting value)))
+
+(register-handler
+	:resort-chapter
+	(fn [db [_ sort-type]]
+		(assoc db :sort-chapter sort-type)))

@@ -14,35 +14,39 @@
 (def view (r/adapt-react-class (.-View ReactNative)))
 (def image (r/adapt-react-class (.-Image ReactNative)))
 (def touchable-highlight (r/adapt-react-class (.-TouchableHighlight ReactNative)))
+(def touchable-opacity (r/adapt-react-class (.-TouchableOpacity ReactNative)))
 (def list-view (r/adapt-react-class (.-ListView ReactNative)))
 
 (defn alert [title]
       (.alert (.-Alert ReactNative) title))
 
-(def ds (ReactNative.ListView.DataSource. #js{:rowHasChanged (fn[a b] false)}))
+(def ds (ReactNative.ListView.DataSource. #js{:rowHasChanged not=}))
 
-(def row-comp
-	(r/reactify-component
-		(fn [props]
-			(let [row (:row props)]
-				[touchable-highlight {:style {:border-top-width 1
-																			:border-color "#000"
-																			:padding-top 10
-																			:padding-bottom 10
-																			:align-items "center"}
-															:on-press #(alert (. js/JSON (stringify row)))}
-				 [text {:style {:font-size 20 :color "#000"}} row]]))))
+(defn row-comp [{:keys [row]}]
+	[touchable-highlight {:style {:border-bottom-width 1
+																:border-color "#000"
+																:padding-top 10
+																:padding-bottom 10
+																:align-items "center"}
+												:on-press #(alert (. js/JSON (stringify row)))}
+	 [text {:style {:font-size 20 :color "#000"}} row]])
 
 (defn app-root []
   (let [chapter (subscribe [:get-chapter])]
     (fn []
-      [list-view {:dataSource (.cloneWithRows ds (clj->js
-																									 (->> @chapter
-																												(map (fn [[key [first-val]]] {:term key :rank (:overall-number first-val)}))
-																												(sort-by :rank)
-																												(map :term))))
-									:render-row (fn [row] (.createElement React row-comp #js{:row row}))
-									:style {:flex 1}}])))
+			[view {:style {:margin-top 15 :flex 1 :flex-direction "column"}}
+			 [view {:style {:flex 1
+											:flex-direction "row"
+											:align-items "stretch"}}
+				[touchable-opacity {:style {:flex 1 :justify-content "center" :align-items "center"}
+														:on-press #(dispatch [:resort-chapter :by-rank])}
+				 [text "In time order"]]
+				[touchable-opacity {:style {:flex 1 :justify-content "center" :align-items "center"}
+														:on-press #(dispatch [:resort-chapter :by-alphabet])}
+				 [text "In alph order"]]]
+			 [list-view {:dataSource (.cloneWithRows ds (clj->js @chapter))
+									 :render-row #(r/as-element (row-comp {:row %}))
+									 :style {:flex 9}}]])))
 
 (defn init []
       (dispatch-sync [:initialize-db])
