@@ -1,4 +1,5 @@
 (ns teach-by-friends.ios.core
+	(:require-macros [reagent.ratom :refer [reaction]])
   (:require [reagent.core :as r :refer [atom]]
             [re-frame.core :refer [subscribe dispatch dispatch-sync]]
             [teach-by-friends.handlers]
@@ -18,9 +19,16 @@
 (def list-view (r/adapt-react-class (.-ListView ReactNative)))
 
 (defn alert [title]
-      (.alert (.-Alert ReactNative) title))
+	(.alert (.-Alert ReactNative) title))
 
 (def ds (ReactNative.ListView.DataSource. #js{:rowHasChanged not=}))
+
+(def navigator (r/adapt-react-class (. ReactNative -Navigator)))
+
+(defn home-scene []
+	[view {:style {:flex 1 :justify-content "center" :align-items "center"}}
+	 [touchable-opacity {:on-press #(dispatch [:nav/chapter])}
+		[text "Move to chapter"]]])
 
 (defn row-comp [{:keys [row]}]
 	[touchable-highlight {:style {:border-bottom-width 1
@@ -28,13 +36,16 @@
 																:padding-top 10
 																:padding-bottom 10
 																:align-items "center"}
-												:on-press #(alert (. js/JSON (stringify row)))}
+												:on-press #(dispatch [:nav/term row])}
 	 [text {:style {:font-size 20 :color "#000"}} row]])
 
-(defn app-root []
-  (let [chapter (subscribe [:get-chapter])]
-    (fn []
-			[view {:style {:margin-top 15 :flex 1 :flex-direction "column"}}
+(defn chapter-scene []
+	(let [chapter (subscribe [:get-chapter])]
+		(fn []
+			[view {:style {:margin-top 15
+										 :flex 1
+										 :flex-direction "column"
+										 :background-color "white"}}
 			 [view {:style {:flex 1
 											:flex-direction "row"
 											:align-items "stretch"}}
@@ -47,6 +58,61 @@
 			 [list-view {:dataSource (.cloneWithRows ds (clj->js @chapter))
 									 :render-row #(r/as-element (row-comp {:row %}))
 									 :style {:flex 9}}]])))
+
+(defn term-scene [{:keys [term values]}]
+	(print values)
+	[view {:style {:flex 1
+								 :background-color "white"
+								 :justify-content "center"
+								 :align-items "center"}}
+	 [text term]])
+
+(defmulti render-scene (fn [nav] (:route nav)))
+(defmethod render-scene :home
+	[_]
+	[home-scene])
+
+(defmethod render-scene :chapter
+	[_]
+	[chapter-scene])
+
+(defmethod render-scene :term
+	[{props :props}]
+	(print "Props " props)
+	[term-scene props])
+
+;(defn navigation []
+;	(let [nav-state (subscribe [:nav-changes])]
+;		(render-scene @nav-state)))
+
+(defn choose-scene [route _]
+	(print "sdfsdfdsf")
+	(r/as-element
+		(render-scene {:route (keyword (.-name route)) :props (js->clj (.-passProps route) :keywordize-keys true)})))
+
+(defn navigation-component []
+	(r/create-class
+		{:component-did-mount
+		 (fn [this]
+			 (r/track! (fn []
+									 (let [nav (reaction (get @re-frame.db/app-db :nav))
+												 route (:route @nav)
+												 props (:props @nav)]
+										 (when (not (nil? route))
+											 (.. this
+													 -refs
+													 -navigator
+													 (push (clj->js {:name (name route)
+																					 :passProps props}))))))))
+		 :reagent-render
+		 (fn []
+			 [navigator {:ref "navigator"
+									 :style {:flex 1}
+									 :initialRoute {:name "home"}
+									 :render-scene choose-scene}])}))
+
+(defn app-root []
+  [navigation-component])
 
 (defn init []
       (dispatch-sync [:initialize-db])

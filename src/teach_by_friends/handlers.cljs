@@ -27,3 +27,16 @@
 	:resort-chapter
 	(fn [db [_ sort-type]]
 		(assoc db :sort-chapter sort-type)))
+
+(register-handler
+	:nav/chapter
+	(fn [db _]
+		(assoc-in db [:nav :route] :chapter)))
+
+(register-handler
+	:nav/term
+	(fn [db [_ term]]
+		(-> db
+				(assoc-in [:nav :route] :term)
+				(assoc-in [:nav :props] {:term term
+																 :values (get-in db [:chapter term])}))))

@@ -6,4 +6,7 @@
 (def chapter (parse-srt FriendsS02-05))
 
 ;; initial state of app-db
-(def app-db {:chapter chapter :sort-chapter :by-rank})
+(def app-db {:chapter chapter
+						 :sort-chapter :by-rank
+						 :nav {:route nil
+									 :props nil}})
