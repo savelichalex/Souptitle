@@ -1,9 +1,10 @@
 (ns teach-by-friends.ios.core
+	(:refer-clojure :exclude [pop])
 	(:require-macros [reagent.ratom :refer [reaction]])
-  (:require [reagent.core :as r :refer [atom]]
-            [re-frame.core :refer [subscribe dispatch dispatch-sync]]
-            [teach-by-friends.handlers]
-            [teach-by-friends.subs]))
+	(:require [reagent.core :as r :refer [atom]]
+						[re-frame.core :refer [subscribe dispatch dispatch-sync]]
+						[teach-by-friends.handlers]
+						[teach-by-friends.subs]))
 
 (enable-console-print!)
 
@@ -31,41 +32,43 @@
 		[text "Move to chapter"]]])
 
 (defn row-comp [{:keys [row]}]
-	[touchable-highlight {:style {:border-bottom-width 1
-																:border-color "#000"
-																:padding-top 10
-																:padding-bottom 10
-																:align-items "center"}
+	[touchable-highlight {:style    {:border-bottom-width 1
+																	 :border-color        "#000"
+																	 :padding-top         10
+																	 :padding-bottom      10
+																	 :align-items         "center"}
 												:on-press #(dispatch [:nav/term row])}
 	 [text {:style {:font-size 20 :color "#000"}} row]])
 
 (defn chapter-scene []
 	(let [chapter (subscribe [:get-chapter])]
 		(fn []
-			[view {:style {:margin-top 15
-										 :flex 1
-										 :flex-direction "column"
+			[view {:style {:margin-top       15
+										 :flex             1
+										 :flex-direction   "column"
 										 :background-color "white"}}
-			 [view {:style {:flex 1
+			 [view {:style {:flex           1
 											:flex-direction "row"
-											:align-items "stretch"}}
-				[touchable-opacity {:style {:flex 1 :justify-content "center" :align-items "center"}
+											:align-items    "stretch"}}
+				[touchable-opacity {:style    {:flex 1 :justify-content "center" :align-items "center"}
 														:on-press #(dispatch [:resort-chapter :by-rank])}
 				 [text "In time order"]]
-				[touchable-opacity {:style {:flex 1 :justify-content "center" :align-items "center"}
+				[touchable-opacity {:style    {:flex 1 :justify-content "center" :align-items "center"}
 														:on-press #(dispatch [:resort-chapter :by-alphabet])}
 				 [text "In alph order"]]]
 			 [list-view {:dataSource (.cloneWithRows ds (clj->js @chapter))
 									 :render-row #(r/as-element (row-comp {:row %}))
-									 :style {:flex 9}}]])))
+									 :style      {:flex 9}}]])))
 
 (defn term-scene [{:keys [term values]}]
 	(print values)
-	[view {:style {:flex 1
+	[view {:style {:flex             1
 								 :background-color "white"
-								 :justify-content "center"
-								 :align-items "center"}}
-	 [text term]])
+								 :justify-content  "center"
+								 :align-items      "center"}}
+	 [text term]
+	 [touchable-opacity {:on-press #(dispatch [:nav/pop])}
+		[text "Back"]]])
 
 (defmulti render-scene (fn [nav] (:route nav)))
 (defmethod render-scene :home
@@ -86,7 +89,6 @@
 ;		(render-scene @nav-state)))
 
 (defn choose-scene [route _]
-	(print "sdfsdfdsf")
 	(r/as-element
 		(render-scene {:route (keyword (.-name route)) :props (js->clj (.-passProps route) :keywordize-keys true)})))
 
@@ -98,22 +100,28 @@
 									 (let [nav (reaction (get @re-frame.db/app-db :nav))
 												 route (:route @nav)
 												 props (:props @nav)]
-										 (when (not (nil? route))
-											 (.. this
-													 -refs
-													 -navigator
-													 (push (clj->js {:name (name route)
-																					 :passProps props}))))))))
+										 (cond
+											 (nil? route) nil
+											 (= route :pop) (.. this
+																					-refs
+																					-navigator
+																					(pop))
+											 :else (.. this
+																 -refs
+																 -navigator
+																 (push (clj->js {:name      (name route)
+																								 :passProps props})))
+											 )))))
 		 :reagent-render
 		 (fn []
-			 [navigator {:ref "navigator"
-									 :style {:flex 1}
+			 [navigator {:ref          "navigator"
+									 :style        {:flex 1}
 									 :initialRoute {:name "home"}
 									 :render-scene choose-scene}])}))
 
 (defn app-root []
-  [navigation-component])
+	[navigation-component])
 
 (defn init []
-      (dispatch-sync [:initialize-db])
-      (.registerComponent app-registry "TeachByFriends" #(r/reactify-component app-root)))
+	(dispatch-sync [:initialize-db])
+	(.registerComponent app-registry "TeachByFriends" #(r/reactify-component app-root)))

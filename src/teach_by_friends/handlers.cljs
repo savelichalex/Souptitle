@@ -29,6 +29,11 @@
 		(assoc db :sort-chapter sort-type)))
 
 (register-handler
+	:nav/pop
+	(fn [db _]
+		(assoc-in db [:nav :route] :pop)))
+
+(register-handler
 	:nav/chapter
 	(fn [db _]
 		(assoc-in db [:nav :route] :chapter)))
