@@ -8,5 +8,7 @@
 ;; initial state of app-db
 (def app-db {:chapter chapter
 						 :sort-chapter :by-rank
+						 :term-translate nil
+						 :target-lang "ru"
 						 :nav {:route nil
 									 :props nil}})

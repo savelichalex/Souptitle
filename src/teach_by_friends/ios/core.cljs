@@ -18,6 +18,7 @@
 (def touchable-highlight (r/adapt-react-class (.-TouchableHighlight ReactNative)))
 (def touchable-opacity (r/adapt-react-class (.-TouchableOpacity ReactNative)))
 (def list-view (r/adapt-react-class (.-ListView ReactNative)))
+(def activity-indicator-ios (r/adapt-react-class (. ReactNative -ActivityIndicatorIOS)))
 
 (defn alert [title]
 	(.alert (.-Alert ReactNative) title))
@@ -61,14 +62,23 @@
 									 :style      {:flex 9}}]])))
 
 (defn term-scene [{:keys [term values]}]
-	(print values)
-	[view {:style {:flex             1
-								 :background-color "white"
-								 :justify-content  "center"
-								 :align-items      "center"}}
-	 [text term]
-	 [touchable-opacity {:on-press #(dispatch [:nav/pop])}
-		[text "Back"]]])
+	(let [translate (subscribe [:term-translate])]
+		(fn []
+			(if (nil? @translate)
+				[view {:style {:flex             1
+											 :background-color "white"
+											 :justify-content  "center"
+											 :align-items      "center"}}
+				 [activity-indicator-ios]
+				 [touchable-opacity {:on-press #(dispatch [:nav/pop-term])}
+					[text "Back"]]]
+				[view {:style {:flex             1
+											 :background-color "white"
+											 :justify-content  "center"
+											 :align-items      "center"}}
+				 [text {:style {:font-size 20 :font-weight "bold"}} (first @translate)]
+				 [touchable-opacity {:on-press #(dispatch [:nav/pop-term])}
+					[text "Back"]]]))))
 
 (defmulti render-scene (fn [nav] (:route nav)))
 (defmethod render-scene :home

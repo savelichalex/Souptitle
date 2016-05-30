@@ -24,3 +24,8 @@
 				(chapter-word-list
 					@sort-type
 					(get @db :chapter))))))
+
+(register-sub
+	:term-translate
+	(fn [db _]
+		(reaction (get @db :term-translate))))
