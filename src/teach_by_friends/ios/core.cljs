@@ -28,6 +28,15 @@
 (def navigator (r/adapt-react-class (. ReactNative -Navigator)))
 
 (defn home-scene []
+	(-> (js/fetch "https://raw.githubusercontent.com/savelichalex/friends-app-db/master/friends/seasons.json")
+			(.then #(.text %))
+			(.then #(js->clj (js/JSON.parse %) :keywordize-keys true))
+			(.then (fn [seasons]
+							 (let [first-season (:chapters (first seasons))]
+								 (-> (js/fetch first-season)
+										 (.then #(.text %))
+										 (.then #(js->clj (js/JSON.parse %) :keywordize-keys true))))))
+			(.then #(print %)))
 	[view {:style {:flex 1 :justify-content "center" :align-items "center"}}
 	 [touchable-opacity {:on-press #(dispatch [:nav/chapter])}
 		[text "Move to chapter"]]])
