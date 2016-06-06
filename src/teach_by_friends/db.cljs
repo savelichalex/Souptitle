@@ -12,5 +12,7 @@
 						 :sort-chapter :by-rank
 						 :term-translate nil
 						 :target-lang "ru"
+						 :seasons-list nil
+						 :chapters-list nil
 						 :nav {:route nil
 									 :props nil}})

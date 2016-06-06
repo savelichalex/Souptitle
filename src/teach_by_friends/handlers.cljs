@@ -17,11 +17,30 @@
 (def YANDEX_TRANSLATE_API_KEY
 	"trnsl.1.1.20160530T190821Z.59ce9ff185d1c573.e05024eb700b7792b46b29fd152cecc6e2aa0ca4")
 
+(def FRIENDS_SEASONS_URL
+	"https://raw.githubusercontent.com/savelichalex/friends-app-db/master/friends/seasons.json")
+
 (register-handler
   :initialize-db
   ;validate-schema-mw
   (fn [_ _]
+		(-> (js/fetch FRIENDS_SEASONS_URL)
+				(.then #(.text %))
+				(.then #(js->clj (js/JSON.parse %) :keywordize-keys true)) ;use transit!
+				(.then #(dispatch [:seasons-load-success %]))
+				(.catch #(dispatch [:seasons-load-error %])))
     app-db))
+
+(register-handler
+	:seasons-load-success
+	(fn [db [_ seasons]]
+		(-> db
+				(assoc :seasons-list seasons))))
+
+(register-handler
+	:seasons-load-error
+	(fn [db [_ error]]
+		db))
 
 (register-handler
   :set-greeting
@@ -71,3 +90,26 @@
 	(fn [db _]
 		(dispatch [:nav/pop])
 		(assoc db :term-translate nil)))
+
+(register-handler
+	:chapters-load
+	(fn [db [_ season]]
+		(-> (js/fetch (:chapters season))
+				(.then #(.text %))
+				(.then #(js->clj (js/JSON.parse %) :keywordize-keys true))
+				(.then #(dispatch [:chapters-load-success %]))
+				(.catch #(dispatch [:chapters-load-error %])))
+		(-> db
+				(assoc :chapters-list nil))))
+
+(register-handler
+	:chapters-load-success
+	(fn [db [_ chapters]]
+		(-> db
+				(assoc :chapters-list chapters))))
+
+(register-handler
+	:chapters-load-error
+	(fn [db [_ error]]
+		(-> db
+				(assoc :chapters-list nil))))

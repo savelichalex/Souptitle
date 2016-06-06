@@ -18,28 +18,51 @@
 (def touchable-highlight (r/adapt-react-class (.-TouchableHighlight ReactNative)))
 (def touchable-opacity (r/adapt-react-class (.-TouchableOpacity ReactNative)))
 (def list-view (r/adapt-react-class (.-ListView ReactNative)))
+(def scroll-view (r/adapt-react-class (.-ScrollView ReactNative)))
 (def activity-indicator-ios (r/adapt-react-class (. ReactNative -ActivityIndicatorIOS)))
 
 (defn alert [title]
 	(.alert (.-Alert ReactNative) title))
 
-(def ds (ReactNative.ListView.DataSource. #js{:rowHasChanged not=}))
-
 (def navigator (r/adapt-react-class (. ReactNative -Navigator)))
 
+(def seasons-ds (ReactNative.ListView.DataSource. #js{:rowHasChanged not=}))
+(def chapters-ds (ReactNative.ListView.DataSource. #js{:rowHasChanged not=}))
+
+(defn season-comp [{:keys [row]}]
+	[touchable-highlight {:style    {:border-bottom-width 1
+																	 :border-color        "#000"
+																	 :padding-top         10
+																	 :padding-bottom      10
+																	 :align-items         "center"}
+												:on-press #(dispatch [:chapters-load row])}
+	 [text {:style {:font-size 20 :color "#000"}} (:title row)]])
+
+(defn chapter-comp [{:keys [row]}]
+	[touchable-highlight {:style    {:border-bottom-width 1
+																	 :border-color        "#000"
+																	 :padding-top         10
+																	 :padding-bottom      10
+																	 :align-items         "center"}
+												:on-press #(dispatch [:nav/chapter])}
+	 [text {:style {:font-size 20 :color "#000"}} (:title row)]])
+
 (defn home-scene []
-	(-> (js/fetch "https://raw.githubusercontent.com/savelichalex/friends-app-db/master/friends/seasons.json")
-			(.then #(.text %))
-			(.then #(js->clj (js/JSON.parse %) :keywordize-keys true))
-			(.then (fn [seasons]
-							 (let [first-season (:chapters (first seasons))]
-								 (-> (js/fetch first-season)
-										 (.then #(.text %))
-										 (.then #(js->clj (js/JSON.parse %) :keywordize-keys true))))))
-			(.then #(print %)))
-	[view {:style {:flex 1 :justify-content "center" :align-items "center"}}
-	 [touchable-opacity {:on-press #(dispatch [:nav/chapter])}
-		[text "Move to chapter"]]])
+	(let [seasons (subscribe [:seasons])
+				chapters (subscribe [:chapters])]
+		[view {:style {:flex 1 :flex-direction "column" :align-items "stretch"}}
+		 (if (not (nil? @seasons))
+			 [list-view {:dataSource (.cloneWithRows seasons-ds (clj->js @seasons))
+									 :render-row #(r/as-element (season-comp {:row %}))
+									 :style      {:flex 1}}]
+			 [view {:style {:flex 1 :justify-content "center" :align-items "center"}}
+				[activity-indicator-ios]])
+		 (if (not (nil? @chapters))
+			 [list-view {:style {:flex 1}}]
+			 [list-view {:dataSource (.cloneWithRows chapters-ds (clj->js @chapters))
+									 :render-row #(r/as-element (chapter-comp {:row %}))
+									 :style      {:flex 1}}]
+			 [view {:style {:flex 1}}])]))
 
 (defn row-comp [{:keys [row]}]
 	[touchable-highlight {:style    {:border-bottom-width 1
@@ -49,6 +72,8 @@
 																	 :align-items         "center"}
 												:on-press #(dispatch [:nav/term row])}
 	 [text {:style {:font-size 20 :color "#000"}} row]])
+
+(def chapter-ds (ReactNative.ListView.DataSource. #js{:rowHasChanged not=}))
 
 (defn chapter-scene []
 	(let [chapter (subscribe [:get-chapter])]
@@ -66,7 +91,7 @@
 				[touchable-opacity {:style    {:flex 1 :justify-content "center" :align-items "center"}
 														:on-press #(dispatch [:resort-chapter :by-alphabet])}
 				 [text "In alph order"]]]
-			 [list-view {:dataSource (.cloneWithRows ds (clj->js @chapter))
+			 [list-view {:dataSource (.cloneWithRows chapter-ds (clj->js @chapter))
 									 :render-row #(r/as-element (row-comp {:row %}))
 									 :style      {:flex 9}}]])))
 

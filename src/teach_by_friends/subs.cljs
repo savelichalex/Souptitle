@@ -29,3 +29,13 @@
 	:term-translate
 	(fn [db _]
 		(reaction (get @db :term-translate))))
+
+(register-sub
+	:seasons
+	(fn [db _]
+		(reaction (get @db :seasons-list))))
+
+(register-sub
+	:chapters
+	(fn [db _]
+		(reaction (get @db :chapters-list))))
