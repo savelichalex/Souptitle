@@ -3,7 +3,8 @@
     [re-frame.core :refer [register-handler after dispatch]]
     [schema.core :as s :include-macros true]
     [teach-by-friends.db :refer [app-db]]
-		[ajax.core :refer [GET]]))
+    [teach-by-friends.parser :refer [parse-srt]]
+    [ajax.core :refer [GET]]))
 
 (enable-console-print!)
 
@@ -59,11 +60,6 @@
 		(assoc-in db [:nav :route] :pop)))
 
 (register-handler
-	:nav/chapter
-	(fn [db _]
-		(assoc-in db [:nav :route] :chapter)))
-
-(register-handler
 	:nav/term
 	(fn [db [_ term]]
 		(GET
@@ -71,7 +67,7 @@
 				"https://translate.yandex.net/api/v1.5/tr.json/translate?"
 				"text=" term
 				"&lang=en-" (:target-lang db)
-				"&key=" YANDEX_TRANSLATE_API_KEY)
+				"&key=" YANDEX_TRANSLATE_API_KEY)                       ;todo: move to fetch
 			{:handler #(dispatch [:term-translate-success %])
 			 :error-handler #(print %)})
 		(-> db
@@ -93,8 +89,8 @@
 
 (register-handler
 	:chapters-load
-	(fn [db [_ season]]
-		(-> (js/fetch (:chapters season))
+	(fn [db [_ {chapters :chapters}]]
+		(-> (js/fetch chapters)
 				(.then #(.text %))
 				(.then #(js->clj (js/JSON.parse %) :keywordize-keys true))
 				(.then #(dispatch [:chapters-load-success %]))
@@ -113,3 +109,29 @@
 	(fn [db [_ error]]
 		(-> db
 				(assoc :chapters-list nil))))
+
+(register-handler
+  :chapter-load
+  (fn [db [_ {srt :srt}]]
+    (-> (js/fetch srt)
+        (.then #(.text %))
+        (.then #(dispatch [:srt-load-success (parse-srt %)]))
+        (.catch #(dispatch [:srt-load-error %])))
+    (-> db
+        (assoc :chapter nil)
+        (assoc :sort-chapter :by-rank)
+        (assoc-in [:nav :route] :chapter))))
+
+(register-handler
+  :srt-load-success
+  (fn [db [_ chapter]]
+    (print chapter)
+    (-> db
+        (assoc :chapter chapter))))
+
+(register-handler
+  :srt-load-error
+  (fn [db [_ error]]
+    (print error)
+    (-> db
+        (assoc :chapter nil))))
