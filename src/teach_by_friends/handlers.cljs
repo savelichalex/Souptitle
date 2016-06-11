@@ -21,13 +21,24 @@
 (def FRIENDS_SEASONS_URL
 	"https://raw.githubusercontent.com/savelichalex/friends-app-db/master/friends/seasons.json")
 
+(defn get-query-string-for-translate [term lang]
+	(str
+		"https://translate.yandex.net/api/v1.5/tr.json/translate?"
+		"text=" term
+		"&lang=en-" lang
+		"&key=" YANDEX_TRANSLATE_API_KEY))
+
+(defn parse-fetch-response [promise]
+	(-> promise
+			(.then #(.text %))
+			(.then #(js->clj (js/JSON.parse %) :keywordize-keys true))))
+
 (register-handler
   :initialize-db
   ;validate-schema-mw
   (fn [_ _]
 		(-> (js/fetch FRIENDS_SEASONS_URL)
-				(.then #(.text %))
-				(.then #(js->clj (js/JSON.parse %) :keywordize-keys true)) ;use transit!
+				(parse-fetch-response)
 				(.then #(dispatch [:seasons-load-success %]))
 				(.catch #(dispatch [:seasons-load-error %])))
     app-db))
@@ -62,14 +73,10 @@
 (register-handler
 	:nav/term
 	(fn [db [_ term]]
-		(GET
-			(str
-				"https://translate.yandex.net/api/v1.5/tr.json/translate?"
-				"text=" term
-				"&lang=en-" (:target-lang db)
-				"&key=" YANDEX_TRANSLATE_API_KEY)                       ;todo: move to fetch
-			{:handler #(dispatch [:term-translate-success %])
-			 :error-handler #(print %)})
+		(-> (js/fetch (get-query-string-for-translate term (:target-lang db)))
+				(parse-fetch-response)
+				(.then #(dispatch [:term-translate-success %]))
+				(.catch #(print %)))
 		(-> db
 				(assoc-in [:nav :route] :term)
 				(assoc-in [:nav :props] {:term term
@@ -79,7 +86,7 @@
 	:term-translate-success
 	(fn [db [_ translate]]
 		(-> db
-				(assoc :term-translate (get translate "text")))))
+				(assoc :term-translate (:text translate)))))
 
 (register-handler
 	:nav/pop-term
@@ -91,8 +98,7 @@
 	:chapters-load
 	(fn [db [_ {chapters :chapters}]]
 		(-> (js/fetch chapters)
-				(.then #(.text %))
-				(.then #(js->clj (js/JSON.parse %) :keywordize-keys true))
+				(parse-fetch-response)
 				(.then #(dispatch [:chapters-load-success %]))
 				(.catch #(dispatch [:chapters-load-error %])))
 		(-> db
@@ -125,7 +131,6 @@
 (register-handler
   :srt-load-success
   (fn [db [_ chapter]]
-    (print chapter)
     (-> db
         (assoc :chapter chapter))))
 
