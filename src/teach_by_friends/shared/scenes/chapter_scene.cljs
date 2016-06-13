@@ -11,7 +11,7 @@
 (defn chapter-scene []
 	(let [chapter (subscribe [:get-chapter])]
 		(fn []
-			[ui/view {:style {:margin-top       15
+			[ui/view {:style {:margin-top       (ui/get-navigation-bar-height)
 												:flex             1
 												:flex-direction   "column"
 												:background-color "white"}}

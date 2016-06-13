@@ -3,8 +3,6 @@
 						[teach-by-friends.stop-words :refer [stop-words]]
 						[clojure.set :as set]))
 
-(def nlp (js/require "nlp_compromise/src/index.js"))
-
 (def time-regex #"(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})[\n]([^\n]+)[\n]([^\n]+)")
 
 (defn time-to-ms [time]

@@ -1,6 +1,7 @@
 (ns teach-by-friends.shared.ui
 	(:require-macros [reagent.ratom :refer [reaction]])
-	(:require [reagent.core :as r]))
+	(:require [reagent.core :as r]
+						[re-frame.core :refer [dispatch]]))
 
 (def React (js/require "react"))
 (def ReactNative (js/require "react-native"))
@@ -20,6 +21,12 @@
 
 (def navigator
 	(r/adapt-react-class (. ReactNative -Navigator)))
+
+(def navigation-bar
+	(r/adapt-react-class (.. ReactNative -Navigator -NavigationBar)))
+
+(defn get-navigation-bar-height []
+	(.. ReactNative -Navigator -NavigationBar -Styles -General -TotalNavHeight))
 
 (defn choose-scene [render-scene]
 	(fn [route _]
@@ -44,6 +51,30 @@
 					(type types)
 					(:push-from-right types))))))
 
+(def navigation-mapper {:LeftButton
+												(fn [route navigator index nav-state]
+													(when (not (= index 0))
+														(let [prev-route (aget nav-state "routeStack" (dec index) "name")]
+															(r/as-element
+																[touchable-opacity
+																 {:style {:padding-left 10
+																					:padding-top 10}
+																	:on-press #(dispatch [:nav/pop (keyword prev-route)])}
+																 [text
+																	{:style {:color "#373E4D"}}
+																	"Back"]]))))
+												:RightButton
+												(fn []
+													nil)
+												:Title
+												(fn [route navigator index nav-state]
+													(print route)
+													(r/as-element
+														[text
+														 {:style {:font-weight "bold"
+																			:margin-top 10}}
+														 "Title"]))})
+
 (defn navigation [props]
 	(r/create-class
 		{:component-did-mount
@@ -51,11 +82,12 @@
 			 (r/track! (fn []
 									 (let [nav (reaction (get @re-frame.db/app-db :nav))
 												 route (:route @nav)
-												 props (:props @nav)]
+												 props (:props @nav)
+												 type (:type @nav)]
 										 (cond
 											 (nil? route) nil
-											 (= route :pop) (.. this -refs -navigator (pop))
-											 :else (.. this -refs -navigator (push (clj->js {:name      (name route)
+											 (= type :pop) (.. this -refs -navigator (pop))
+											 (= type :push) (.. this -refs -navigator (push (clj->js {:name      (name route)
 																																			 :passProps props}))))))))
 		 :reagent-render
 		 (fn [{:keys [initial-route render-scene configure-scene]}]
@@ -63,5 +95,9 @@
 									 :style           {:flex 1}
 									 :initial-route   {:name (name initial-route)}
 									 :render-scene    (choose-scene render-scene)
-									 :configure-scene (choose-scene-transition configure-scene)}])
+									 :configure-scene (choose-scene-transition configure-scene)
+									 :navigation-bar (r/as-element
+																		 [navigation-bar {:style {:background-color "white"}
+																											:route-mapper (clj->js navigation-mapper)}])
+									 }])
 		 }))

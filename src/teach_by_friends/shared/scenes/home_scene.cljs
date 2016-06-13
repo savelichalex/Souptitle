@@ -15,7 +15,7 @@
 		(let [seasons (subscribe [:seasons])
 					chapters (subscribe [:chapters])]
 			(fn []
-				[ui/view {:style {:flex 1 :margin-top 15 :flex-direction "column" :align-items "stretch"}}
+				[ui/view {:style {:flex 1 :margin-top (ui/get-navigation-bar-height) :flex-direction "column" :align-items "stretch"}}
 				 (if (not (nil? @seasons))
 					 [ui/list-view {:dataSource (.cloneWithRows seasons-ds (clj->js @seasons))
 													:render-row #(r/as-element (season-row %))

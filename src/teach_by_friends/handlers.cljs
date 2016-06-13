@@ -67,8 +67,10 @@
 
 (register-handler
 	:nav/pop
-	(fn [db _]
-		(assoc-in db [:nav :route] :pop)))
+	(fn [db [_ route]]
+		(-> db
+				(assoc-in [:nav :route] route)
+				(assoc-in [:nav :type] :pop))))
 
 (register-handler
 	:nav/term
@@ -79,6 +81,7 @@
 				(.catch #(print %)))
 		(-> db
 				(assoc-in [:nav :route] :term)
+				(assoc-in [:nav :type] :push)
 				(assoc-in [:nav :props] {:term term
 																 :values (get-in db [:chapter term])}))))
 
@@ -91,7 +94,7 @@
 (register-handler
 	:nav/pop-term
 	(fn [db _]
-		(dispatch [:nav/pop])
+		(dispatch [:nav/pop :chapter])
 		(assoc db :term-translate nil)))
 
 (register-handler
@@ -126,7 +129,8 @@
     (-> db
         (assoc :chapter nil)
         (assoc :sort-chapter :by-rank)
-        (assoc-in [:nav :route] :chapter))))
+        (assoc-in [:nav :route] :chapter)
+        (assoc-in [:nav :type] :push))))
 
 (register-handler
   :srt-load-success

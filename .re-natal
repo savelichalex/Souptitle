@@ -8,7 +8,6 @@
     "prod": "env/prod"
   },
   "modules": [
-    "nlp_compromise/src/index.js"
   ],
   "imageDirs": [
     "images"
