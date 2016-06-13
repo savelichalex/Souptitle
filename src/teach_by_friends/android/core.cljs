@@ -6,10 +6,11 @@
             [teach-by-friends.shared.ui :as ui]
             [teach-by-friends.android.ui :as android-ui]
             [teach-by-friends.shared.scenes.home-scene :refer [get-home-scene]]
-            [teach-by-friends.shared.scenes.chapter-scene :refer [chapter-scene]]
+            [teach-by-friends.shared.scenes.chapter-scene :refer [get-chapter-scene]]
             [teach-by-friends.shared.scenes.term-scene :refer [get-term-scene]]))
 
 (def home-scene (get-home-scene android-ui/activity-indicator))
+(def chapter-scene (get-chapter-scene android-ui/activity-indicator))
 (def term-scene (get-term-scene android-ui/activity-indicator))
 
 (defmulti render-scene (fn [nav] (:route nav)))

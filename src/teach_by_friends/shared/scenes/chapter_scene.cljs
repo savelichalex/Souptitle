@@ -8,22 +8,29 @@
 
 (def chapter-ds (ReactNative.ListView.DataSource. #js{:rowHasChanged not=}))
 
-(defn chapter-scene []
-	(let [chapter (subscribe [:get-chapter])]
-		(fn []
-			[ui/view {:style {:margin-top       (ui/get-navigation-bar-height)
-												:flex             1
-												:flex-direction   "column"
-												:background-color "white"}}
-			 [ui/view {:style {:flex           1
-												 :flex-direction "row"
-												 :align-items    "stretch"}}
-				[ui/touchable-opacity {:style    {:flex 1 :justify-content "center" :align-items "center"}
-															 :on-press #(dispatch [:resort-chapter :by-rank])}
-				 [ui/text "In time order"]]
-				[ui/touchable-opacity {:style    {:flex 1 :justify-content "center" :align-items "center"}
-															 :on-press #(dispatch [:resort-chapter :by-alphabet])}
-				 [ui/text "In alph order"]]]
-			 [ui/list-view {:dataSource (.cloneWithRows chapter-ds (clj->js @chapter))
-											:render-row #(r/as-element (term-row %))
-											:style      {:flex 9}}]])))
+(defn get-chapter-scene [activity-indicator]
+	(fn chapter-scene []
+		(let [chapter (subscribe [:get-chapter])]
+			(fn []
+				(if (not (nil? @chapter))
+					[ui/view {:style {:margin-top       (ui/get-navigation-bar-height)
+														:flex             1
+														:flex-direction   "column"
+														:background-color "white"}}
+					 [ui/view {:style {:flex           1
+														 :flex-direction "row"
+														 :align-items    "stretch"}}
+						[ui/touchable-opacity {:style    {:flex 1 :justify-content "center" :align-items "center"}
+																	 :on-press #(dispatch [:resort-chapter :by-rank])}
+						 [ui/text "In time order"]]
+						[ui/touchable-opacity {:style    {:flex 1 :justify-content "center" :align-items "center"}
+																	 :on-press #(dispatch [:resort-chapter :by-alphabet])}
+						 [ui/text "In alph order"]]]
+					 [ui/list-view {:dataSource (.cloneWithRows chapter-ds (clj->js @chapter))
+													:render-row #(r/as-element (term-row %))
+													:style      {:flex 9}}]]
+					[ui/view {:style {:flex             1
+														:background-color "white"
+														:justify-content  "center"
+														:align-items      "center"}}
+					 [activity-indicator]])))))
