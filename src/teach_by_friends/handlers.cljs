@@ -77,7 +77,7 @@
 	(fn [db [_ term]]
 		(-> (js/fetch (get-query-string-for-translate term (:target-lang db)))
 				(parse-fetch-response)
-				(.then #(dispatch [:term-translate-success %]))
+				(.then #(dispatch [:term-translate-success term %]))
 				(.catch #(print %)))
 		(-> db
 				(assoc-in [:nav :route] :term)
@@ -87,9 +87,11 @@
 
 (register-handler
 	:term-translate-success
-	(fn [db [_ translate]]
-		(-> db
-				(assoc :term-translate (:text translate)))))
+	(fn [db [_ term translate]]
+		(let [in-chapter (first (get-in db [:chapter term]))]
+			(-> db
+					(assoc :term-translate (-> in-chapter
+																		 (assoc :translate (:text translate))))))))
 
 (register-handler
 	:nav/pop-term

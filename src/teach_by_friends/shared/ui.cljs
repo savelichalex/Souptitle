@@ -68,7 +68,6 @@
 													nil)
 												:Title
 												(fn [route navigator index nav-state]
-													(print route)
 													(r/as-element
 														[text
 														 {:style {:font-weight "bold"
