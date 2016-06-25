@@ -3,7 +3,7 @@
 						[clojure.string :as string]
 						[reagent.core :as r]))
 
-(defn nav-bar [seasons]
+(defn nav-bar []
 	[ui/view {:style {:flex             3
 										:flex-direction   "row"
 										:align-items      "center"
@@ -16,7 +16,7 @@
 		[ui/text {:style {:color     "white"
 											:font-size 30}}
 		 (string/upper-case
-			 (str "season " (:title (first (filter #(:active? %) seasons)))))]]
+			 (str "season " "one"))]]
 	 [ui/view {:style {:flex        1
 										 :align-items "center"}}
 		[ui/text {:style {:color "white"}} "S"]]])
@@ -61,7 +61,7 @@
 						 seasons-list))]))
 
 (defn new-design-scene []
-	(let [seasons (r/atom '({:active? false
+	(let [chapters (r/atom '({:active? false
 													 :title   "one"}
 													 {:active? false
 														:title   "two"}
@@ -85,8 +85,8 @@
 			[ui/view {:style {:flex           1
 												:flex-direction "column"
 												:align-items    "stretch"}}
-			 [nav-bar @seasons]
-			 [seasons-bar @seasons #(swap! seasons (fn [a]
+			 [nav-bar]
+			 [seasons-bar @chapters #(swap! chapters (fn [a]
 																							 (->> a
 																										(map-indexed (fn [index i] (assoc i :active? (= index %)))))))]
 			 [ui/scroll-view {:style {:flex 12}}]])))
