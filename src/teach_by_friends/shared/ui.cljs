@@ -95,8 +95,8 @@
 									 :initial-route   {:name (name initial-route)}
 									 :render-scene    (choose-scene render-scene)
 									 :configure-scene (choose-scene-transition configure-scene)
-									 :navigation-bar (r/as-element
-																		 [navigation-bar {:style {:background-color "white"}
-																											:route-mapper (clj->js navigation-mapper)}])
+									 ;:navigation-bar (r/as-element
+										;								 [navigation-bar {:style {:background-color "white"}
+										;																	:route-mapper (clj->js navigation-mapper)}])
 									 }])
 		 }))
