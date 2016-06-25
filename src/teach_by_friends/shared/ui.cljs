@@ -75,28 +75,32 @@
 														 "Title"]))})
 
 (defn navigation [props]
-	(r/create-class
-		{:component-did-mount
-		 (fn [this]
-			 (r/track! (fn []
-									 (let [nav (reaction (get @re-frame.db/app-db :nav))
-												 route (:route @nav)
-												 props (:props @nav)
-												 type (:type @nav)]
-										 (cond
-											 (nil? route) nil
-											 (= type :pop) (.. this -refs -navigator (pop))
-											 (= type :push) (.. this -refs -navigator (push (clj->js {:name      (name route)
-																																			 :passProps props}))))))))
-		 :reagent-render
-		 (fn [{:keys [initial-route render-scene configure-scene]}]
-			 [navigator {:ref             "navigator"
-									 :style           {:flex 1}
-									 :initial-route   {:name (name initial-route)}
-									 :render-scene    (choose-scene render-scene)
-									 :configure-scene (choose-scene-transition configure-scene)
-									 ;:navigation-bar (r/as-element
-										;								 [navigation-bar {:style {:background-color "white"}
-										;																	:route-mapper (clj->js navigation-mapper)}])
-									 }])
-		 }))
+	(let [track-id (atom nil)]
+		(r/create-class
+			{:component-did-mount
+			 (fn [this]
+				 (let [id (r/track! (fn []
+															(let [nav (reaction (get @re-frame.db/app-db :nav))
+																		route (:route @nav)
+																		props (:props @nav)
+																		type (:type @nav)]
+																(cond
+																	(nil? route) nil
+																	(= type :pop) (.. this -refs -navigator (pop))
+																	(= type :push) (.. this -refs -navigator (push (clj->js {:name      (name route)
+																																													 :passProps props})))))))]
+					 (swap! track-id (fn [_] id))))
+			 :component-will-unmount
+			 (fn [this]
+				 (r/dispose! @track-id))
+			 :reagent-render
+			 (fn [{:keys [initial-route render-scene configure-scene]}]
+				 [navigator {:ref             "navigator"
+										 :style           {:flex 1}
+										 :initial-route   {:name (name initial-route)}
+										 :render-scene    (choose-scene render-scene)
+										 :configure-scene (choose-scene-transition configure-scene)
+										 ;:navigation-bar (r/as-element
+										 ;								 [navigation-bar {:style {:background-color "white"}
+										 ;																	:route-mapper (clj->js navigation-mapper)}])
+										 }])})))

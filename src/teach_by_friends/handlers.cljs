@@ -131,7 +131,8 @@
     (-> db
         (assoc :chapter nil)
         (assoc :sort-chapter :by-rank)
-        (assoc-in [:nav :route] :chapter)
+        ;(assoc-in [:nav :route] :chapter)
+        (assoc-in [:nav :route] :new-design)
         (assoc-in [:nav :type] :push))))
 
 (register-handler

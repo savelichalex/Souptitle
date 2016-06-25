@@ -10,13 +10,14 @@
             [teach-by-friends.shared.scenes.home-scene :refer [get-home-scene]]
             [teach-by-friends.shared.scenes.chapter-scene :refer [get-chapter-scene]]
             [teach-by-friends.shared.scenes.term-scene :refer [get-term-scene]]
-            [teach-by-friends.shared.scenes.new-design :refer [new-design-scene]]))
+            [teach-by-friends.shared.scenes.new-design :refer [get-new-design-scene]]))
 
 (enable-console-print!)
 
 (def home-scene (get-home-scene ios-ui/activity-indicator))
 (def term-scene (get-term-scene ios-ui/activity-indicator))
 (def chapter-scene (get-chapter-scene ios-ui/activity-indicator))
+(def new-design-scene (get-new-design-scene ios-ui/activity-indicator))
 
 (defmulti render-scene (fn [nav] (:route nav)))
 (defmethod render-scene :home
@@ -41,7 +42,7 @@
   :push-from-right)
 
 (defn app-root []
-  [ui/navigation {:initial-route :new-design                           ;:home
+  [ui/navigation {:initial-route :home                      ;:new-design                           ;:home
                   :render-scene render-scene
                   :configure-scene configure-scene}])
 
