@@ -102,4 +102,4 @@
 														 :background-color "white"
 														 :justify-content  "center"
 														 :align-items      "center"}}
-						[activity-indicator]])]))))
+						[activity-indicator {:color "rgb(72, 86, 155)"}]])]))))

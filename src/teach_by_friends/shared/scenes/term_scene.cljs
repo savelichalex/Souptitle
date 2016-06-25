@@ -26,4 +26,6 @@
 														:justify-content  "center"
 														:align-items      "center"}}
 					 [sentence-with-term (:sentence @translate) (:raw @translate)]
-					 [ui/text {:style {:font-size 20 :font-weight "bold"}} (first (:translate @translate))]])))))
+					 [ui/text {:style {:font-size 20 :font-weight "bold"}} (first (:translate @translate))]
+					 [ui/touchable-opacity {:on-press #(dispatch [:nav/pop-term])}
+						[ui/text "Back"]]])))))
