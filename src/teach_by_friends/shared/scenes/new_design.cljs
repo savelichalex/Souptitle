@@ -93,13 +93,13 @@
 				 (when (not (nil? @chapters))
 					 [seasons-bar @chapters
 						#(dispatch [:chapter-load %1 %2])])
-				 (if (not (nil? @chapter))
+				 (if (not (empty? @chapter))
 					 [ui/list-view {:dataSource            (.cloneWithRows chapter-ds (clj->js @chapter))
 													:enable-empty-sections true
 													:render-row            #(r/as-element (term-row %))
 													:style                 {:flex             12
 																									:background-color "white"}}]
-					 [ui/view {:style {:flex             12
+					 [ui/view {:style {:flex             (if (nil? @chapters) 13 12)
 														 :background-color "white"
 														 :justify-content  "center"
 														 :align-items      "center"}}

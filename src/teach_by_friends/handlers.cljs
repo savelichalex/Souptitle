@@ -102,13 +102,16 @@
 (register-handler
 	:chapters-load
 	(fn [db [_ {chapters :chapters title :title}]]
-		(-> (js/fetch chapters)
-				(parse-fetch-response)
-				(.then (fn [chapters]
-								 (dispatch [:chapter-load 0 (first chapters)])
-								 chapters))
-				(.then #(dispatch [:chapters-load-success %]))
-				(.catch #(dispatch [:chapters-load-error %])))
+		(js/setTimeout
+			(fn []
+				(-> (js/fetch chapters)
+						(parse-fetch-response)
+						(.then (fn [chapters]
+										 (dispatch [:chapter-load 0 (first chapters)])
+										 chapters))
+						(.then #(dispatch [:chapters-load-success %]))
+						(.catch #(dispatch [:chapters-load-error %]))))
+			300)
 		(-> db
 				(assoc :chapter nil)
 				(assoc :chapters-list nil)

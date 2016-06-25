@@ -32,6 +32,6 @@
 				 (if (not (nil? @seasons))
 					 [ui/list-view {:dataSource (.cloneWithRows seasons-ds (clj->js @seasons))
 													:render-row #(r/as-element (season-row %))
-													:style      {:flex 14}}]
+													:style      {:flex 13}}]
 					 [ui/view {:style {:flex 14 :justify-content "center" :align-items "center"}}
-						[activity-indicator]])]))))
+						[activity-indicator {:color "rgb(72, 86, 155)"}]])]))))
