@@ -26,15 +26,15 @@
 										 :align-items "center"}}
 		[ui/text {:style {:color "white"}} "S"]]])
 
-(defn season-bar-item [style number last-number on-change]
-	[ui/touchable-opacity {:style {:justify-content "center"
-																 :align-items     "center"
-																 :padding-left 10
-																 :padding-right 10
-																 :margin-right    (when (not= (dec last-number) number)
-																										25)
-																 :background-color "transparent"}
-												 :on-press #(on-change number)}
+(defn season-bar-item [style number last-number item on-change]
+	[ui/touchable-opacity {:style    {:justify-content  "center"
+																		:align-items      "center"
+																		:padding-left     10
+																		:padding-right    10
+																		:margin-right     (when (not= (dec last-number) number)
+																												25)
+																		:background-color "transparent"}
+												 :on-press #(on-change number item)}
 	 [ui/text {:style (-> style
 												(merge {:font-size 25}))}
 		(inc number)]])
@@ -57,11 +57,13 @@
 																 {:color "rgb(72, 86, 155)"}
 																 index
 																 last-number
+																 item
 																 on-change]
 																[season-bar-item
 																 {:color "white"}
 																 index
 																 last-number
+																 item
 																 on-change]))
 						 seasons-list))]))
 
@@ -70,50 +72,34 @@
 (def chapter-ds (ReactNative.ListView.DataSource. #js{:rowHasChanged not=}))
 
 (defn term-row [term]
-	[ui/touchable-highlight {:style    {:border-bottom-width 1
-																			:border-color        "#000"
-																			:padding-top         10
-																			:padding-bottom      10
-																			:align-items         "center"}
-													 :on-press #(dispatch [:nav/term term])}
-	 [ui/text {:style {:font-size 20 :color "#000"}} term]])
+	[ui/touchable-opacity {:style    {:border-bottom-width 1
+																		:border-color        "rgba(0,0,0,.1)"
+																		:padding-top         20
+																		:padding-bottom      20
+																		:padding-left        30}
+												 :on-press #(dispatch [:nav/term term])}
+	 [ui/text {:style {:font-size 20 :color "rgb(72, 86, 155)"}} term]])
 
 (defn get-new-design-scene [activity-indicator]
 	(fn new-design-scene []
-		(let [chapters (r/atom '({:active? false
-															:title   "one"}
-															{:active? false
-															 :title   "two"}
-															{:active? false
-															 :title   "three"}
-															{:active? true
-															 :title   "four"}
-															{:active? false
-															 :title   "five"}
-															{:active? false
-															 :title   "six"}
-															{:active? false
-															 :title   "seven"}
-															{:active? false
-															 :title   "eight"}
-															{:active? false
-															 :title   "nine"}
-															{:active? false
-															 :title   "ten"}))
+		(let [chapters (subscribe [:chapters])
 					chapter (subscribe [:get-chapter])]
 			(fn []
 				[ui/view {:style {:flex           1
 													:flex-direction "column"
 													:align-items    "stretch"}}
 				 [nav-bar]
-				 [seasons-bar @chapters #(swap! chapters (fn [a]
-																									 (->> a
-																												(map-indexed (fn [index i] (assoc i :active? (= index %)))))))]
+				 (when (not (nil? @chapters))
+					 [seasons-bar @chapters
+						#(dispatch [:chapter-load %1 %2])])
 				 (if (not (nil? @chapter))
-					 [ui/list-view {:dataSource (.cloneWithRows chapter-ds (clj->js @chapter))
-													:render-row #(r/as-element (term-row %))
-													:style      {:flex 12}}]
-					 [ui/view {:style {:flex 12
-														 :justify-content "center"
-														 :align-items "center"}}
+					 [ui/list-view {:dataSource            (.cloneWithRows chapter-ds (clj->js @chapter))
+													:enable-empty-sections true
+													:render-row            #(r/as-element (term-row %))
+													:style                 {:flex             12
+																									:background-color "white"}}]
+					 [ui/view {:style {:flex             12
+														 :background-color "white"
+														 :justify-content  "center"
+														 :align-items      "center"}}
 						[activity-indicator]])]))))

@@ -19,6 +19,13 @@
 (defn alert [title]
 	(.alert (.-Alert ReactNative) title))
 
+(def InteractionManager (. ReactNative -InteractionManager))
+
+(defn run-after-interaction [cb]
+	(. InteractionManager
+		 (runAfterInteractions
+			 (cb))))
+
 (def navigator
 	(r/adapt-react-class (. ReactNative -Navigator)))
 
@@ -88,7 +95,8 @@
 																	(nil? route) nil
 																	(= type :pop) (.. this -refs -navigator (pop))
 																	(= type :push) (.. this -refs -navigator (push (clj->js {:name      (name route)
-																																													 :passProps props})))))))]
+																																													 :passProps props}))))
+																)))]
 					 (swap! track-id (fn [_] id))))
 			 :component-will-unmount
 			 (fn [this]
