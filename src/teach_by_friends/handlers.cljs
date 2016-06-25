@@ -101,7 +101,7 @@
 
 (register-handler
 	:chapters-load
-	(fn [db [_ {chapters :chapters}]]
+	(fn [db [_ {chapters :chapters title :title}]]
 		(-> (js/fetch chapters)
 				(parse-fetch-response)
 				(.then (fn [chapters]
@@ -114,6 +114,7 @@
 				(assoc :chapters-list nil)
 				;(assoc-in [:nav :route] :chapter)
 				(assoc-in [:nav :route] :new-design)
+				(assoc-in [:nav :props] title)
 				(assoc-in [:nav :type] :push))))
 
 (register-handler

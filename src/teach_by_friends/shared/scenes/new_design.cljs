@@ -8,12 +8,12 @@
 (defn menu-icon [{:keys [style]}]
 	[ui/image {:source menu-icon-source :style style}])
 
-(defn nav-bar []
+(defn nav-bar [title]
 	[ui/view {:style {:flex             3
 										:flex-direction   "row"
 										:align-items      "center"
 										:background-color "rgb(72, 86, 155)"}}
-	 [ui/view {:style {:flex        1
+	 [ui/touchable-opacity {:style {:flex        1
 										 :align-items "center"}}
 		[ui/text {:style {:color "white"}} "M"]]
 	 [ui/view {:style {:flex        5
@@ -21,7 +21,7 @@
 		[ui/text {:style {:color     "white"
 											:font-size 30}}
 		 (string/upper-case
-			 (str "season " "one"))]]
+			 (str "season " title))]]
 	 [ui/view {:style {:flex        1
 										 :align-items "center"}}
 		[ui/text {:style {:color "white"}} "S"]]])
@@ -81,14 +81,14 @@
 	 [ui/text {:style {:font-size 20 :color "rgb(72, 86, 155)"}} term]])
 
 (defn get-new-design-scene [activity-indicator]
-	(fn new-design-scene []
+	(fn new-design-scene [title]
 		(let [chapters (subscribe [:chapters])
 					chapter (subscribe [:get-chapter])]
 			(fn []
 				[ui/view {:style {:flex           1
 													:flex-direction "column"
 													:align-items    "stretch"}}
-				 [nav-bar]
+				 [nav-bar title]
 				 (when (not (nil? @chapters))
 					 [seasons-bar @chapters
 						#(dispatch [:chapter-load %1 %2])])

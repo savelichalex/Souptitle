@@ -33,8 +33,8 @@
   [term-scene props])
 
 (defmethod render-scene :new-design
-  [_]
-  [new-design-scene])
+  [{title :props}]
+  [new-design-scene title])
 
 (defmulti configure-scene identity)
 (defmethod configure-scene :default
