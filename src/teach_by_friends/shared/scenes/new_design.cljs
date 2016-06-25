@@ -14,7 +14,8 @@
 										:align-items      "center"
 										:background-color "rgb(72, 86, 155)"}}
 	 [ui/touchable-opacity {:style {:flex        1
-										 :align-items "center"}}
+																	:align-items "center"}
+													:on-press #(dispatch [:nav/pop :chapter])}
 		[ui/text {:style {:color "white"}} "M"]]
 	 [ui/view {:style {:flex        5
 										 :align-items "center"}}
