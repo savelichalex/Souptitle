@@ -1,10 +1,10 @@
 (ns teach-by-friends.handlers
-  (:require
-    [re-frame.core :refer [register-handler after dispatch]]
-    [schema.core :as s :include-macros true]
-    [teach-by-friends.db :refer [app-db]]
-    [teach-by-friends.parser :refer [parse-srt]]
-    [ajax.core :refer [GET]]))
+	(:require
+		[re-frame.core :refer [register-handler after dispatch]]
+		[schema.core :as s :include-macros true]
+		[teach-by-friends.db :refer [app-db]]
+		[teach-by-friends.parser :refer [parse-srt]]
+		[teach-by-friends.shared.ui :as ui]))
 
 (enable-console-print!)
 
@@ -34,14 +34,14 @@
 			(.then #(js->clj (js/JSON.parse %) :keywordize-keys true))))
 
 (register-handler
-  :initialize-db
-  ;validate-schema-mw
-  (fn [_ _]
+	:initialize-db
+	;validate-schema-mw
+	(fn [_ _]
 		(-> (js/fetch FRIENDS_SEASONS_URL)
 				(parse-fetch-response)
 				(.then #(dispatch [:seasons-load-success %]))
 				(.catch #(dispatch [:seasons-load-error %])))
-    app-db))
+		app-db))
 
 (register-handler
 	:seasons-load-success
@@ -55,10 +55,10 @@
 		db))
 
 (register-handler
-  :set-greeting
-  ;validate-schema-mw
-  (fn [db [_ value]]
-    (assoc db :greeting value)))
+	:set-greeting
+	;validate-schema-mw
+	(fn [db [_ value]]
+		(assoc db :greeting value)))
 
 (register-handler
 	:resort-chapter
@@ -82,7 +82,7 @@
 		(-> db
 				(assoc-in [:nav :route] :term)
 				(assoc-in [:nav :type] :push)
-				(assoc-in [:nav :props] {:term term
+				(assoc-in [:nav :props] {:term   term
 																 :values (get-in db [:chapter term])}))))
 
 (register-handler
@@ -101,19 +101,28 @@
 
 (register-handler
 	:chapters-load
-	(fn [db [_ {chapters :chapters}]]
+	(fn [db [_ {chapters :chapters title :title}]]
 		(-> (js/fetch chapters)
 				(parse-fetch-response)
+				(.then (fn [chapters]
+								 (dispatch [:chapter-load 0 (first chapters)])
+								 chapters))
 				(.then #(dispatch [:chapters-load-success %]))
 				(.catch #(dispatch [:chapters-load-error %])))
 		(-> db
-				(assoc :chapters-list nil))))
+				(assoc :chapter nil)
+				(assoc :chapters-list nil)
+				;(assoc-in [:nav :route] :chapter)
+				(assoc-in [:nav :route] :new-design)
+				(assoc-in [:nav :props] title)
+				(assoc-in [:nav :type] :push))))
 
 (register-handler
 	:chapters-load-success
 	(fn [db [_ chapters]]
 		(-> db
-				(assoc :chapters-list chapters))))
+				(assoc :chapters-list (->> chapters
+																	 (map-indexed #(assoc %2 :active? (= %1 0))))))))
 
 (register-handler
 	:chapters-load-error
@@ -122,27 +131,28 @@
 				(assoc :chapters-list nil))))
 
 (register-handler
-  :chapter-load
-  (fn [db [_ {srt :srt}]]
-    (-> (js/fetch srt)
-        (.then #(.text %))
-        (.then #(dispatch [:srt-load-success (parse-srt %)]))
-        (.catch #(dispatch [:srt-load-error %])))
-    (-> db
-        (assoc :chapter nil)
-        (assoc :sort-chapter :by-rank)
-        (assoc-in [:nav :route] :chapter)
-        (assoc-in [:nav :type] :push))))
+	:chapter-load
+	(fn [db [_ number {srt :srt}]]
+		(-> (js/fetch srt)
+				(.then #(.text %))
+				(.then #(dispatch [:srt-load-success (parse-srt %)]))
+				(.catch #(dispatch [:srt-load-error %])))
+		(-> db
+				(update :chapters-list #(->> %
+															 (map-indexed (fn [index chapter]
+																							(assoc chapter :active? (= index number))))))
+				(assoc :chapter nil)
+				(assoc :sort-chapter :by-rank))))
 
 (register-handler
-  :srt-load-success
-  (fn [db [_ chapter]]
-    (-> db
-        (assoc :chapter chapter))))
+	:srt-load-success
+	(fn [db [_ chapter]]
+		(-> db
+				(assoc :chapter chapter))))
 
 (register-handler
-  :srt-load-error
-  (fn [db [_ error]]
-    (print error)
-    (-> db
-        (assoc :chapter nil))))
+	:srt-load-error
+	(fn [db [_ error]]
+		(print error)
+		(-> db
+				(assoc :chapter nil))))

@@ -12,8 +12,7 @@
 
 (defn get-home-scene [activity-indicator]
 	(fn home-scene []
-		(let [seasons (subscribe [:seasons])
-					chapters (subscribe [:chapters])]
+		(let [seasons (subscribe [:seasons])]
 			(fn []
 				[ui/view {:style {:flex 1 :margin-top (ui/get-navigation-bar-height) :flex-direction "column" :align-items "stretch"}}
 				 (if (not (nil? @seasons))
@@ -21,9 +20,4 @@
 													:render-row #(r/as-element (season-row %))
 													:style      {:flex 1}}]
 					 [ui/view {:style {:flex 1 :justify-content "center" :align-items "center"}}
-						[activity-indicator]])
-				 (if (not (nil? @chapters))
-					 [ui/list-view {:dataSource (.cloneWithRows chapters-ds (clj->js @chapters))
-													:render-row #(r/as-element (chapter-row %))
-													:style      {:flex 1}}]
-					 [ui/view {:style {:flex 1}}])]))))
+						[activity-indicator]])]))))
