@@ -4,10 +4,10 @@
 
 (defn season-row [s]
 	(let [season (js->clj s :keywordize-keys true)]
-		[ui/touchable-highlight {:style    {:border-bottom-width 1
-																				:border-color        "#000"
-																				:padding-top         10
-																				:padding-bottom      10
-																				:align-items         "center"}
+		[ui/touchable-opacity {:style    {:border-bottom-width 1
+																				:border-color        "rgba(0,0,0,.1)"
+																				:padding-top         20
+																				:padding-bottom      20
+																				:padding-left        30}
 														 :on-press #(dispatch [:chapters-load season])}
-		 [ui/text {:style {:font-size 20 :color "#000"}} (:title season)]]))
+		 [ui/text {:style {:font-size 20 :color "rgb(72, 86, 155)"}} (:title season)]]))
