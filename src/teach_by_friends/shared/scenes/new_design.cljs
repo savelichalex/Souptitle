@@ -73,13 +73,24 @@
 (def chapter-ds (ReactNative.ListView.DataSource. #js{:rowHasChanged not=}))
 
 (defn term-row [term]
-	[ui/touchable-opacity {:style    {:border-bottom-width 1
-																		:border-color        "rgba(0,0,0,.1)"
-																		:padding-top         20
-																		:padding-bottom      20
-																		:padding-left        30}
-												 :on-press #(dispatch [:nav/term term])}
-	 [ui/text {:style {:font-size 20 :color "rgb(72, 86, 155)"}} term]])
+	(if (= term "wink")
+		[ui/view {:style {:padding-left        10
+											:padding-right        10}}
+		 [ui/view {:style {:border-radius 15
+											 :background-color "rgb(132, 145, 206)"
+											 :padding-top 15
+											 :padding-bottom 15
+											 :padding-left 15
+											 :padding-right 15
+											 }}
+			[ui/text {:style {:font-size 20 :color "white"}} term]]]
+		[ui/touchable-opacity {:style    {:border-bottom-width 1
+																			:border-color        "rgba(0,0,0,.1)"
+																			:padding-top         20
+																			:padding-bottom      20
+																			:padding-left        30}
+													 :on-press #(dispatch [:nav/term term])}
+		 [ui/text {:style {:font-size 20 :color "rgb(72, 86, 155)"}} term]]))
 
 (defn get-new-design-scene [activity-indicator]
 	(fn new-design-scene [title]
