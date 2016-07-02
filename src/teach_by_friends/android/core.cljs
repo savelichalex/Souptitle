@@ -10,7 +10,7 @@
             [teach-by-friends.shared.scenes.term-scene :refer [get-term-scene]]
             [teach-by-friends.shared.scenes.new-design :refer [get-new-design-scene]]))
 
-(def home-scene (get-home-scene android-ui/activity-indicator))
+(def home-scene (get-home-scene android-ui/activity-indicator {:background-color "rgb(72, 86, 155)"}))
 (def chapter-scene (get-chapter-scene android-ui/activity-indicator))
 (def term-scene (get-term-scene android-ui/activity-indicator))
 (def new-design-scene (get-new-design-scene android-ui/activity-indicator))

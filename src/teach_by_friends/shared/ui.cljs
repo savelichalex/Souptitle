@@ -16,6 +16,7 @@
 (def list-view (r/adapt-react-class (.-ListView ReactNative)))
 (def scroll-view (r/adapt-react-class (.-ScrollView ReactNative)))
 (def text-input (r/adapt-react-class (.-TextInput ReactNative)))
+(def status-bar (r/adapt-react-class (.-StatusBar ReactNative)))
 
 (defn alert [title]
 	(.alert (.-Alert ReactNative) title))

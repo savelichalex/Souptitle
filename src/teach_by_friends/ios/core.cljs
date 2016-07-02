@@ -14,7 +14,7 @@
 
 (enable-console-print!)
 
-(def home-scene (get-home-scene ios-ui/activity-indicator))
+(def home-scene (get-home-scene ios-ui/activity-indicator {:bar-style "light-content"}))
 (def term-scene (get-term-scene ios-ui/activity-indicator))
 (def chapter-scene (get-chapter-scene ios-ui/activity-indicator))
 (def new-design-scene (get-new-design-scene ios-ui/activity-indicator))
@@ -42,7 +42,7 @@
   :push-from-right)
 
 (defn app-root []
-  [ui/navigation {:initial-route :home                      ;:new-design                           ;:home
+  [ui/navigation {:initial-route :home
                   :render-scene render-scene
                   :configure-scene configure-scene}])
 

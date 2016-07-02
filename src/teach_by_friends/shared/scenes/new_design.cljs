@@ -5,9 +5,12 @@
             [re-frame.core :refer [subscribe dispatch]]
             [teach-by-friends.consts :as const]))
 
-(def menu-icon-source (js/require "./images/friends-menu-icon.svg"))
+(def menu-icon-source (js/require "./images/menu-icon.png"))
+(def search-icon-source (js/require "./images/search-icon.png"))
 (defn menu-icon [{:keys [style]}]
   [ui/image {:source menu-icon-source :style style}])
+(defn search-icon [{:keys [style]}]
+  [ui/image {:source search-icon-source :style style}])
 
 (defn nav-bar [title show-search?]
   [ui/view {:style {:flex             3
@@ -17,7 +20,7 @@
    [ui/touchable-opacity {:style    {:flex        1
                                      :align-items "center"}
                           :on-press #(dispatch [:nav/pop :chapter])}
-    [ui/text {:style {:color "white"}} "M"]]
+    [menu-icon {:style {:width 25 :height 15}}]]
    (if show-search?
      [ui/view {:style {:flex        5
                        :align-items "stretch"}}
@@ -39,7 +42,7 @@
    [ui/touchable-opacity {:style {:flex        1
                                   :align-items "center"}
                           :on-press #(dispatch [:toggle-search])}
-    [ui/text {:style {:color "white"}} "S"]]])
+    [search-icon {:style {:width 15 :height 15}}]]])
 
 (defn season-bar-item [style number last-number item on-change]
   [ui/touchable-opacity {:style    {:justify-content  "center"

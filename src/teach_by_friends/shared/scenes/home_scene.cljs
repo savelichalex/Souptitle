@@ -23,11 +23,12 @@
 		 (string/upper-case
 			 (str "seasons"))]]])
 
-(defn get-home-scene [activity-indicator]
+(defn get-home-scene [activity-indicator status-bar-props]
 	(fn home-scene []
 		(let [seasons (subscribe [:seasons])]
 			(fn []
 				[ui/view {:style {:flex 1 :flex-direction "column" :align-items "stretch"}}
+				 [ui/status-bar status-bar-props]
 				 [nav-bar]
 				 (if (not (nil? @seasons))
 					 [ui/list-view {:dataSource (.cloneWithRows seasons-ds (clj->js @seasons))
