@@ -26,8 +26,10 @@
                         :padding-left     15
                         :padding-right    15
                         }}
-       [ui/text-input {:style {:color  "rgb(72, 86, 155)"
-                               :height 30}}]]]
+       [ui/text-input {:auto-capitalize "none"
+                       :style {:color  "rgb(72, 86, 155)"
+                               :height 30}
+                       :on-change-text #(dispatch [:change-search-predicate %])}]]]
      [ui/view {:style {:flex        5
                        :align-items "center"}}
       [ui/text {:style {:color     "white"

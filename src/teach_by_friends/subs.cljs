@@ -35,14 +35,24 @@
     (->> terms
          (map term-processing-fn))))
 
+(defn filter-terms-by-search-predicate [terms predicate]
+  (if (empty? predicate)
+    terms
+    (let [pattern (js/RegExp. (str "^" predicate ".+"))]
+      (->> terms
+           (filter #(.test pattern %))))))
+
 (register-sub
   :get-chapter
   (fn [db _]
     (let [term-to-translate (reaction (get @db :term-to-translate))
           term-translate (reaction (get @db :term-translate))
           sort-type (reaction (:sort-chapter @db))
-          terms (reaction (chapter-word-list @sort-type (get @db :chapter)))]
-      (reaction (->> @terms
+          terms (reaction (chapter-word-list @sort-type (get @db :chapter)))
+          search-predicate (reaction (get @db :search-predicate))
+          filtered-terms (reaction (filter-terms-by-search-predicate @terms @search-predicate))
+          ]
+      (reaction (->> @filtered-terms
                      (add-status-keys @term-to-translate @term-translate))))))
 
 (register-sub

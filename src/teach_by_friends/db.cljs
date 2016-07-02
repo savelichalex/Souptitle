@@ -11,6 +11,7 @@
 						 :target-lang "ru"
 						 :seasons-list nil
 						 :chapters-list nil
-						 :show-search? true
+						 :show-search? false
+						 :search-predicate ""
 						 :nav {:route nil
 									 :props nil}})
