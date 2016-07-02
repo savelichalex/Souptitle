@@ -36,7 +36,7 @@
 
 (defn parse-to-terms [sentence number from to]
 	(->> sentence
-			 (re-seq #"the\s[a-zA-Z']+|a\s[a-zA-Z']+|an\s[a-zA-Z']+|[a-zA-Z']+")
+			 (re-seq #"the\s[a-zA-Z'-]+|a\s[a-zA-Z'-]+|an\s[a-zA-Z'-]+|[a-zA-Z'-]+")
 			 (map-indexed (partial parse-term sentence number from to))
 			 (filter #(not (contains? exclude (:normalized %))))))
 
