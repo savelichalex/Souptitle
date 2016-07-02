@@ -73,17 +73,15 @@
 				(assoc-in [:nav :type] :pop))))
 
 (register-handler
-	:nav/term
+	:translate-term
 	(fn [db [_ term]]
 		(-> (js/fetch (get-query-string-for-translate term (:target-lang db)))
 				(parse-fetch-response)
 				(.then #(dispatch [:term-translate-success term %]))
 				(.catch #(print %)))
 		(-> db
-				(assoc-in [:nav :route] :term)
-				(assoc-in [:nav :type] :push)
-				(assoc-in [:nav :props] {:term   term
-																 :values (get-in db [:chapter term])}))))
+				(assoc :term-to-translate term)
+				(assoc :term-translate nil))))
 
 (register-handler
 	:term-translate-success

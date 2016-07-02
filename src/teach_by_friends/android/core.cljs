@@ -38,7 +38,7 @@
   :push-from-right)
 
 (defn app-root []
-  [ui/navigation {:initial-route   :new-design                         ;:home
+  [ui/navigation {:initial-route   :home
                   :render-scene    render-scene
                   :configure-scene configure-scene}])
 

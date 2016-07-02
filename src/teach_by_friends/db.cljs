@@ -6,6 +6,7 @@
 ;; initial state of app-db
 (def app-db {:chapter nil
 						 :sort-chapter :by-rank
+						 :term-to-translate nil
 						 :term-translate nil
 						 :target-lang "ru"
 						 :seasons-list nil
