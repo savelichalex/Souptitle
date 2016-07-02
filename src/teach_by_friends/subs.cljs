@@ -40,9 +40,9 @@
   (fn [db _]
     (let [term-to-translate (reaction (get @db :term-to-translate))
           term-translate (reaction (get @db :term-translate))
-          sort-type (reaction (:sort-chapter @db))]
-      (reaction (->> (get @db :chapter)
-                     (chapter-word-list @sort-type)         ;todo: move this to reaction
+          sort-type (reaction (:sort-chapter @db))
+          terms (reaction (chapter-word-list @sort-type (get @db :chapter)))]
+      (reaction (->> @terms
                      (add-status-keys @term-to-translate @term-translate))))))
 
 (register-sub
