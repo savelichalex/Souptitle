@@ -157,3 +157,16 @@
 		(print error)
 		(-> db
 				(assoc :chapter nil))))
+
+(register-handler
+	:toggle-search
+	(fn [db _]
+		(-> db
+				(assoc :search-predicate "")
+				(update :show-search? not))))
+
+(register-handler
+	:change-search-predicate
+	(fn [db [_ predicate]]
+		(-> db
+				(assoc :search-predicate predicate))))
