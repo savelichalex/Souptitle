@@ -59,3 +59,8 @@
   :chapters
   (fn [db _]
     (reaction (get @db :chapters-list))))
+
+(register-sub
+  :show-search?
+  (fn [db _]
+    (reaction (get @db :show-search?))))
