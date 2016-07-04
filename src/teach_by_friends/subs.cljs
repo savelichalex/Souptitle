@@ -42,6 +42,12 @@
       (->> terms
            (filter #(.test pattern %))))))
 
+(defn filter-well-known-words [terms well-known-terms]
+  (if (empty? well-known-terms)
+    terms
+    (->> terms
+         (filter #(not (contains? well-known-terms %))))))
+
 (register-sub
   :get-chapter
   (fn [db _]
@@ -49,8 +55,10 @@
           term-translate (reaction (get @db :term-translate))
           sort-type (reaction (:sort-chapter @db))
           terms (reaction (chapter-word-list @sort-type (get @db :chapter)))
+          well-known-terms (reaction (get @db :well-known-terms))
+          filter-by-well-known-terms (reaction (filter-well-known-words @terms @well-known-terms))
           search-predicate (reaction (get @db :search-predicate))
-          filtered-terms (reaction (filter-terms-by-search-predicate @terms @search-predicate))
+          filtered-terms (reaction (filter-terms-by-search-predicate @filter-by-well-known-terms @search-predicate))
           ]
       (reaction (->> @filtered-terms
                      (add-status-keys @term-to-translate @term-translate))))))

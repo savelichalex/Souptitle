@@ -30,17 +30,17 @@
                         :padding-right    15
                         }}
        [ui/text-input {:auto-capitalize "none"
-                       :style {:color  "rgb(72, 86, 155)"
-                               :height 30}
-                       :on-change-text #(dispatch [:change-search-predicate %])}]]]
+                       :style           {:color  "rgb(72, 86, 155)"
+                                         :height 30}
+                       :on-change-text  #(dispatch [:change-search-predicate %])}]]]
      [ui/view {:style {:flex        5
                        :align-items "center"}}
       [ui/text {:style {:color     "white"
                         :font-size 30}}
        (string/upper-case
          (str "season " title))]])
-   [ui/touchable-opacity {:style {:flex        1
-                                  :align-items "center"}
+   [ui/touchable-opacity {:style    {:flex        1
+                                     :align-items "center"}
                           :on-press #(dispatch [:toggle-search])}
     [search-icon {:style {:width 15 :height 15}}]]])
 
@@ -117,16 +117,25 @@
          [activity-indicator {:color "white"}]]]
        [ui/view {:style {:border-radius    15
                          :background-color "rgb(132, 145, 206)"
-                         :padding-top      15
-                         :padding-bottom   15
-                         :padding-left     15
-                         :padding-right    15
                          :flex-direction   "column"
                          :align-items      "stretch"
                          }}
-        [ui/text {:style {:font-size 20 :color "white" :margin-bottom 10}} term]
-        [ui/text {:style {:font-size 20 :color "white" :margin-bottom 10}} (first (:translate translate))]
-        [sentence-with-term {} (:sentence translate) (:raw translate)]]
+        [ui/view {:style {:margin-top   15
+                          :margin-left  15
+                          :margin-right 15
+                          }}
+         [ui/text {:style {:font-size 20 :color "white" :margin-bottom 10}} term]
+         [ui/text {:style {:font-size 20 :color "white" :margin-bottom 10}} (first (:translate translate))]
+         [sentence-with-term {:style {:margin-bottom 10}} (:sentence translate) (:raw translate)]]
+        [ui/touchable-opacity {:style    {:background-color           "rgb(72, 86, 155)"
+                                          :justify-content            "center"
+                                          :align-items                "center"
+                                          :border-bottom-left-radius  15
+                                          :border-bottom-right-radius 15
+                                          :padding-top                10
+                                          :padding-bottom             10}
+                               :on-press #(dispatch [:add-to-well-known term])}
+         [ui/text {:style {:color "white"}} "I remember this"]]]
        )]
     [ui/touchable-opacity {:style    {:border-bottom-width 1
                                       :border-color        "rgba(0,0,0,.1)"

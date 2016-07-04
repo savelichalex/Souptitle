@@ -170,3 +170,9 @@
 	(fn [db [_ predicate]]
 		(-> db
 				(assoc :search-predicate predicate))))
+
+(register-handler
+	:add-to-well-known
+	(fn [db [_ term]]
+		(-> db
+				(update :well-known-terms conj term))))
