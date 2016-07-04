@@ -13,5 +13,6 @@
 						 :chapters-list nil
 						 :show-search? false
 						 :search-predicate ""
+						 :well-known-terms #{}
 						 :nav {:route nil
 									 :props nil}})
