@@ -6,6 +6,12 @@
 (def React (js/require "react"))
 (def ReactNative (js/require "react-native"))
 
+(def NativeModules (.-NativeModules ReactNative))
+
+(js/console.log (js/Object.keys NativeModules))
+(def SecretConfigManager (.-SecretConfigManager NativeModules))
+(.getConfig SecretConfigManager "SecretConfig" (fn [a] (print a)))
+
 (def DataSource (.. ReactNative -ListView -DataSource))
 (def app-registry (.-AppRegistry ReactNative))
 (def text (r/adapt-react-class (.-Text ReactNative)))
