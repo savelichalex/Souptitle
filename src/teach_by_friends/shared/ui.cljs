@@ -8,9 +8,8 @@
 
 (def NativeModules (.-NativeModules ReactNative))
 
-(js/console.log (js/Object.keys NativeModules))
 (def SecretConfigManager (.-SecretConfigManager NativeModules))
-(.getConfig SecretConfigManager "SecretConfig" (fn [a] (print a)))
+(.getConfig SecretConfigManager "SecretConfig" (fn [a] (print (js->clj a :keywordize-keys true))))
 
 (def DataSource (.. ReactNative -ListView -DataSource))
 (def app-registry (.-AppRegistry ReactNative))

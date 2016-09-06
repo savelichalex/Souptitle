@@ -47,13 +47,16 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(getConfig:(NSString *) name
                   callback:(RCTResponseSenderBlock)callback)
 {
-  SecretConfig *config = [[SecretConfig alloc] init];
-  NSDictionary* configDict = [NSDictionary dictionaryWithPropertiesOfObject: config];
-  for (id key in configDict) {
-    NSLog(@"key: %@, value: %@ \n", key, [configDict objectForKey:key]);
-  }
-  if(callback) {
-    callback(configDict);
+  NSBundle* mainBundle;
+  mainBundle = [NSBundle mainBundle];
+  Class configClass;
+  id config;
+  if ((configClass = [mainBundle classNamed: name])) {
+    config = [[configClass alloc] init];
+    NSDictionary* configDict = [NSDictionary dictionaryWithPropertiesOfObject: config];
+    if(callback) {
+      callback(@[configDict]);
+    }
   }
 }
 
