@@ -25,7 +25,7 @@ public class SecretConfigManager extends ReactContextBaseJavaModule {
         return "SecretConfigManager";
     }
 
-    private Map<String,String> configToMap() {
+    private Map<String,String> configToMap() throws IllegalAccessException {
         Field[] declaredFields = config.getDeclaredFields();
         Map<String, String> configMap = new HashMap<String, String>();
         for (Field field : declaredFields) {
@@ -40,7 +40,11 @@ public class SecretConfigManager extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getConfig(String name, Callback callback) {
-        callback.invoke(configToMap());
+        try {
+            callback.invoke(configToMap());
+        } catch (IllegalAccessException err) {
+            callback.invoke(err);
+        }
     }
 
 }
