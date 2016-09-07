@@ -13,10 +13,11 @@
   [ui/image {:source search-icon-source :style style}])
 
 (defn nav-bar [title show-search?]
-  [ui/view {:style {:flex             3
-                    :flex-direction   "row"
-                    :align-items      "center"
-                    :background-color "rgb(72, 86, 155)"}}
+  [ui/linear-gradient {:colors           ["#834d9b" "#48569B"]
+                       :start            [1.0 1.0] :end [0.0 0.0]
+                       :style {:flex             3
+                               :flex-direction   "row"
+                               :align-items      "center"}}
    [ui/touchable-opacity {:style    {:flex        1
                                      :align-items "center"}
                           :on-press #(dispatch [:nav/pop :chapter])}

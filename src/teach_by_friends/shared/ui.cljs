@@ -3,6 +3,8 @@
 	(:require [reagent.core :as r]
 						[re-frame.core :refer [dispatch]]))
 
+(enable-console-print!)
+
 (def React (js/require "react"))
 (def ReactNative (js/require "react-native"))
 
@@ -10,6 +12,9 @@
 
 (def SecretConfigManager (.-SecretConfigManager NativeModules))
 (.getConfig SecretConfigManager "SecretConfig" (fn [a] (print (js->clj a :keywordize-keys true))))
+
+(def LinearGradient (.-default (js/require "react-native-linear-gradient")))
+(def linear-gradient (r/adapt-react-class LinearGradient))
 
 (def DataSource (.. ReactNative -ListView -DataSource))
 (def app-registry (.-AppRegistry ReactNative))

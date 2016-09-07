@@ -8,6 +8,7 @@
     "prod": "env/prod"
   },
   "modules": [
+    "react-native-linear-gradient"
   ],
   "imageDirs": [
     "images"
