@@ -1,0 +1,6 @@
+target: rn
+ios:
+  folder: ios/TeachByFriends
+android:
+  folder: android/app/src/main/java/com/teachbyfriends
+  package: com.teachbyfriends
