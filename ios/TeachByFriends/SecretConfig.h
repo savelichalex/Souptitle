@@ -2,6 +2,6 @@
 
 @interface SecretConfig : NSObject
 
-    @property (readonly) NSString *key;
+    @property (readonly) NSString *DropboxOAuthToken;
 
 @end

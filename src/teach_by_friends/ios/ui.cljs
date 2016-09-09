@@ -1,5 +1,5 @@
 (ns teach-by-friends.ios.ui
-	(:require [reagent.core :as r]))
+  (:require [reagent.core :as r]))
 
 (def ReactNative (js/require "react-native"))
 

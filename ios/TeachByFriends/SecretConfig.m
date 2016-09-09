@@ -5,7 +5,7 @@
 
 - (id) init {
   if((self = [super init])) {
-        _key = nil;
+        _DropboxOAuthToken = nil;
   }
   return self;
 }

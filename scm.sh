@@ -37,6 +37,7 @@ init() {
     printf "target: swift\n" > $rc_file
     printf "example: key" > $config_file
     printf "example: key" > "$config_file.sample"
+    printf "\n\n# SCM\nconfig.yml" >> .gitignore
     echo "scm files generated, please update $rc_file and $config_file"
 }
 

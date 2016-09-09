@@ -47,5 +47,5 @@
                   :configure-scene configure-scene}])
 
 (defn init []
-  (dispatch-sync [:initialize-db])
+  ;(dispatch-sync [:initialize-db])
   (.registerComponent ui/app-registry "TeachByFriends" #(r/reactify-component app-root)))
