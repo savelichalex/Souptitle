@@ -28,8 +28,8 @@
       [ui/view {:style {:border-radius    15
                         :background-color "white"
                         :padding-left     15
-                        :padding-right    15
-                        }}
+                        :padding-right    15}}
+
        [ui/text-input {:auto-capitalize "none"
                        :style           {:color  "rgb(72, 86, 155)"
                                          :height 30}
@@ -110,8 +110,8 @@
                          :padding-left     15
                          :padding-right    15
                          :flex-direction   "column"
-                         :align-items      "stretch"
-                         }}
+                         :align-items      "stretch"}}
+
         [ui/text {:style {:font-size 20 :color "white"}} term]
         [ui/view {:style {:justify-content "center"
                           :align-items     "center"}}
@@ -119,12 +119,12 @@
        [ui/view {:style {:border-radius    15
                          :background-color "rgb(132, 145, 206)"
                          :flex-direction   "column"
-                         :align-items      "stretch"
-                         }}
+                         :align-items      "stretch"}}
+
         [ui/view {:style {:margin-top   15
                           :margin-left  15
-                          :margin-right 15
-                          }}
+                          :margin-right 15}}
+
          [ui/text {:style {:font-size 20 :color "white" :margin-bottom 10}} term]
          [ui/text {:style {:font-size 20 :color "white" :margin-bottom 10}} (first (:translate translate))]
          [sentence-with-term {:style {:margin-bottom 10}} (:sentence translate) (:raw translate)]]
@@ -136,8 +136,8 @@
                                           :padding-top                10
                                           :padding-bottom             10}
                                :on-press #(dispatch [:add-to-well-known term])}
-         [ui/text {:style {:color "white"}} "I remember this"]]]
-       )]
+         [ui/text {:style {:color "white"}} "I remember this"]]])]
+
     [ui/touchable-opacity {:style    {:border-bottom-width 1
                                       :border-color        "rgba(0,0,0,.1)"
                                       :padding-top         20
