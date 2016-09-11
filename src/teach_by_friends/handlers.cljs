@@ -31,8 +31,8 @@
 (def YANDEX_TRANSLATE_API_KEY
   "trnsl.1.1.20160530T190821Z.59ce9ff185d1c573.e05024eb700b7792b46b29fd152cecc6e2aa0ca4")
 
-(def FRIENDS_SEASONS_URL
-  "/friends/seasons.json")
+(def SERIALS_URL
+  "/serials.json")
 
 (defn get-query-string-for-translate [term lang]
   (str
@@ -46,16 +46,42 @@
   ;validate-schema-mw
   (fn [_ [_ app-config]]
     (let [remote-db (rdb/->DropboxDB. (:DropboxOAuthToken app-config))]
-      (-> (rdb/download-json remote-db FRIENDS_SEASONS_URL)
-          (.then #(dispatch [:seasons-load-success %]))
-          (.catch #(dispatch [:seasons-load-error %])))
+      (-> (rdb/download-json remote-db SERIALS_URL)
+          (.then #(dispatch [:serials-load-success %]))
+          (.catch #(dispatch [:serials-load-error %])))
       (-> app-db
           (assoc :remote-db remote-db)))))
 
 (register-handler
+  :serials-load-success
+  (fn [db [_ serials]]
+    (-> db
+        (assoc :serials-list serials))))
+
+(register-handler
+  :serials-load-error
+  (fn [db [_ error]]
+    (print error)
+    db))
+
+(register-handler
+  :seasons-load
+  (fn [db [_ {seasons :path title :title}]]
+    (js/setTimeout
+      (fn []
+        (-> (rdb/download-json (get db :remote-db) seasons)
+            (.then #(dispatch [:seasons-load-success %]))
+            (.catch #(dispatch [:seasons-load-error %]))))
+      300)
+    (-> db
+        (assoc :seasons-list nil)
+        (assoc-in [:nav :route] :seasons)
+        (assoc-in [:nav :props] title)
+        (assoc-in [:nav :type] :push))))
+
+(register-handler
   :seasons-load-success
   (fn [db [_ seasons]]
-    (print seasons)
     (-> db
         (assoc :seasons-list seasons))))
 
@@ -64,12 +90,6 @@
   (fn [db [_ error]]
     (print error)
     db))
-
-(register-handler
-  :set-greeting
-  ;validate-schema-mw
-  (fn [db [_ value]]
-    (assoc db :greeting value)))
 
 (register-handler
   :resort-chapter
@@ -124,8 +144,7 @@
     (-> db
         (assoc :chapter nil)
         (assoc :chapters-list nil)
-        ;(assoc-in [:nav :route] :chapter)
-        (assoc-in [:nav :route] :new-design)
+        (assoc-in [:nav :route] :chapter)
         (assoc-in [:nav :props] title)
         (assoc-in [:nav :type] :push))))
 

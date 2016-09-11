@@ -5,32 +5,26 @@
             [teach-by-friends.subs]
             [teach-by-friends.shared.ui :as ui]
             [teach-by-friends.android.ui :as android-ui]
-            [teach-by-friends.shared.scenes.home-scene :refer [get-home-scene]]
-            [teach-by-friends.shared.scenes.chapter-scene :refer [get-chapter-scene]]
-            [teach-by-friends.shared.scenes.term-scene :refer [get-term-scene]]
+            [teach-by-friends.shared.scenes.serials-scene :refer [get-serials-scene]]
+            [teach-by-friends.shared.scenes.seasons-scene :refer [get-seasons-scene]]
             [teach-by-friends.shared.scenes.new-design :refer [get-new-design-scene]]))
 
-(def home-scene (get-home-scene android-ui/activity-indicator {:background-color "rgb(72, 86, 155)"}))
-(def chapter-scene (get-chapter-scene android-ui/activity-indicator))
-(def term-scene (get-term-scene android-ui/activity-indicator))
+(def serials-scene (get-serials-scene android-ui/activity-indicator {:background-color "rgb(72, 86, 155)"}))
+(def seasons-scene (get-seasons-scene android-ui/activity-indicator))
 (def new-design-scene (get-new-design-scene android-ui/activity-indicator))
 
 (defmulti render-scene (fn [nav] (:route nav)))
-(defmethod render-scene :home
+(defmethod render-scene :serials
   [_]
-  [home-scene])
+  [serials-scene])
+
+(defmethod render-scene :seasons
+  [_]
+  [seasons-scene])
 
 (defmethod render-scene :chapter
-  [_]
-  [chapter-scene])
-
-(defmethod render-scene :term
-  [{props :props}]
-  [term-scene props])
-
-(defmethod render-scene :new-design
-  [_]
-  [new-design-scene])
+  [{title :props}]
+  [new-design-scene title])
 
 (defmulti configure-scene identity)
 (defmethod configure-scene :default
@@ -38,10 +32,10 @@
   :push-from-right)
 
 (defn app-root []
-  [ui/navigation {:initial-route   :home
-                  :render-scene    render-scene
+  [ui/navigation {:initial-route :serials
+                  :render-scene render-scene
                   :configure-scene configure-scene}])
 
 (defn init []
-      (dispatch-sync [:initialize-db])
+      ;(dispatch-sync [:initialize-db])
       (.registerComponent ui/app-registry "TeachByFriends" #(r/reactify-component app-root)))

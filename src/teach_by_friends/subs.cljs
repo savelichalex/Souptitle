@@ -58,8 +58,8 @@
           well-known-terms (reaction (get @db :well-known-terms))
           filter-by-well-known-terms (reaction (filter-well-known-words @terms @well-known-terms))
           search-predicate (reaction (get @db :search-predicate))
-          filtered-terms (reaction (filter-terms-by-search-predicate @filter-by-well-known-terms @search-predicate))
-          ]
+          filtered-terms (reaction (filter-terms-by-search-predicate @filter-by-well-known-terms @search-predicate))]
+
       (reaction (->> @filtered-terms
                      (add-status-keys @term-to-translate @term-translate))))))
 
@@ -67,6 +67,11 @@
   :term-translate
   (fn [db _]
     (reaction (get @db :term-translate))))
+
+(register-sub
+  :serials
+  (fn [db _]
+    (reaction (get @db :serials-list))))
 
 (register-sub
   :seasons
