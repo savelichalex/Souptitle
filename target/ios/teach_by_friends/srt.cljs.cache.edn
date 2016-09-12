@@ -1,0 +1,2 @@
+;; Analyzed by ClojureScript 1.7.170
+{:name teach-by-friends.srt, :doc nil, :excludes #{}, :use-macros nil, :require-macros nil, :uses nil, :requires nil, :imports nil, :defs {FriendsS02-05 {:name teach-by-friends.srt/FriendsS02-05, :file "src/teach_by_friends/srt.cljs", :line 3, :column 1, :end-line 3, :end-column 28, :export true, :meta {:file "/Users/admin/for-clojure/teach-by-friends/src/teach_by_friends/srt.cljs", :line 3, :column 15, :end-line 3, :end-column 28, :export true}}}}
