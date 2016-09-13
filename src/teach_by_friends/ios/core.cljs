@@ -76,19 +76,59 @@
             (:prev-props @state)
             children)])})))
 
+(defn with-slide-transition [_ & children]
+  (let [state (r/atom {:animated false
+                       :width nil
+                       :from-value (ui/animated-value 0)
+                       :to-value (ui/animated-value 100)})]
+      (r/create-class
+        {:component-will-mount
+         (fn []
+           (swap! state (fn [s] (merge s {:animated      false
+                                          :prev-props    children
+                                          :current-props children}))))
+         :component-will-receive-props
+         (fn [_ [_ _ & next-props]]
+           (let [current-props (:current-props @state)]
+             (swap! state (fn [s] (merge s {:animated      true
+                                            :prev-props    current-props
+                                            :current-props next-props})))))
+         :component-did-update
+         (fn [_ [_ {:keys [time]}]]
+           (when (:animated @state)
+             (ui/start-animated-timing
+               (:fade-value @state)
+               {:toValue 0 :duration (/ time 2)}
+               (fn []
+                 (swap! state assoc :animated false)
+                 (ui/start-animated-timing
+                   (:fade-value @state)
+                   {:toValue 1 :duration (/ time 2)})))))
+         :reagent-render
+         (fn [{:keys [style]} & children]
+           (if (nil? (:width @state))
+            [ui/view {:style (merge style {:position "relative"})}
+                     :on-layout #(swap! state (fn [s] (assoc s :width (.. % -nativeEvent -layout -width))))]
+            [ui/view {:style {:position "relative"}}
+             [ui/animated-view {:style {:position "absolute"
+                                        :width "100%"
+                                        :height "100%"
+                                        :left (:from-value @state)}}
+              (:prev-props @state)]
+             [ui/animated-view {:style {:position "absolute"
+                                        :width "100%"
+                                        :height "100%"
+                                        :left (:to-value @state)}}
+              (:current-props @state)]]))})))
+
 ;(defn app-root []
 ;  (let [state (r/atom 0)]
 ;    (fn []
 ;      [with-opacity-transition {:time 1000}
 ;       [ui/text {:on-click #(swap! state inc) @state}]])))
-(print "123")
 (defn app-root []
   (let [state (r/atom 0)]
     (fn []
-      [ui/view {:style {:margin-top 50 :margin-left 50}}
-       [with-opacity-transition {:time 1000}
-        [ui/text {:key 1 :on-press #(swap! state inc) :style {:font-size 50}}
-         @state]]]
       [ui/linear-gradient {:colors ["#834d9b" "#48569B"]
                            :start  [1.0 1.0] :end [0.0 0.0]
                            :style  {:height         150
