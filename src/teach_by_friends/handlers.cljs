@@ -151,8 +151,9 @@
     (-> db
         (assoc :chapter nil)
         (assoc :chapters-list nil)
-        (assoc-in [:nav :route] :chapter)
-        (assoc-in [:nav :props] title)
+        (assoc :season-title title)
+        (assoc-in [:nav :route] :chapters)
+        (assoc-in [:nav :props] {:title title})
         (assoc-in [:nav :type] :push))))
 
 (register-handler
@@ -167,6 +168,13 @@
   (fn [db [_ error]]
     (-> db
         (assoc :chapters-list nil))))
+
+(register-handler
+  :back-to-seasons
+  (fn [db _]
+    (-> db
+        (assoc-in [:nav :route] :seasons)
+        (assoc-in [:nav :type] :pop))))
 
 (register-handler
   :chapter-load

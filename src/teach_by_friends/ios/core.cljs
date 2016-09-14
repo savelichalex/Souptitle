@@ -9,19 +9,14 @@
             [teach-by-friends.ios.ui :as ios-ui]
             [teach-by-friends.shared.scenes.serials-scene :refer [get-serials-scene]]
             [teach-by-friends.shared.scenes.seasons-scene :refer [get-seasons-scene]]
-            [teach-by-friends.shared.scenes.new-design :refer [get-new-design-scene]]
+            [teach-by-friends.shared.scenes.new-design :refer [get-chapters-scene]]
             [clojure.string :as string]))
 
 (enable-console-print!)
 
 (def serials-scene (get-serials-scene ios-ui/activity-indicator))
 (def seasons-scene (get-seasons-scene ios-ui/activity-indicator))
-(def new-design-scene (get-new-design-scene ios-ui/activity-indicator))
-
-;(defn app-root []
-;  [ui/navigation {:initial-route :serials
-;                  :render-scene render-scene
-;                  :configure-scene configure-scene}])
+(def chapters-scene (get-chapters-scene ios-ui/activity-indicator))
 
 (defn with-opacity-transition [_ & children]
   (let [state (r/atom {:animated   false
@@ -141,7 +136,9 @@
                                            :left     (:to-value @state)})}
                children]]
              [ui/animated-view {:style (merge root-style style {:position         "relative"
-                                                                :background-color "transparent"})}
+                                                                :background-color "transparent"
+                                                                :width            (:width @state)
+                                                                :height           (:height @state)})}
               children])))})))
 
 (defn with-slide-transition [& children]
@@ -216,13 +213,9 @@
                                                                 :height   (:height @state)})}
               children])))})))
 
-;(defn app-root []
-;  (let [state (r/atom 0)]
-;    (fn []
-;      [with-opacity-transition {:time 1000}
-;       [ui/text {:on-click #(swap! state inc) @state}]])))
 (defn root-layout [{{lb :left-button title :title rb :right-button} :nav-bar content :content} {:keys [direction time]}]
   [ui/view {:style {:flex 1}}
+   [ui/status-bar {:bar-style "light-content"}] ; this is only for ios, for andoid need {:background-color "rgb(72, 86, 155)"}
    [ui/linear-gradient {:colors ["#834d9b" "#48569B"]
                         :start  [1.0 1.0] :end [0.0 0.0]
                         :style  {:height         150
@@ -266,9 +259,9 @@
   [{{direction :direction} :props}]
   [root-layout (seasons-scene) {:direction direction :time 400}])
 
-(defmethod render-scene :chapter
-  [{title :props}]
-  [new-design-scene title])
+(defmethod render-scene :chapters
+  [{{direction :direction} :props}]
+  [root-layout (chapters-scene) {:direction direction :time 400}])
 
 (defn navigation [props]
   (let [nav-state (r/atom {:route nil

@@ -38,7 +38,7 @@
 
 (defn serials-content [activity-indicator]
   (let [serials (subscribe [:serials])]
-    (fn serials-content []
+    (fn serials-content-comp []
       [ui/view {:style {:position "absolute"
                         :left 0
                         :right 0

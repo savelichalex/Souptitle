@@ -79,6 +79,11 @@
     (reaction (get @db :seasons-list))))
 
 (register-sub
+  :season-title
+  (fn [db _]
+    (reaction (get @db :season-title))))
+
+(register-sub
   :chapters
   (fn [db _]
     (reaction (get @db :chapters-list))))

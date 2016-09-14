@@ -37,7 +37,7 @@
 
 (defn seasons-content [activity-indicator]
   (let [seasons (subscribe [:seasons])]
-    (fn seasons-content []
+    (fn seasons-content-comp []
       [ui/view {:style {:position "absolute"
                         :left 0
                         :right 0

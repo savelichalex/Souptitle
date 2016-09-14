@@ -13,11 +13,11 @@
   [ui/image {:source search-icon-source :style style}])
 
 (defn nav-bar [title show-search?]
-  [ui/linear-gradient {:colors           ["#834d9b" "#48569B"]
-                       :start            [1.0 1.0] :end [0.0 0.0]
-                       :style {:flex             3
-                               :flex-direction   "row"
-                               :align-items      "center"}}
+  [ui/linear-gradient {:colors ["#834d9b" "#48569B"]
+                       :start  [1.0 1.0] :end [0.0 0.0]
+                       :style  {:flex           3
+                                :flex-direction "row"
+                                :align-items    "center"}}
    [ui/touchable-opacity {:style    {:flex        1
                                      :align-items "center"}
                           :on-press #(dispatch [:nav/pop :chapter])}
@@ -37,9 +37,8 @@
      [ui/view {:style {:flex        5
                        :align-items "center"}}
       [ui/text {:style {:color     "white"
-                        :font-size 30}}
-       (string/upper-case
-         (str "season " title))]])
+                        :font-size 30}}]])
+
    [ui/touchable-opacity {:style    {:flex        1
                                      :align-items "center"}
                           :on-press #(dispatch [:toggle-search])}
@@ -170,3 +169,72 @@
                              :justify-content  "center"
                              :align-items      "center"}}
             [activity-indicator {:color "rgb(72, 86, 155)"}]])]))))
+
+(defn back-button []
+  [ui/text {:style    {:color     "white"
+                       :font-size 20}
+            :on-press #(dispatch [:back-to-seasons])}
+   (clojure.string/upper-case "back")])
+
+(defn chapter-title []
+  (let [title (subscribe [:season-title])
+        show-search? (subscribe [:show-search?])]
+    (if (not @show-search?)
+      [ui/text {:style {:color     "white"
+                        :font-size 30}}
+       (string/upper-case
+         (str "season " @title))]
+      [ui/view {:style {:position "absolute"
+                        :top 0
+                        :left 5
+                        :right 5
+                        :flex        5
+                        :align-items "stretch"}}
+       [ui/view {:style {:border-radius    15
+                         :background-color "white"
+                         :padding-left     15
+                         :padding-right    15}}
+        [ui/text-input {:auto-capitalize "none"
+                        :style           {:color  "rgb(72, 86, 155)"
+                                          :height 30}
+                        :on-change-text  #(dispatch [:change-search-predicate %])}]]])))
+
+(defn right-button []
+  [ui/touchable-opacity {:style    {:flex        1
+                                    :align-items "center"}
+                         :on-press #(dispatch [:toggle-search])}
+   [search-icon {:style {:width 15 :height 15}}]])
+
+(defn chapters-content [activity-indicator]
+  (let [chapters (subscribe [:chapters])
+        chapter (subscribe [:get-chapter])]
+    (fn chapters-content-comp []
+      [ui/view {:style {:position       "absolute"
+                        :left           0
+                        :right          0
+                        :top            0
+                        :bottom         0
+                        :flex           1
+                        :flex-direction "column"
+                        :align-items    "stretch"}}
+       (when (not (nil? @chapters))
+         [seasons-bar @chapters
+          #(dispatch [:chapter-load %1 %2])])
+       (if (not (empty? @chapter))
+         [ui/list-view {:dataSource            (.cloneWithRows chapter-ds (clj->js @chapter))
+                        :enable-empty-sections true
+                        :render-row            #(r/as-element [term-row (js->clj % :keywordize-keys true) activity-indicator])
+                        :style                 {:flex             12
+                                                :background-color "white"}}]
+         [ui/view {:style {:flex             (if (nil? @chapters) 13 12)
+                           :background-color "white"
+                           :justify-content  "center"
+                           :align-items      "center"}}
+          [activity-indicator {:color "rgb(72, 86, 155)"}]])])))
+
+(defn get-chapters-scene [activity-indicator]
+  (fn chapters-scene []
+    {:nav-bar {:left-button  back-button
+               :title        chapter-title
+               :right-button right-button}
+     :content (chapters-content activity-indicator)}))
