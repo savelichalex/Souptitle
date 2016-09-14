@@ -7,10 +7,13 @@
 
 (def menu-icon-source (js/require "./images/menu-icon.png"))
 (def search-icon-source (js/require "./images/search-icon.png"))
+(def back-icon-source (js/require "./images/back-icon.png"))
 (defn menu-icon [{:keys [style]}]
   [ui/image {:source menu-icon-source :style style}])
 (defn search-icon [{:keys [style]}]
   [ui/image {:source search-icon-source :style style}])
+(defn back-icon [{:keys [style]}]
+  [ui/image {:source back-icon-source :style style}])
 
 (defn season-bar-item [style number last-number item on-change]
   [ui/touchable-opacity {:style    {:justify-content  "center"
@@ -114,10 +117,10 @@
      [ui/text {:style {:font-size 20 :color "rgb(72, 86, 155)"}} term]]))
 
 (defn back-button []
-  [ui/text {:style    {:color     "white"
-                       :font-size 20}
-            :on-press #(dispatch [:back-to-seasons])}
-   (clojure.string/upper-case "back")])
+  [ui/touchable-opacity {:style    {:flex        1
+                                    :align-items "center"}
+                         :on-press #(dispatch [:back-to-seasons])}
+   [back-icon {:style {:width 20 :height 20}}]])
 
 (defn chapter-title []
   (let [title (subscribe [:season-title])
@@ -131,6 +134,7 @@
                         :top 0
                         :left 5
                         :right 5
+                        :bottom 0
                         :flex        5
                         :align-items "stretch"}}
        [ui/view {:style {:border-radius    15

@@ -2,6 +2,7 @@
   (:require [teach-by-friends.shared.ui :as ui :refer [DataSource]]
             [reagent.core :as r]
             [re-frame.core :refer [subscribe dispatch dispatch-sync]]
+            [teach-by-friends.shared.scenes.chapters-scene :refer [back-icon]]
             [teach-by-friends.shared.components.row :refer [row]]
             [clojure.string :as string]))
 
@@ -28,10 +29,10 @@
           [activity-indicator {:color "rgb(72, 86, 155)"}]])])))
 
 (defn back-button []
-  [ui/text {:style {:color     "white"
-                    :font-size 20}
-            :on-press #(dispatch [:back-to-serials])}
-   (clojure.string/upper-case "back")])
+  [ui/touchable-opacity {:style    {:flex        1
+                                    :align-items "center"}
+                         :on-press #(dispatch [:back-to-serials])}
+   [back-icon {:style {:width 20 :height 20}}]])
 
 (defn seasons-title []
   [ui/text {:style {:color     "white"

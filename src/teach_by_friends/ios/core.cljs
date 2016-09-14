@@ -229,7 +229,7 @@
     [with-slide-and-opacity-transition {:key        "title"
                                         :time       time
                                         :direction  direction
-                                        :root-style {:flex 5}
+                                        :root-style {:flex 9}
                                         :style      {:align-items "center"}}
      (when title
        ^{:key "title"} [title])]
