@@ -1,1 +1,0 @@
-{"version":3,"file":"\/Users\/admin\/for-clojure\/teach-by-friends\/target\/ios\/teach_by_friends\/ios\/ui.js","sources":["ui.cljs"],"lineCount":8,"mappings":";AAAA;;;AAGA,AAAKA,sCAAY,QAAA,RAACC;AAElB,AAAKC,6CAAmB,AAACC,yCAAoB,AAAGH","names":["teach-by-friends.ios.ui\/ReactNative","js\/require","teach-by-friends.ios.ui\/activity-indicator","reagent.core\/adapt-react-class"]}

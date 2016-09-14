@@ -42,6 +42,10 @@
   ([& animations]
    (.. Animated (parallel (clj->js animations)))))
 
+(defn animated-sequence
+  ([& animations]
+   (.. Animated (sequence (clj->js animations)))))
+
 (defn animated-timing [animated-value config]
   (.. Animated (timing animated-value (clj->js config))))
 

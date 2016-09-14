@@ -1,1 +1,0 @@
-{"version":3,"file":"\/Users\/admin\/for-clojure\/teach-by-friends\/target\/ios\/reagent\/dom\/server.js","sources":["server.cljs"],"lineCount":11,"mappings":";AAAA;;AAGA,sCAAA,tCAAMA,oFAAkBC;AAAxB,AAAA;;AAEA,6CAAA,7CAAMC,kGAAyBD;AAA\/B,AAAA","names":["reagent.dom.server\/render-to-string","_","reagent.dom.server\/render-to-static-markup"]}
