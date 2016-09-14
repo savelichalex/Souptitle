@@ -9,7 +9,7 @@
             [teach-by-friends.ios.ui :as ios-ui]
             [teach-by-friends.shared.scenes.serials-scene :refer [get-serials-scene]]
             [teach-by-friends.shared.scenes.seasons-scene :refer [get-seasons-scene]]
-            [teach-by-friends.shared.scenes.new-design :refer [get-chapters-scene]]
+            [teach-by-friends.shared.scenes.chapters-scene :refer [get-chapters-scene]]
             [clojure.string :as string]))
 
 (enable-console-print!)
@@ -74,7 +74,6 @@
                                           :current-props next-props})))))
        :component-did-update
        (fn [_ [_ {:keys [time]}]]
-         (print (first (:current-props @state)))
          (when (and (:width @state) (:animated @state))
            (let [from-anim-value (:from-value @state)
                  to-anim-value (:to-value @state)
@@ -275,7 +274,6 @@
                                     route (:route @nav)
                                     props (:props @nav)
                                     type (:type @nav)]
-                                (print route)
                                 (cond
                                   (nil? route) nil
                                   (= type :pop) (swap! nav-state (fn [] {:route route :props (assoc props :direction :to-right)}))

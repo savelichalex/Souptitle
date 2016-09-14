@@ -7,8 +7,6 @@
     [teach-by-friends.shared.ui :as ui]
     [teach-by-friends.remote-db-service :as rdb]))
 
-(enable-console-print!)
-
 ;; -- Middleware ------------------------------------------------------------
 ;;
 ;; See https://github.com/Day8/re-frame/wiki/Using-Handler-Middleware
@@ -192,7 +190,6 @@
 (register-handler
   :srt-load-success
   (fn [db [_ chapter]]
-    (print chapter)
     (-> db
         (assoc :chapter chapter))))
 

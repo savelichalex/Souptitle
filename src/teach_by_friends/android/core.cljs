@@ -7,7 +7,7 @@
             [teach-by-friends.android.ui :as android-ui]
             [teach-by-friends.shared.scenes.serials-scene :refer [get-serials-scene]]
             [teach-by-friends.shared.scenes.seasons-scene :refer [get-seasons-scene]]
-            [teach-by-friends.shared.scenes.new-design :refer [get-new-design-scene]]))
+            [teach-by-friends.shared.scenes.chapters_scene :refer [get-new-design-scene]]))
 
 (def serials-scene (get-serials-scene android-ui/activity-indicator {:background-color "rgb(72, 86, 155)"}))
 (def seasons-scene (get-seasons-scene android-ui/activity-indicator))

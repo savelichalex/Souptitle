@@ -38,7 +38,6 @@
 (deftype DropboxDB [auth-api-key]
   IRemoteDB
   (download [_ path]
-    (print path)
     (-> (fetch
           DROPBOX_DOWNLOAD_URL
           {:headers {:Authorization (str "Bearer " auth-api-key)
