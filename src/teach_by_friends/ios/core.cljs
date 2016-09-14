@@ -14,27 +14,9 @@
 
 (enable-console-print!)
 
-(def serials-scene (get-serials-scene ios-ui/activity-indicator {:bar-style "light-content"}))
+(def serials-scene (get-serials-scene ios-ui/activity-indicator))
 (def seasons-scene (get-seasons-scene ios-ui/activity-indicator))
 (def new-design-scene (get-new-design-scene ios-ui/activity-indicator))
-
-(defmulti render-scene (fn [nav] (:route nav)))
-(defmethod render-scene :serials
-  [_]
-  [serials-scene])
-
-(defmethod render-scene :seasons
-  [_]
-  [seasons-scene])
-
-(defmethod render-scene :chapter
-  [{title :props}]
-  [new-design-scene title])
-
-(defmulti configure-scene identity)
-(defmethod configure-scene :default
-  [_]
-  :push-from-right)
 
 ;(defn app-root []
 ;  [ui/navigation {:initial-route :serials
@@ -97,6 +79,7 @@
                                           :current-props next-props})))))
        :component-did-update
        (fn [_ [_ {:keys [time]}]]
+         (print (first (:current-props @state)))
          (when (and (:width @state) (:animated @state))
            (let [from-anim-value (:from-value @state)
                  to-anim-value (:to-value @state)
@@ -135,12 +118,12 @@
                                                                    (assoc :height (.. % -nativeEvent -layout -height)))))}
             children]
            (if (:animated @state)
-             [ui/animated-view {:style (merge root-style {:position "relative"
+             [ui/animated-view {:style (merge root-style {:position         "relative"
                                                           :background-color "transparent"
-                                                          :overflow "hidden"
-                                                          :width (:width @state)
-                                                          :height (:height @state)
-                                                          :opacity (:opacity @state)})}
+                                                          :overflow         "hidden"
+                                                          :width            (:width @state)
+                                                          :height           (:height @state)
+                                                          :opacity          (:opacity @state)})}
               [ui/animated-view {:key   "from"
                                  :style (merge
                                           (:style (first (:prev-props @state)))
@@ -157,7 +140,7 @@
                                            :height   (:height @state)
                                            :left     (:to-value @state)})}
                children]]
-             [ui/animated-view {:style (merge root-style style {:position "relative"
+             [ui/animated-view {:style (merge root-style style {:position         "relative"
                                                                 :background-color "transparent"})}
               children])))})))
 
@@ -203,13 +186,15 @@
        :reagent-render
        (fn [{:keys [root-style style]} & children]
          (if (nil? (:width @state))
-           [ui/view {:style     (merge root-style style {:position "relative"})
-                     :on-layout #(swap! state (fn [s] (-> s
-                                                          (assoc :width (.. % -nativeEvent -layout -width))
-                                                          (assoc :height (.. % -nativeEvent -layout -height)))))}
+           [ui/animated-view {:style (merge root-style style {:position "relative"})
+                              :on-layout #(swap! state (fn [s] (-> s
+                                                                 (assoc :width (.. % -nativeEvent -layout -width))
+                                                                 (assoc :height (.. % -nativeEvent -layout -height)))))}
             children]
            (if (:animated @state)
-             [ui/view {:style (merge root-style {:position "relative"})}
+             [ui/animated-view {:style (merge root-style {:position "relative"
+                                                          :width    (:width @state)
+                                                          :height   (:height @state)})}
               [ui/animated-view {:key   "from"
                                  :style (merge
                                           (:style (first (:prev-props @state)))
@@ -226,7 +211,9 @@
                                            :height   (:height @state)
                                            :left     (:to-value @state)})}
                children]]
-             [ui/view {:style (merge root-style style {:position "relative"})}
+             [ui/animated-view {:style (merge root-style style {:position "relative"
+                                                                :width    (:width @state)
+                                                                :height   (:height @state)})}
               children])))})))
 
 ;(defn app-root []
@@ -234,59 +221,84 @@
 ;    (fn []
 ;      [with-opacity-transition {:time 1000}
 ;       [ui/text {:on-click #(swap! state inc) @state}]])))
-(def menu-icon-source (js/require "./images/menu-icon.png"))
-(defn menu-icon [{:keys [style]}]
-  [ui/image {:source menu-icon-source :style style}])
-(defn app-root []
-  (let [state (r/atom {:val       0
-                       :direction :to-left})]
-    (fn []
-      [ui/view {:style {:flex 1}}
-       [ui/linear-gradient {:colors ["#834d9b" "#48569B"]
-                            :start  [1.0 1.0] :end [0.0 0.0]
-                            :style  {:height         150
-                                     :flex-direction "row"
-                                     :align-items    "center"}}
-        [with-opacity-transition {:key   "left-menu"
-                                  :time  400
-                                  :style {:flex        2
-                                          :align-items "center"}}
-         (if (= (mod (:val @state) 2) 0)
-           [ui/text {:key   1
-                     :style {:color     "white"
-                             :font-size 20}}
-            "< Back"]
-           [menu-icon {:key 2 :style {:width 25 :height 15}}])]
-        [with-slide-and-opacity-transition {:key        "title"
-                                            :time       400
-                                            :direction  (:direction @state)
-                                            :root-style {:flex 5}
-                                            :style      {:align-items "center"}}
-         [ui/text {:key 1
-                   :style {:color     "white"
-                           :font-size 30}}
-          (:val @state)]]
-        [with-opacity-transition {:key   "right-menu"
-                                  :time  400
-                                  :style {:flex        2
-                                          :align-items "center"}}
-         [ui/text {:key      1
-                   :on-press #(swap! state (fn [s] {:val (inc (:val s)) :direction :to-left}))
-                   :style    {:color     "white"
-                              :font-size 30}}
-          (:val @state)]]]
-       [with-slide-transition
-        {:time       400
-         :direction  (:direction @state)
-         :root-style {:flex 1}
-         :style      {:flex            1
-                      :align-items     "center"
-                      :justify-content "center"}}
-        [ui/text {:key      "slide-text"
-                  :on-press #(swap! state (fn [s] {:val (dec (:val s)) :direction :to-right}))
-                  :style    {:font-size 30}}
-         (:val @state)]]])))
+(defn root-layout [{{lb :left-button title :title rb :right-button} :nav-bar content :content} {:keys [direction time]}]
+  [ui/view {:style {:flex 1}}
+   [ui/linear-gradient {:colors ["#834d9b" "#48569B"]
+                        :start  [1.0 1.0] :end [0.0 0.0]
+                        :style  {:height         150
+                                 :flex-direction "row"
+                                 :align-items    "center"}}
+    [with-opacity-transition {:key   "left-menu"
+                              :time  time
+                              :style {:flex        2
+                                      :align-items "center"}}
+     (when lb
+       ^{:key "left-button"} [lb])]
+    [with-slide-and-opacity-transition {:key        "title"
+                                        :time       time
+                                        :direction  direction
+                                        :root-style {:flex 5}
+                                        :style      {:align-items "center"}}
+     (when title
+       ^{:key "title"} [title])]
+    [with-opacity-transition {:key   "right-menu"
+                              :time  time
+                              :style {:flex        2
+                                      :align-items "center"}}
+     (when rb
+       ^{:key "right-button"} [rb])]]
+   [with-slide-transition
+    {:time       time
+     :direction  direction
+     :root-style {:flex 1}
+     :style      {:flex            1
+                  :align-items     "center"
+                  :justify-content "center"}}
+    (when content
+      ^{:key "content"} [content])]])
 
+(defmulti render-scene (fn [nav] (:route nav)))
+(defmethod render-scene :serials
+  [{{direction :direction} :props}]
+  [root-layout (serials-scene) {:direction direction :time 400}])
+
+(defmethod render-scene :seasons
+  [{{direction :direction} :props}]
+  [root-layout (seasons-scene) {:direction direction :time 400}])
+
+(defmethod render-scene :chapter
+  [{title :props}]
+  [new-design-scene title])
+
+(defn navigation [props]
+  (let [nav-state (r/atom {:route nil
+                           :props nil})
+        track-id (atom nil)]
+    (r/create-class
+      {:component-did-mount
+       (fn [this]
+         (let [id (r/track! (fn []
+                              (let [nav (reaction (get @re-frame.db/app-db :nav))
+                                    route (:route @nav)
+                                    props (:props @nav)
+                                    type (:type @nav)]
+                                (print route)
+                                (cond
+                                  (nil? route) nil
+                                  (= type :pop) (swap! nav-state (fn [] {:route route :props (assoc props :direction :to-right)}))
+                                  (= type :push) (swap! nav-state (fn [] {:route route :props (assoc props :direction :to-left)}))
+                                  :else (swap! nav-state (fn [] {:route route}))))))]
+           (swap! track-id (fn [_] id))))
+       :component-will-unmount
+       (fn [this]
+         (r/dispose! @track-id))
+       :reagent-render
+       (fn [{:keys [render-scene]}]
+         (when (not (nil? (:route @nav-state)))
+           (render-scene @nav-state)))})))
+
+(defn app-root []
+  [navigation {:render-scene render-scene}])
 
 (defn init []
   ;(dispatch-sync [:initialize-db])

@@ -22,16 +22,44 @@
      (string/upper-case
        (str "serials"))]]])
 
-(defn get-serials-scene [activity-indicator status-bar-props]
+;(defn get-serials-scene [activity-indicator status-bar-props]
+;  (fn serials-scene []
+;    (let [serials (subscribe [:serials])]
+;      (fn []
+;        [ui/view {:style {:flex 1 :flex-direction "column" :align-items "stretch"}}
+;         [ui/status-bar status-bar-props]
+;         [nav-bar]
+;         (if (not (nil? @serials))
+;           [ui/list-view {:dataSource (.cloneWithRows serials-ds (clj->js @serials))
+;                          :render-row #(r/as-element (row % (fn [serial] (dispatch [:seasons-load serial]))))
+;                          :style      {:flex 13}}]
+;           [ui/view {:style {:flex 14 :justify-content "center" :align-items "center"}}
+;            [activity-indicator {:color "rgb(72, 86, 155)"}]])]))))
+
+(defn serials-content [activity-indicator]
+  (let [serials (subscribe [:serials])]
+    (fn serials-content []
+      [ui/view {:style {:position "absolute"
+                        :left 0
+                        :right 0
+                        :top 0
+                        :bottom 0
+                        :flex 1 :flex-direction "column" :align-items "stretch"}}
+       (if (not (nil? @serials))
+         [ui/list-view {:dataSource (.cloneWithRows serials-ds (clj->js @serials))
+                        :render-row #(r/as-element (row % (fn [serial] (dispatch [:seasons-load serial]))))
+                        :style      {:flex 13}}]
+         [ui/view {:style {:flex 14 :justify-content "center" :align-items "center"}}
+          [activity-indicator {:color "rgb(72, 86, 155)"}]])])))
+
+(defn serials-title []
+  [ui/text {:style {:color "white"
+                    :font-size 30}}
+   (clojure.string/upper-case "serials")])
+
+(defn get-serials-scene [activity-indicator]
   (fn serials-scene []
-    (let [serials (subscribe [:serials])]
-      (fn []
-        [ui/view {:style {:flex 1 :flex-direction "column" :align-items "stretch"}}
-         [ui/status-bar status-bar-props]
-         [nav-bar]
-         (if (not (nil? @serials))
-           [ui/list-view {:dataSource (.cloneWithRows serials-ds (clj->js @serials))
-                          :render-row #(r/as-element (row % (fn [serial] (dispatch [:seasons-load serial]))))
-                          :style      {:flex 13}}]
-           [ui/view {:style {:flex 14 :justify-content "center" :align-items "center"}}
-            [activity-indicator {:color "rgb(72, 86, 155)"}]])]))))
+    {:nav-bar {:left-button nil
+               :title serials-title
+               :right-button nil}
+     :content (serials-content activity-indicator)}))

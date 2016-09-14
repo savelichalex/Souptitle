@@ -46,9 +46,9 @@
   ;validate-schema-mw
   (fn [_ [_ app-config]]
     (let [remote-db (rdb/->DropboxDB. (:DropboxOAuthToken app-config))]
-      ;(-> (rdb/download-json remote-db SERIALS_URL)
-      ;    (.then #(dispatch [:serials-load-success %]))
-      ;    (.catch #(dispatch [:serials-load-error %])))
+      (-> (rdb/download-json remote-db SERIALS_URL)
+          (.then #(dispatch [:serials-load-success %]))
+          (.catch #(dispatch [:serials-load-error %])))
       (-> app-db
           (assoc :remote-db remote-db)))))
 
@@ -72,11 +72,11 @@
         (-> (rdb/download-json (get db :remote-db) seasons)
             (.then #(dispatch [:seasons-load-success %]))
             (.catch #(dispatch [:seasons-load-error %]))))
-      300)
+      400)
     (-> db
         (assoc :seasons-list nil)
         (assoc-in [:nav :route] :seasons)
-        (assoc-in [:nav :props] title)
+        (assoc-in [:nav :props] {:title title})
         (assoc-in [:nav :type] :push))))
 
 (register-handler
@@ -90,6 +90,13 @@
   (fn [db [_ error]]
     (print error)
     db))
+
+(register-handler
+  :back-to-serials
+  (fn [db _]
+    (-> db
+        (assoc-in [:nav :route] :serials)
+        (assoc-in [:nav :type] :pop))))
 
 (register-handler
   :resort-chapter
