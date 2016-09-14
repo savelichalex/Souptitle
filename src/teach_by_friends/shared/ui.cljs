@@ -26,6 +26,45 @@
 (defn alert [title]
   (.alert (.-Alert ReactNative) title))
 
+(def Animated
+  (. ReactNative -Animated))
+
+(def AnimatedValue
+  (. Animated -Value))
+
+(defn animated-value [val]
+  (AnimatedValue. val))
+
+(defn animated-set-value [an val]
+  (.setValue an val))
+
+(defn animated-parallel
+  ([& animations]
+   (.. Animated (parallel (clj->js animations)))))
+
+(defn animated-sequence
+  ([& animations]
+   (.. Animated (sequence (clj->js animations)))))
+
+(defn animated-timing [animated-value config]
+  (.. Animated (timing animated-value (clj->js config))))
+
+(defn start-animated
+  ([animated]
+   (.. animated (start)))
+  ([animated end-cb]
+   (.. animated (start end-cb))))
+
+(defn start-animated-timing
+  ([animated-value config]
+   (-> (animated-timing animated-value config)
+       (start-animated)))
+  ([animated-value config end-cb]
+   (-> (animated-timing animated-value config)
+       (start-animated end-cb))))
+
+(def animated-view (r/adapt-react-class (.-View Animated)))
+
 (def InteractionManager (. ReactNative -InteractionManager))
 
 (defn run-after-interaction [cb]

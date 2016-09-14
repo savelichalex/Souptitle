@@ -7,8 +7,6 @@
     [teach-by-friends.shared.ui :as ui]
     [teach-by-friends.remote-db-service :as rdb]))
 
-(enable-console-print!)
-
 ;; -- Middleware ------------------------------------------------------------
 ;;
 ;; See https://github.com/Day8/re-frame/wiki/Using-Handler-Middleware
@@ -72,11 +70,11 @@
         (-> (rdb/download-json (get db :remote-db) seasons)
             (.then #(dispatch [:seasons-load-success %]))
             (.catch #(dispatch [:seasons-load-error %]))))
-      300)
+      400)
     (-> db
         (assoc :seasons-list nil)
         (assoc-in [:nav :route] :seasons)
-        (assoc-in [:nav :props] title)
+        (assoc-in [:nav :props] {:title title})
         (assoc-in [:nav :type] :push))))
 
 (register-handler
@@ -90,6 +88,13 @@
   (fn [db [_ error]]
     (print error)
     db))
+
+(register-handler
+  :back-to-serials
+  (fn [db _]
+    (-> db
+        (assoc-in [:nav :route] :serials)
+        (assoc-in [:nav :type] :pop))))
 
 (register-handler
   :resort-chapter
@@ -144,8 +149,9 @@
     (-> db
         (assoc :chapter nil)
         (assoc :chapters-list nil)
-        (assoc-in [:nav :route] :chapter)
-        (assoc-in [:nav :props] title)
+        (assoc :season-title title)
+        (assoc-in [:nav :route] :chapters)
+        (assoc-in [:nav :props] {:title title})
         (assoc-in [:nav :type] :push))))
 
 (register-handler
@@ -160,6 +166,13 @@
   (fn [db [_ error]]
     (-> db
         (assoc :chapters-list nil))))
+
+(register-handler
+  :back-to-seasons
+  (fn [db _]
+    (-> db
+        (assoc-in [:nav :route] :seasons)
+        (assoc-in [:nav :type] :pop))))
 
 (register-handler
   :chapter-load
@@ -177,7 +190,6 @@
 (register-handler
   :srt-load-success
   (fn [db [_ chapter]]
-    (print chapter)
     (-> db
         (assoc :chapter chapter))))
 
