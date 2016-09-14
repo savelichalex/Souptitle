@@ -76,8 +76,9 @@
             (:prev-props @state)
             children)])})))
 
-(defn with-slide-transition [_ & children]
+(defn with-slide-transition [& children]
   (let [state (r/atom {:animated false
+                       :height nil
                        :width nil
                        :from-value (ui/animated-value 0)
                        :to-value (ui/animated-value 100)})]
@@ -88,78 +89,114 @@
                                           :prev-props    children
                                           :current-props children}))))
          :component-will-receive-props
-         (fn [_ [_ _ & next-props]]
+         (fn [_ [_ & next-props]]
            (let [current-props (:current-props @state)]
              (swap! state (fn [s] (merge s {:animated      true
                                             :prev-props    current-props
                                             :current-props next-props})))))
          :component-did-update
          (fn [_ [_ {:keys [time]}]]
-           (when (:animated @state)
-             (ui/start-animated-timing
-               (:fade-value @state)
-               {:toValue 0 :duration (/ time 2)}
-               (fn []
-                 (swap! state assoc :animated false)
-                 (ui/start-animated-timing
-                   (:fade-value @state)
-                   {:toValue 1 :duration (/ time 2)})))))
+           (when (and (:width @state) (:animated @state))
+            (let [from-anim-value (:from-value @state)
+                  to-anim-value (:to-value @state)
+                  width (:width @state)
+                  to-value (case (:direction (first (:current-props @state)))
+                                :to-left width
+                                :to-right (* -1 width))]
+             (ui/animated-set-value from-anim-value 0)
+             (ui/animated-set-value to-anim-value to-value)
+             (-> (ui/animated-parallel
+                   (ui/animated-timing
+                     from-anim-value
+                     {:toValue (* -1 to-value)
+                      :duration time})
+                   (ui/animated-timing
+                     to-anim-value
+                     {:toValue 0
+                      :duration time}))
+                (ui/start-animated #(swap! state assoc :animated false))))))
          :reagent-render
-         (fn [{:keys [style]} & children]
+         (fn [{:keys [root-style style]} & children]
            (if (nil? (:width @state))
-            [ui/view {:style (merge style {:position "relative"})}
-                     :on-layout #(swap! state (fn [s] (assoc s :width (.. % -nativeEvent -layout -width))))]
-            [ui/view {:style {:position "relative"}}
-             [ui/animated-view {:style {:position "absolute"
-                                        :width "100%"
-                                        :height "100%"
-                                        :left (:from-value @state)}}
-              (:prev-props @state)]
-             [ui/animated-view {:style {:position "absolute"
-                                        :width "100%"
-                                        :height "100%"
-                                        :left (:to-value @state)}}
-              (:current-props @state)]]))})))
+            [ui/view {:style (merge root-style style {:position "relative"})
+                      :on-layout #(swap! state (fn [s] (-> s
+                                                        (assoc :width (.. % -nativeEvent -layout -width))
+                                                        (assoc :height (.. % -nativeEvent -layout -height)))))}
+              children]
+            (if (:animated @state)
+              [ui/view {:style (merge root-style {:position "relative"})}
+               [ui/animated-view {:key "from"
+                                  :style (merge
+                                          (:style (first (:prev-props @state)))
+                                          {:position "absolute"
+                                           :width (:width @state)
+                                           :height (:height @state)
+                                           :left (:from-value @state)})}
+                (rest (:prev-props @state))]
+               [ui/animated-view {:key "to"
+                                  :style (merge
+                                           style
+                                           {:position "absolute"
+                                                   :width (:width @state)
+                                                   :height (:height @state)
+                                                   :left (:to-value @state)})}
+                children]]
+              [ui/view {:style (merge root-style style {:position "relative"})}
+                children])))})))
 
 ;(defn app-root []
 ;  (let [state (r/atom 0)]
 ;    (fn []
 ;      [with-opacity-transition {:time 1000}
 ;       [ui/text {:on-click #(swap! state inc) @state}]])))
+
 (defn app-root []
-  (let [state (r/atom 0)]
+  (let [state (r/atom {:val 0
+                       :direction :to-left})]
     (fn []
-      [ui/linear-gradient {:colors ["#834d9b" "#48569B"]
-                           :start  [1.0 1.0] :end [0.0 0.0]
-                           :style  {:height         150
-                                    :flex-direction "row"
-                                    :align-items    "center"}}
-       [with-opacity-transition {:key  "left-menu"
-                                 :time 400
-                                 :style {:flex 2
-                                         :align-items "center"}}
-        [ui/text {:key      1
-                  :on-press #(swap! state inc)
-                  :style    {:color     "white"
-                             :font-size 20}}
-         "< Back"]]
-       [with-opacity-transition {:key         "title"
-                                 :time        400
-                                 :style       {:flex 5
-                                               :align-items "center"}}
-        [ui/text {:style {:color     "white"
-                          :font-size 30}}
-         (string/upper-case
-           (str "serials"))]]
-       [with-opacity-transition {:key  "right-menu"
-                                 :time 400
-                                 :style {:flex 2
-                                         :align-items "center"}}
-        [ui/text {:key      1
-                  :on-press #(swap! state inc)
-                  :style    {:color     "white"
-                             :font-size 30}}
-         @state]]])))
+      [ui/view {:style {:flex 1}}
+       [ui/linear-gradient {:colors ["#834d9b" "#48569B"]
+                            :start  [1.0 1.0] :end [0.0 0.0]
+                            :style  {:height         150
+                                     :flex-direction "row"
+                                     :align-items    "center"}}
+        [with-opacity-transition {:key  "left-menu"
+                                  :time 400
+                                  :style {:flex 2
+                                          :align-items "center"}}
+         [ui/text {:key      1
+                   :style    {:color     "white"
+                              :font-size 20}}
+          "< Back"]]
+        [with-opacity-transition {:key         "title"
+                                  :time        400
+                                  :style       {:flex 5
+                                                :align-items "center"}}
+         [ui/text {:style {:color     "white"
+                           :font-size 30}}
+          (string/upper-case
+            (str "serials"))]]
+        [with-opacity-transition {:key  "right-menu"
+                                  :time 400
+                                  :style {:flex 2
+                                          :align-items "center"}}
+         [ui/text {:key      1
+                   :on-press #(swap! state (fn [s] {:val (inc (:val s)) :direction :to-left}))
+                   :style    {:color     "white"
+                              :font-size 30}}
+          (:val @state)]]]
+       [with-slide-transition
+         {:time 400
+          :direction (:direction @state)
+          :root-style {:flex 1}
+          :style {:flex 1
+                  :align-items "center"
+                  :justify-content "center"}}
+        [ui/text {:key "slide-text"
+                  :on-press #(swap! state (fn [s] {:val (dec (:val s)) :direction :to-right}))
+                  :style {:font-size 30}}
+          (:val @state)]]])))
+
 
 (defn init []
   ;(dispatch-sync [:initialize-db])

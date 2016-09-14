@@ -33,10 +33,10 @@ return new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMP
 cljs.core._add_method.call(null,teach_by_friends.android.core.render_scene,new cljs.core.Keyword(null,"seasons","seasons",1033111474),(function (_){
 return new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [teach_by_friends.android.core.seasons_scene], null);
 }));
-cljs.core._add_method.call(null,teach_by_friends.android.core.render_scene,new cljs.core.Keyword(null,"chapter","chapter",-238644368),(function (p__21173){
-var map__21174 = p__21173;
-var map__21174__$1 = ((((!((map__21174 == null)))?((((map__21174.cljs$lang$protocol_mask$partition0$ & (64))) || (map__21174.cljs$core$ISeq$))?true:false):false))?cljs.core.apply.call(null,cljs.core.hash_map,map__21174):map__21174);
-var title = cljs.core.get.call(null,map__21174__$1,new cljs.core.Keyword(null,"props","props",453281727));
+cljs.core._add_method.call(null,teach_by_friends.android.core.render_scene,new cljs.core.Keyword(null,"chapter","chapter",-238644368),(function (p__23701){
+var map__23702 = p__23701;
+var map__23702__$1 = ((((!((map__23702 == null)))?((((map__23702.cljs$lang$protocol_mask$partition0$ & (64))) || (map__23702.cljs$core$ISeq$))?true:false):false))?cljs.core.apply.call(null,cljs.core.hash_map,map__23702):map__23702);
+var title = cljs.core.get.call(null,map__23702__$1,new cljs.core.Keyword(null,"props","props",453281727));
 return new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [teach_by_friends.android.core.new_design_scene,title], null);
 }));
 if(typeof teach_by_friends.android.core.configure_scene !== 'undefined'){

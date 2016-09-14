@@ -22,8 +22,8 @@ return (function (){
 return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"resort-chapter","resort-chapter",-606074972),new cljs.core.Keyword(null,"by-alphabet","by-alphabet",-1215394575)], null));
 });})(chapter))
 ], null),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [teach_by_friends.shared.ui.text,"In alph order"], null)], null)], null),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [teach_by_friends.shared.ui.list_view,new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"dataSource","dataSource",-178401132),teach_by_friends.shared.scenes.chapter_scene.chapter_ds.cloneWithRows(cljs.core.clj__GT_js.call(null,cljs.core.deref.call(null,chapter))),new cljs.core.Keyword(null,"render-row","render-row",630859969),((function (chapter){
-return (function (p1__21180_SHARP_){
-return reagent.core.as_element.call(null,teach_by_friends.shared.components.term_row.term_row.call(null,p1__21180_SHARP_));
+return (function (p1__23708_SHARP_){
+return reagent.core.as_element.call(null,teach_by_friends.shared.components.term_row.term_row.call(null,p1__23708_SHARP_));
 });})(chapter))
 ,new cljs.core.Keyword(null,"style","style",-496642736),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"flex","flex",-1425124628),(9)], null)], null)], null)], null);
 } else {

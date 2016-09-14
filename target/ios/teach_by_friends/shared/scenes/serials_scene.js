@@ -17,8 +17,8 @@ var serials = re_frame.core.subscribe.call(null,new cljs.core.PersistentVector(n
 return ((function (serials){
 return (function (){
 return new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMPTY_NODE, [teach_by_friends.shared.ui.view,new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"style","style",-496642736),new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"flex","flex",-1425124628),(1),new cljs.core.Keyword(null,"flex-direction","flex-direction",364609438),"column",new cljs.core.Keyword(null,"align-items","align-items",-267946462),"stretch"], null)], null),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [teach_by_friends.shared.ui.status_bar,status_bar_props], null),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [teach_by_friends.shared.scenes.serials_scene.nav_bar], null),((!((cljs.core.deref.call(null,serials) == null)))?new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [teach_by_friends.shared.ui.list_view,new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"dataSource","dataSource",-178401132),teach_by_friends.shared.scenes.serials_scene.serials_ds.cloneWithRows(cljs.core.clj__GT_js.call(null,cljs.core.deref.call(null,serials))),new cljs.core.Keyword(null,"render-row","render-row",630859969),((function (serials){
-return (function (p1__18111_SHARP_){
-return reagent.core.as_element.call(null,teach_by_friends.shared.components.row.row.call(null,p1__18111_SHARP_,((function (serials){
+return (function (p1__23572_SHARP_){
+return reagent.core.as_element.call(null,teach_by_friends.shared.components.row.row.call(null,p1__23572_SHARP_,((function (serials){
 return (function (serial){
 return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"seasons-load","seasons-load",950204241),serial], null));
 });})(serials))

@@ -2860,3 +2860,338 @@ notifying browser that file changed:  out/teach_by_friends/ios/core.js
 [0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
 notifying browser that file changed:  out/teach_by_friends/ios/core.js
 [32mSuccessfully compiled "target/ios/not-used.js" in 0.456 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  target/ios/goog/deps.js
+notifying browser that file changed:  target/ios/cljs_deps.js
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 1.181 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 1.027 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 1.183 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+WARNING: Use of undeclared Var teach-by-friends.ios.core/app-root at line 9 env/dev/env/ios/main.cljs
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.535 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+WARNING: Use of undeclared Var teach-by-friends.ios.core/app-root2 at line 190 /Users/admin/for-clojure/teach-by-friends/src/teach_by_friends/ios/core.cljs
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.661 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.412 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.504 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.785 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.397 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.551 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.449 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.446 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/shared/ui.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 1.137 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.668 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.6 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.982 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+[31mCompiling "target/ios/not-used.js" failed.
+[0mjava.lang.AssertionError: No ns form found in src/teach_by_friends/ios/core.cljs
+ at cljs.analyzer$parse_ns$fn__1924.invoke (analyzer.cljc:2731)
+    cljs.analyzer$parse_ns.invoke (analyzer.cljc:2682)
+    cljs.analyzer$parse_ns.invoke (analyzer.cljc:2673)
+    cljs.compiler$find_source.invoke (compiler.cljc:1389)
+    clojure.core$map$fn__4553.invoke (core.clj:2624)
+    clojure.lang.LazySeq.sval (LazySeq.java:40)
+    clojure.lang.LazySeq.seq (LazySeq.java:49)
+    clojure.lang.RT.seq (RT.java:507)
+    clojure.core/seq (core.clj:137)
+    clojure.core$concat$cat__4217$fn__4218.invoke (core.clj:700)
+    clojure.lang.LazySeq.sval (LazySeq.java:40)
+    clojure.lang.LazySeq.seq (LazySeq.java:49)
+    clojure.lang.Cons.next (Cons.java:39)
+    clojure.lang.RT.next (RT.java:674)
+    clojure.core/next (core.clj:64)
+    clojure.core$reduce1.invoke (core.clj:909)
+    clojure.core$set.invoke (core.clj:3960)
+    cljs.closure$add_dependency_sources.invoke (closure.clj:731)
+    cljs.closure$build.invoke (closure.clj:1807)
+    cljs.build.api$build.invoke (api.clj:207)
+    figwheel_sidecar.components.cljs_autobuild$cljs_build.invoke (cljs_autobuild.clj:24)
+    figwheel_sidecar.build_middleware.injection$hook$fn__15906.invoke (injection.clj:139)
+    figwheel_sidecar.build_middleware.notifications$hook$fn__16233.invoke (notifications.clj:187)
+    figwheel_sidecar.build_middleware.clj_reloading$hook$fn__16309.invoke (clj_reloading.clj:115)
+    figwheel_sidecar.build_middleware.javascript_reloading$hook$fn__16355.invoke (javascript_reloading.clj:60)
+    figwheel_sidecar.components.cljs_autobuild$eval16370$figwheel_start_and_end_messages__16373$fn__16375.invoke (cljs_autobuild.clj:47)
+    figwheel_sidecar.components.cljs_autobuild$execute_build$fn__16396$fn__16397.invoke (cljs_autobuild.clj:116)
+    figwheel_sidecar.components.cljs_autobuild$execute_build$fn__16396.invoke (cljs_autobuild.clj:114)
+    figwheel_sidecar.utils$sync_exec$fn__1973$fn__1974.invoke (utils.clj:13)
+    figwheel_sidecar.utils$sync_exec$fn__1973.invoke (utils.clj:12)
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.236 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+[31mCompiling "target/ios/not-used.js" failed.
+[0mjava.lang.AssertionError: No ns form found in src/teach_by_friends/ios/core.cljs
+ at cljs.analyzer$parse_ns$fn__1924.invoke (analyzer.cljc:2731)
+    cljs.analyzer$parse_ns.invoke (analyzer.cljc:2682)
+    cljs.analyzer$parse_ns.invoke (analyzer.cljc:2673)
+    cljs.compiler$find_source.invoke (compiler.cljc:1389)
+    clojure.core$map$fn__4553.invoke (core.clj:2624)
+    clojure.lang.LazySeq.sval (LazySeq.java:40)
+    clojure.lang.LazySeq.seq (LazySeq.java:49)
+    clojure.lang.RT.seq (RT.java:507)
+    clojure.core/seq (core.clj:137)
+    clojure.core$concat$cat__4217$fn__4218.invoke (core.clj:700)
+    clojure.lang.LazySeq.sval (LazySeq.java:40)
+    clojure.lang.LazySeq.seq (LazySeq.java:49)
+    clojure.lang.Cons.next (Cons.java:39)
+    clojure.lang.RT.next (RT.java:674)
+    clojure.core/next (core.clj:64)
+    clojure.core$reduce1.invoke (core.clj:909)
+    clojure.core$set.invoke (core.clj:3960)
+    cljs.closure$add_dependency_sources.invoke (closure.clj:731)
+    cljs.closure$build.invoke (closure.clj:1807)
+    cljs.build.api$build.invoke (api.clj:207)
+    figwheel_sidecar.components.cljs_autobuild$cljs_build.invoke (clj[0mjava.lang.AssertionError: No ns form found in src/teach_by_friends/ios/core.cljs
+ at cljs.analyzer$parse_ns$fn__1924.invoke (analyzer.cljc:2731)
+    cljs.analyzer$parse_ns.invoke (analyzer.cljc:2682)
+    cljs.analyzer$parse_ns.invoke (analyzer.cljc:2673)
+    cljs.compiler$find_source.invoke (compiler.cljc:1389)
+    clojure.core$map$fn__4553.invoke (core.clj:2624)
+    clojure.lang.LazySeq.sval (LazySeq.java:40)
+    clojure.lang.LazySeq.seq (LazySeq.java:49)
+    clojure.lang.RT.seq (RT.java:507)
+    clojure.core/seq (core.clj:137)
+    clojure.core$concat$cat__4217$fn__4218.invoke (core.clj:700)
+    clojure.lang.LazySeq.sval (LazySeq.java:40)
+    clojure.lang.LazySeq.seq (LazySeq.java:49)
+    clojure.lang.Cons.next (Cons.java:39)
+    clojure.lang.RT.next (RT.java:674)
+    clojure.core/next (core.clj:64)
+    clojure.core$reduce1.invoke (core.clj:909)
+    clojure.core$set.invoke (core.clj:3960)
+    cljs.closure$add_dependency_sources.invoke (closure.clj:731)
+    cljs.closure$build.invoke (closure.clj:1807)
+    cljs.build.api$build.invoke (api.clj:207)
+    figwheel_sidecar.components.cljs_autobuild$cljs_build.invoke (cljs_autobuild.clj:24)
+    figwheel_sidecar.build_middleware.injection$hook$fn__15906.invoke (injection.clj:139)
+    figwheel_sidecar.build_middleware.notifications$hook$fn__16233.invoke (notifications.clj:187)
+    figwheel_sidecar.build_middleware.clj_reloading$hook$fn__16309.invoke (clj_reloading.clj:115)
+    figwheel_sidecar.build_middleware.javascript_reloading$hook$fn__16355.invoke (javascript_reloading.clj:60)
+    figwheel_sidecar.components.cljs_autobuild$eval16370$figwheel_start_and_end_messages__16373$fn__16375.invoke (cljs_autobuild.clj:47)
+    figwheel_sidecar.components.cljs_autobuild$execute_build$fn__16396$fn__16397.invoke (cljs_autobuild.clj:116)
+    figwheel_sidecar.components.cljs_autobuild$execute_build$fn__16396.invoke (cljs_autobuild.clj:114)
+    figwheel_sidecar.utils$sync_exec$fn__1973$fn__1974.invoke (utils.clj:13)
+    figwheel_sidecar.utils$sync_exec$fn__1973.invoke (utils.clj:12)
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 1.365 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.797 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.614 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.469 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.598 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.423 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.419 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.453 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+[31mCompiling "target/ios/not-used.js" failed.
+[0mERROR: Map literal must contain an even number of forms on file /Users/admin/for-clojure/teach-by-friends/src/teach_by_friends/ios/core.cljs, line 195, column 55
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.522 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+[31mCompiling "target/ios/not-used.js" failed.
+[0mERROR: Map literal must contain an even number of forms on file /Users/admin/for-clojure/teach-by-friends/src/teach_by_friends/ios/core.cljs, line 195, column 55
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.365 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+[31mCompiling "target/ios/not-used.js" failed.
+[0mjava.lang.AssertionError: No ns form found in src/teach_by_friends/ios/core.cljs
+ at cljs.analyzer$parse_ns$fn__1924.invoke (analyzer.cljc:2731)
+    cljs.analyzer$parse_ns.invoke (analyzer.cljc:2682)
+    cljs.analyzer$parse_ns.invoke (analyzer.cljc:2673)
+    cljs.compiler$find_source.invoke (compiler.cljc:1389)
+    clojure.core$map$fn__4553.invoke (core.clj:2624)
+    clojure.lang.LazySeq.sval (LazySeq.java:40)
+    clojure.lang.LazySeq.seq (LazySeq.java:49)
+    clojure.lang.RT.seq (RT.java:507)
+    clojure.core/seq (core.clj:137)
+    clojure.core$concat$cat__4217$fn__4218.invoke (core.clj:700)
+    clojure.lang.LazySeq.sval (LazySeq.java:40)
+    clojure.lang.LazySeq.seq (LazySeq.java:49)
+    clojure.lang.Cons.next (Cons.java:39)
+    clojure.lang.RT.next (RT.java:674)
+    clojure.core/next (core.clj:64)
+    clojure.core$reduce1.invoke (core.clj:909)
+    clojure.core$set.invoke (core.clj:3960)
+    cljs.closure$add_dependency_sources.invoke (closure.clj:731)
+    cljs.closure$build.invoke (closure.clj:1807)
+    cljs.build.api$build.invoke (api.clj:207)
+    figwheel_sidecar.components.cljs_autobuild$cljs_build.invoke (cljs_autobuild.clj:24)
+    figwheel_sidecar.build_middleware.injection$hook$fn__15906.invoke (injection.clj:139)
+    figwheel_sidecar.build_middleware.notifications$hook$fn__16233.invoke (notifications.clj:187)
+    figwheel_sidecar.build_middleware.clj_reloading$hook$fn__16309.invoke (clj_reloading.clj:115)
+    figwheel_sidecar.build_middleware.javascript_reloading$hook$fn__16355.invoke (javascript_reloading.clj:60)
+    figwheel_sidecar.components.cljs_autobuild$eval16370$figwheel_start_and_end_messages__16373$fn__16375.invoke (cljs_autobuild.clj:47)
+    figwheel_sidecar.components.cljs_autobuild$execute_build$fn__16396$fn__16397.invoke (cljs_autobuild.clj:116)
+    figwheel_sidecar.components.cljs_autobuild$execute_build$fn__16396.invoke (cljs_autobuild.clj:114)
+    figwheel_sidecar.utils$sync_exec$fn__1973$fn__1974.invoke (utils.clj:13)
+    figwheel_sidecar.utils$sync_exec$fn__1973.invoke (utils.clj:12)
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.038 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+[31mCompiling "target/ios/not-used.js" failed.
+[0mjava.lang.AssertionError: No ns form found in src/teach_by_friends/ios/core.cljs
+ at cljs.analyzer$parse_ns$fn__1924.invoke (analyzer.cljc:2731)
+    cljs.analyzer$parse_ns.invoke (analyzer.cljc:2682)
+    cljs.analyzer$parse_ns.invoke (analyzer.cljc:2673)
+    cljs.compiler$find_source.invoke (compiler.cljc:1389)
+    clojure.core$map$fn__4553.invoke (core.clj:2624)
+    clojure.lang.LazySeq.sval (LazySeq.java:40)
+    clojure.lang.LazySeq.seq (LazySeq.java:49)
+    clojure.lang.RT.seq (RT.java:507)
+    clojure.core/seq (core.clj:137)
+    clojure.core$concat$cat__4217$fn__4218.invoke (core.clj:700)
+    clojure.lang.LazySeq.sval (LazySeq.java:40)
+    clojure.lang.LazySeq.seq (LazySeq.java:49)
+    clojure.lang.Cons.next (Cons.java:39)
+    clojure.lang.RT.next (RT.java:674)
+    clojure.core/next (core.clj:64)
+    clojure.core$reduce1.invoke (core.clj:909)
+    clojure.core$set.invoke (core.clj:3960)
+    cljs.closure$add_dependency_sources.invoke (closure.clj:731)
+    cljs.closure$build.invoke (closure.clj:1807)
+    cljs.build.api$build.invoke (api.clj:207)
+    figwheel_sidecar.components.cljs_autobuild$cljs_build.invoke (cljs_autobuild.clj:24)
+    figwheel_sidecar.build_middleware.injection$hook$[0mjava.lang.AssertionError: No ns form found in src/teach_by_friends/ios/core.cljs
+ at cljs.analyzer$parse_ns$fn__1924.invoke (analyzer.cljc:2731)
+    cljs.analyzer$parse_ns.invoke (analyzer.cljc:2682)
+    cljs.analyzer$parse_ns.invoke (analyzer.cljc:2673)
+    cljs.compiler$find_source.invoke (compiler.cljc:1389)
+    clojure.core$map$fn__4553.invoke (core.clj:2624)
+    clojure.lang.LazySeq.sval (LazySeq.java:40)
+    clojure.lang.LazySeq.seq (LazySeq.java:49)
+    clojure.lang.RT.seq (RT.java:507)
+    clojure.core/seq (core.clj:137)
+    clojure.core$concat$cat__4217$fn__4218.invoke (core.clj:700)
+    clojure.lang.LazySeq.sval (LazySeq.java:40)
+    clojure.lang.LazySeq.seq (LazySeq.java:49)
+    clojure.lang.Cons.next (Cons.java:39)
+    clojure.lang.RT.next (RT.java:674)
+    clojure.core/next (core.clj:64)
+    clojure.core$reduce1.invoke (core.clj:909)
+    clojure.core$set.invoke (core.clj:3960)
+    cljs.closure$add_dependency_sources.invoke (closure.clj:731)
+    cljs.closure$build.invoke (closure.clj:1807)
+    cljs.build.api$build.invoke (api.clj:207)
+    figwheel_sidecar.components.cljs_autobuild$cljs_build.invoke (cljs_autobuild.clj:24)
+    figwheel_sidecar.build_middleware.injection$hook$fn__15906.invoke (injection.clj:139)
+    figwheel_sidecar.build_middleware.notifications$hook$fn__16233.invoke (notifications.clj:187)
+    figwheel_sidecar.build_middleware.clj_reloading$hook$fn__16309.invoke (clj_reloading.clj:115)
+    figwheel_sidecar.build_middleware.javascript_reloading$hook$fn__16355.invoke (javascript_reloading.clj:60)
+    figwheel_sidecar.components.cljs_autobuild$eval16370$figwheel_start_and_end_messages__16373$fn__16375.invoke (cljs_autobuild.clj:47)
+    figwheel_sidecar.components.cljs_autobuild$execute_build$fn__16396$fn__16397.invoke (cljs_autobuild.clj:116)
+    figwheel_sidecar.components.cljs_autobuild$execute_build$fn__16396.invoke (cljs_autobuild.clj:114)
+    figwheel_sidecar.utils$sync_exec$fn__1973$fn__1974.invoke (utils.clj:13)
+    figwheel_sidecar.utils$sync_exec$fn__1973.invoke (utils.clj:12)
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.611 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 1.02 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.795 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.621 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.613 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+WARNING: app-root at line 152 is being replaced at line 157 /Users/admin/for-clojure/teach-by-friends/src/teach_by_friends/ios/core.cljs
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.559 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.455 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/shared/ui.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 1.164 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/shared/ui.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 1.502 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/shared/ui.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 1.139 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/shared/ui.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 1.321 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/shared/ui.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 1.016 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/shared/ui.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 1.115 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.55 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.494 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.952 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.642 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.414 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+[31mCompiling "target/ios/not-used.js" failed.
+[0mANALYSIS ERROR: Wrong number of args (5) passed to: core/inc at line 184 /Users/admin/for-clojure/teach-by-friends/src/teach_by_friends/ios/core.cljs on file /Users/admin/for-clojure/teach-by-friends/src/teach_by_friends/ios/core.cljs, line 184, column 58
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.43 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.405 seconds.[0m
+[0mCompiling "target/ios/not-used.js" from ["src" "env/dev"]...
+notifying browser that file changed:  out/teach_by_friends/ios/core.js
+[32mSuccessfully compiled "target/ios/not-used.js" in 0.425 seconds.[0m
