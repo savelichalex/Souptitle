@@ -7,8 +7,10 @@
             [teach-by-friends.android.ui :as android-ui]
             [teach-by-friends.shared.scenes.serials-scene :refer [get-serials-scene]]
             [teach-by-friends.shared.scenes.seasons-scene :refer [get-seasons-scene]]
-            [teach-by-friends.shared.scenes.chapters-scene :refer [get-chapters-scene]]))
+            [teach-by-friends.shared.scenes.chapters-scene :refer [get-chapters-scene]])
+  (:use teach-by-friends.shared.layouts.root-layout))
 
+(def root-layout (create-root-layout {:background-color "rgb(72, 86, 155)"}))
 (def serials-scene (get-serials-scene android-ui/activity-indicator))
 (def seasons-scene (get-seasons-scene android-ui/activity-indicator))
 (def new-design-scene (get-chapters-scene android-ui/activity-indicator))
