@@ -128,7 +128,9 @@
                              "Title"]))})
 
 (defn navigation [props]
-  (let [track-id (atom nil)]
+  (let [nav-state (r/atom {:route nil
+                           :props nil})
+        track-id (atom nil)]
     (r/create-class
       {:component-did-mount
        (fn [this]
@@ -139,18 +141,14 @@
                                     type (:type @nav)]
                                 (cond
                                   (nil? route) nil
-                                  (= type :pop) (.. this -refs -navigator (pop))
-                                  (= type :push) (.. this -refs -navigator (push (clj->js {:name      (name route)
-                                                                                           :passProps props})))))))]
-
+                                  (= type :pop) (swap! nav-state (fn [] {:route route :props (assoc props :direction :to-right)}))
+                                  (= type :push) (swap! nav-state (fn [] {:route route :props (assoc props :direction :to-left)}))
+                                  :else (swap! nav-state (fn [] {:route route}))))))]
            (swap! track-id (fn [_] id))))
        :component-will-unmount
        (fn [this]
          (r/dispose! @track-id))
        :reagent-render
-       (fn [{:keys [initial-route render-scene configure-scene]}]
-         [navigator {:ref             "navigator"
-                     :style           {:flex 1}
-                     :initial-route   {:name (name initial-route)}
-                     :render-scene    (choose-scene render-scene)
-                     :configure-scene (choose-scene-transition configure-scene)}])})))
+       (fn [{:keys [render-scene]}]
+         (when (not (nil? (:route @nav-state)))
+           (render-scene @nav-state)))})))
