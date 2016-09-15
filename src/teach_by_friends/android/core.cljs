@@ -6,8 +6,8 @@
             [teach-by-friends.android.ui :as android-ui]
             [teach-by-friends.shared.scenes.serials-scene :refer [get-serials-scene]]
             [teach-by-friends.shared.scenes.seasons-scene :refer [get-seasons-scene]]
-            [teach-by-friends.shared.scenes.chapters-scene :refer [get-chapters-scene]])
-  (:use teach-by-friends.shared.layouts.root-layout))
+            [teach-by-friends.shared.scenes.chapters-scene :refer [get-chapters-scene]]
+            [teach-by-friends.shared.layouts.root-layout :refer [create-root-layout]]))
 
 (enable-console-print!)
 
