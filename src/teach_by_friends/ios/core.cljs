@@ -1,8 +1,5 @@
 (ns teach-by-friends.ios.core
-  (:refer-clojure :exclude [pop])
-  (:require-macros [reagent.ratom :refer [reaction]])
-  (:require [reagent.core :as r :refer [atom]]
-            [re-frame.core :refer [subscribe dispatch dispatch-sync]]
+  (:require [reagent.core :as r]
             [teach-by-friends.handlers]
             [teach-by-friends.subs]
             [teach-by-friends.shared.ui :as ui]
@@ -36,5 +33,4 @@
   [ui/navigation {:render-scene render-scene}])
 
 (defn init []
-  ;(dispatch-sync [:initialize-db])
   (.registerComponent ui/app-registry "TeachByFriends" #(r/reactify-component app-root)))

@@ -1,6 +1,5 @@
 (ns teach-by-friends.android.core
   (:require [reagent.core :as r :refer [atom]]
-            [re-frame.core :refer [subscribe dispatch dispatch-sync]]
             [teach-by-friends.handlers]
             [teach-by-friends.subs]
             [teach-by-friends.shared.ui :as ui]
@@ -15,31 +14,23 @@
 (def root-layout (create-root-layout {:background-color "rgb(72, 86, 155)"}))
 (def serials-scene (get-serials-scene android-ui/activity-indicator))
 (def seasons-scene (get-seasons-scene android-ui/activity-indicator))
-(def new-design-scene (get-chapters-scene android-ui/activity-indicator))
+(def chapters-scene (get-chapters-scene android-ui/activity-indicator))
 
 (defmulti render-scene (fn [nav] (:route nav)))
 (defmethod render-scene :serials
-  [_]
-  [serials-scene])
+  [{{direction :direction} :props}]
+  [root-layout (serials-scene) {:direction direction :time 400}])
 
 (defmethod render-scene :seasons
-  [_]
-  [seasons-scene])
+  [{{direction :direction} :props}]
+  [root-layout (seasons-scene) {:direction direction :time 400}])
 
-(defmethod render-scene :chapter
-  [{title :props}]
-  [new-design-scene title])
-
-(defmulti configure-scene identity)
-(defmethod configure-scene :default
-  [_]
-  :push-from-right)
+(defmethod render-scene :chapters
+  [{{direction :direction} :props}]
+  [root-layout (chapters-scene) {:direction direction :time 400}])
 
 (defn app-root []
-  [ui/navigation {:initial-route :serials
-                  :render-scene render-scene
-                  :configure-scene configure-scene}])
+  [ui/navigation {:render-scene render-scene}])
 
 (defn init []
-      ;(dispatch-sync [:initialize-db])
-      (.registerComponent ui/app-registry "TeachByFriends" #(r/reactify-component app-root)))
+  (.registerComponent ui/app-registry "TeachByFriends" #(r/reactify-component app-root)))
