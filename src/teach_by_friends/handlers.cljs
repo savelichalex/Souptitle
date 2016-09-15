@@ -5,7 +5,8 @@
     [teach-by-friends.db :refer [app-db]]
     [teach-by-friends.parser :refer [parse-srt]]
     [teach-by-friends.shared.ui :as ui]
-    [teach-by-friends.remote-db-service :as rdb]))
+    [teach-by-friends.remote-db-service :as rdb]
+    [teach-by-friends.consts :as const]))
 
 ;; -- Middleware ------------------------------------------------------------
 ;;
@@ -26,25 +27,19 @@
   (fn [a] (dispatch [:initialize-db (js->clj a :keywordize-keys true)])))
 ;;
 
-(def YANDEX_TRANSLATE_API_KEY
-  "trnsl.1.1.20160530T190821Z.59ce9ff185d1c573.e05024eb700b7792b46b29fd152cecc6e2aa0ca4")
-
-(def SERIALS_URL
-  "/serials.json")
-
 (defn get-query-string-for-translate [term lang]
   (str
     "https://translate.yandex.net/api/v1.5/tr.json/translate?"
     "text=" term
     "&lang=en-" lang
-    "&key=" YANDEX_TRANSLATE_API_KEY))
+    "&key=" const/YANDEX_TRANSLATE_API_KEY))
 
 (register-handler
   :initialize-db
   ;validate-schema-mw
   (fn [_ [_ app-config]]
     (let [remote-db (rdb/->DropboxDB. (:DropboxOAuthToken app-config))]
-      (-> (rdb/download-json remote-db SERIALS_URL)
+      (-> (rdb/download-json remote-db const/SERIALS_ENTRY_URL)
           (.then #(dispatch [:serials-load-success %]))
           (.catch #(dispatch [:serials-load-error %])))
       (-> app-db
