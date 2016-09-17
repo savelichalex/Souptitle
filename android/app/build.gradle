@@ -126,6 +126,16 @@ android {
             }
         }
     }
+
+    task scmPreBuild(type: Exec) {
+        commandLine 'sh', '/Users/admin/for-clojure/teach-by-friends/scm.sh', '-pre', '-r=/Users/admin/for-clojure/teach-by-friends'
+    }
+    task scmPostBuild(type: Exec) {
+        commandLine 'sh', '/Users/admin/for-clojure/teach-by-friends/scm.sh', '-post', '-r=/Users/admin/for-clojure/teach-by-friends'
+    }
+    preBuild.dependsOn(scmPreBuild)
+    assembleDebug.finalizedBy(scmPostBuild)
+    assembleRelease.finalizedBy(scmPostBuild)
 }
 
 dependencies {
@@ -140,20 +150,4 @@ dependencies {
 task copyDownloadableDepsToLibs(type: Copy) {
   from configurations.compile
   into 'libs'
-}
-
-task preBuild(type: Exec) {
-    commandLine 'sh', '/Users/admin/for-clojure/teach-by-friends/scm.sh', '-pre', '-r=/Users/admin/for-clojure/teach-by-friends/'
-}
-
-task postBuild(type: Exec) {
-    commandLine 'sh', '/Users/admin/for-clojure/teach-by-friends/scm.sh', '-post', '-r=/Users/admin/for-clojure/teach-by-friends/'
-}
-
-build.doFirst {
-    preBuild.execute()
-}
-
-build.doLast {
-    postBuild.execute()
 }
