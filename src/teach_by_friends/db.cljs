@@ -1,8 +1,6 @@
 (ns teach-by-friends.db
   (:require [schema.core :as s :include-macros true]))
 
-(enable-console-print!)
-
 ;; initial state of app-db
 (def app-db {:chapter nil
              :sort-chapter :by-rank

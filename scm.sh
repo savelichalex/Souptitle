@@ -9,7 +9,6 @@
 #  Copyright © 2016 savelichalex. All rights reserved.
 
 # Basic vars
-
 rc_file=.scmrc
 config_file_name="config"
 config_file="$config_file_name.yml"

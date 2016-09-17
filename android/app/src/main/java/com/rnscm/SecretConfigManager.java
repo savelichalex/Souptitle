@@ -6,9 +6,9 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
 
-import java.util.Map;
-import java.util.HashMap;
 import java.lang.reflect.Field;
 
 public class SecretConfigManager extends ReactContextBaseJavaModule {
@@ -25,14 +25,14 @@ public class SecretConfigManager extends ReactContextBaseJavaModule {
         return "SecretConfigManager";
     }
 
-    private Map<String,String> configToMap() throws IllegalAccessException {
+    private WritableMap configToMap() throws IllegalAccessException {
         Field[] declaredFields = config.getDeclaredFields();
-        Map<String, String> configMap = new HashMap<String, String>();
+        WritableMap configMap = new WritableNativeMap();
         for (Field field : declaredFields) {
             if (java.lang.reflect.Modifier.isStatic(field.getModifiers())) {
                 String key = field.getName();
                 String val = (String)field.get(null);
-                configMap.put(key, val);
+                configMap.putString(key, val);
             }
         }
         return configMap;
