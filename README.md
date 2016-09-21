@@ -1,6 +1,6 @@
-# teach-by-friends
+# Souptitle
 
-A Clojure library designed to ... well, that part is up to you.
+An application that help learn english with serials.
 
 ## Usage
 
