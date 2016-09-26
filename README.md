@@ -2,10 +2,6 @@
 
 An application that help learn english with serials.
 
-## Usage
-
-FIXME
-
 ## License
 
 Copyright © 2016 FIXME
