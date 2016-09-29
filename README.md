@@ -1,6 +1,6 @@
 # Souptitle
 
-An application that help learn english with serials.
+An application that help learn english with subtitles from TV shows.
 
 ## License
 
