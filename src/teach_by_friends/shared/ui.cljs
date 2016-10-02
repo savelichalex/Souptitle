@@ -8,6 +8,8 @@
 (def React (js/require "react"))
 (def ReactNative (js/require "react-native"))
 
+(def require-native-component (.-requireNativeComponent ReactNative))
+
 (def LinearGradient (.-default (js/require "react-native-linear-gradient")))
 (def linear-gradient (r/adapt-react-class LinearGradient))
 

@@ -24,6 +24,8 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		841031E41D7DF50900BF5BFE /* SecretConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 841031E31D7DF50900BF5BFE /* SecretConfig.m */; };
 		841031E61D7DF53000BF5BFE /* SecretConfigManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 841031E51D7DF53000BF5BFE /* SecretConfigManager.m */; };
+		84B643BF1DA12ACF0021EA34 /* TimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B643BE1DA12ACF0021EA34 /* TimelineView.m */; };
+		84B643CD1DA12BA80021EA34 /* RCTTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B643CC1DA12BA80021EA34 /* RCTTimeline.m */; };
 		AF567EA9FF5F4E2E8E784D85 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18CBC71F1DE045F0B5EC3419 /* libBVLinearGradient.a */; };
 /* End PBXBuildFile section */
 
@@ -141,6 +143,10 @@
 		841031E21D7DF50900BF5BFE /* SecretConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SecretConfig.h; path = TeachByFriends/SecretConfig.h; sourceTree = "<group>"; };
 		841031E31D7DF50900BF5BFE /* SecretConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SecretConfig.m; path = TeachByFriends/SecretConfig.m; sourceTree = "<group>"; };
 		841031E51D7DF53000BF5BFE /* SecretConfigManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SecretConfigManager.m; path = TeachByFriends/SecretConfigManager.m; sourceTree = "<group>"; };
+		84B643BD1DA12ACF0021EA34 /* TimelineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineView.h; sourceTree = "<group>"; };
+		84B643BE1DA12ACF0021EA34 /* TimelineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineView.m; sourceTree = "<group>"; };
+		84B643CB1DA12B490021EA34 /* RCTTimeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTTimeline.h; sourceTree = "<group>"; };
+		84B643CC1DA12BA80021EA34 /* RCTTimeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTTimeline.m; sourceTree = "<group>"; };
 		A2BFCAC88C334E03BCD50934 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -249,6 +255,8 @@
 		13B07FAE1A68108700A75B9A /* TeachByFriends */ = {
 			isa = PBXGroup;
 			children = (
+				84B643BD1DA12ACF0021EA34 /* TimelineView.h */,
+				84B643BE1DA12ACF0021EA34 /* TimelineView.m */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -260,6 +268,8 @@
 				841031E31D7DF50900BF5BFE /* SecretConfig.m */,
 				841031E11D7DF31000BF5BFE /* SecretConfigManager.h */,
 				841031E51D7DF53000BF5BFE /* SecretConfigManager.m */,
+				84B643CB1DA12B490021EA34 /* RCTTimeline.h */,
+				84B643CC1DA12BA80021EA34 /* RCTTimeline.m */,
 			);
 			name = TeachByFriends;
 			sourceTree = "<group>";
@@ -611,9 +621,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84B643CD1DA12BA80021EA34 /* RCTTimeline.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				841031E41D7DF50900BF5BFE /* SecretConfig.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				84B643BF1DA12ACF0021EA34 /* TimelineView.m in Sources */,
 				841031E61D7DF53000BF5BFE /* SecretConfigManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
