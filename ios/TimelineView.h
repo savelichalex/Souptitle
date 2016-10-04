@@ -12,7 +12,7 @@
 #import <UIKit/UIKit.h>
 
 @interface TimelineView : UIView {
-    int offsetBetweenLines;
+    float offsetBetweenLines;
     int countOfLines;
     CGFloat activeLine;
     int activeLineInt;

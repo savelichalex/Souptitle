@@ -52,7 +52,7 @@
     self->offsetBetweenLines = height / self->countOfLines;
     self->activeLine = (CGFloat) self.tPosition / self->offsetBetweenLines;
     self->activeLineInt = (int)self->activeLine;
-    self->n = self.countWordsOnScreen / 2;
+    self->n = self.countWordsOnScreen / 2; // TODO: think about better name for `n`
     self->nRatio = 0.55 + (float)n * 0.05;
     for (int i = 0; i < self->countOfLines; i++) {
         [self drawLine:i];
