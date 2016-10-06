@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.AttributeSet;
 import android.view.View;
 
 public class TimelineView extends View {
@@ -16,11 +15,11 @@ public class TimelineView extends View {
     private double nRatio;
     private double linesRatio;
     private int width;
-    private float regularLineWidth = 0.5f;
-    private float mainLineWidth = 2f;
+    private float regularLineWidth = 1.5f;
+    private float mainLineWidth = 3f;
     private Paint regularLinePaint = new Paint();
     private Paint mainLinePaint = new Paint();
-    private Paint mainPaint = new Paint();
+    private Paint mainLineTextPaint = new Paint();
 
     public double tPosition;
     public int countWordsOnScreen;
@@ -28,8 +27,8 @@ public class TimelineView extends View {
     public double minAlpha;
     public double minWidthRatio;
 
-    public TimelineView(Context context, AttributeSet attr) {
-        super(context, attr);
+    public TimelineView(Context context) {
+        super(context);
         tPosition = 0.0;
         countOfLines = 0;
         countWordsOnScreen = 11;
@@ -37,9 +36,13 @@ public class TimelineView extends View {
         minWidthRatio = 0.3;
         setNRatios();
         regularLinePaint.setColor(Color.BLACK);
+        regularLinePaint.setStyle(Paint.Style.STROKE);
         regularLinePaint.setStrokeWidth(regularLineWidth);
         mainLinePaint.setColor(Color.BLACK);
+        mainLinePaint.setStyle(Paint.Style.STROKE);
         mainLinePaint.setStrokeWidth(mainLineWidth);
+        mainLineTextPaint.setColor(Color.BLACK);
+        mainLineTextPaint.setTextAlign(Paint.Align.CENTER);
     }
 
     public void settPosition(double value) {
@@ -61,7 +64,7 @@ public class TimelineView extends View {
 
     public void setTimestamps(String[] values) {
         timestamps = values;
-        countOfLines = values.length();
+        countOfLines = values.length;
         invalidate();
         requestLayout();
     }
@@ -91,11 +94,13 @@ public class TimelineView extends View {
     public void onSizeChanged(int w, int h, int oldW, int oldH) {
         width = w;
         offsetBetweenLines = (h - ((countOfLines - 1) * regularLineWidth) - mainLineWidth) / countOfLines;
+        mainLineTextPaint.setTextSize((float)offsetBetweenLines);
         super.onSizeChanged(w, h, oldW, oldH);
     }
 
     @Override
     public void onDraw(Canvas canvas) {
+        System.out.println(countOfLines);
         // TODO: set white color as background
         activeLine = tPosition / offsetBetweenLines;
         activeLineInt = (int) activeLine;
@@ -115,18 +120,20 @@ public class TimelineView extends View {
     private void drawMainLine(int lineNumber, Canvas canvas) {
         float up = (float)(lineNumber * offsetBetweenLines);
         float width = (float)getLineWidth(lineNumber);
-        canvas.drawLine(0, up, width, up, mainLinePaint);
         // TODO: set white color behind text
         Rect textRect = new Rect();
         String positionAsString = String.valueOf(tPosition);
-        mainLinePaint.getTextBounds(positionAsString, 0, positionAsString.length(), textRect);
-        canvas.drawText(positionAsString, width / 2 - textRect.width() / 2, up - textRect.height() / 2, mainLinePaint);
+        mainLineTextPaint.getTextBounds(positionAsString, 0, positionAsString.length(), textRect);
+        canvas.drawText(positionAsString, width / 2 - 1, up + textRect.height() / 2, mainLineTextPaint);
+        // draw a lines from left and right sides over text
+        canvas.drawLine(0, up, width / 2 - textRect.width() / 2 - 2, up, mainLinePaint);
+        canvas.drawLine(width / 2 + textRect.width() / 2  + 2, up, width, up, mainLinePaint);
     }
 
     private void drawRegularLine(int lineNumber, Canvas canvas) {
         float up = (float)(lineNumber * offsetBetweenLines);
         float width = (float)getLineWidth(lineNumber);
-        int lineAlpha = (int)getLineAlpha(lineNumber)*100;
+        int lineAlpha = (int)(getLineAlpha(lineNumber)*100);
         regularLinePaint.setAlpha(lineAlpha);
         canvas.drawLine(0, up, width, up, regularLinePaint);
     }
@@ -156,7 +163,7 @@ public class TimelineView extends View {
         double betweenBiggestFactor = additionalFactor * getBetweenBiggestWidthRatio(lineNumber);
         return (minWidthRatio +
                 additionalFactor * (nRatio - minWidthRatio) +
-                betweenBiggestFactor * (1 - nRatio) * width);
+                betweenBiggestFactor * (1 - nRatio)) * width;
     }
 
     private double getAdditionalWidthRatio(int lineNumber) {
