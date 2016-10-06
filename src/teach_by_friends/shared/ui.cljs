@@ -74,6 +74,15 @@
      (runAfterInteractions
        (cb))))
 
+(def PanResponder
+  (. ReactNative -PanResponder))
+
+(defn create-pan-responder [a]
+  (. PanResponder (create (clj->js a))))
+
+(defn get-pan-handlers [pan-responder]
+  (js->clj (. pan-responder -panHandlers) :keywordize-keys true))
+
 (defn navigation [props]
   (let [nav-state (r/atom {:route nil
                            :props nil})
