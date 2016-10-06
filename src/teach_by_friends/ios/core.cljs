@@ -37,7 +37,7 @@
               :countWordsOnScreen 11
               :timestamps (clj->js (range 0 70))
               :style {:flex 1}}]
-   [ui/view {:style {:flex 6}}]])
+   [ui/view {:style {:flex 5}}]])
 
 ;(defn app-root []
 ;  [ui/navigation {:render-scene render-scene}])

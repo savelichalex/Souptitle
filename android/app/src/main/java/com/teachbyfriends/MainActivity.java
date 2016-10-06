@@ -39,7 +39,8 @@ public class MainActivity extends ReactActivity {
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
             new LinearGradientPackage(),
-            new SecretConfigManagerPackage(SecretConfig.class)
+            new SecretConfigManagerPackage(SecretConfig.class),
+            new RCTTimelinePackage()
         );
     }
 }

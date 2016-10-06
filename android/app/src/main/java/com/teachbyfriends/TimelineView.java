@@ -1,4 +1,4 @@
-package com.example.savelichalex.timeline;
+package com.teachbyfriends;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -45,7 +45,7 @@ public class TimelineView extends View {
         mainLineTextPaint.setTextAlign(Paint.Align.CENTER);
     }
 
-    public void settPosition(double value) {
+    public void setTPosition(double value) {
         tPosition = value;
         invalidate();
         requestLayout();

@@ -16,3 +16,7 @@
 (dispatch [:add-to-well-known "say"])
 (dispatch [:add-to-well-known "honey"])
 (dispatch [:add-to-well-known "romantic"])
+((((((()))(((()((((())((((((()(((((()))))))))((?))))))))
+(())
+(start-figwheel "android")
+(start-figwheel "ios" "android")

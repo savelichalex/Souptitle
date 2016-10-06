@@ -7,7 +7,8 @@
             [teach-by-friends.shared.scenes.serials-scene :refer [get-serials-scene]]
             [teach-by-friends.shared.scenes.seasons-scene :refer [get-seasons-scene]]
             [teach-by-friends.shared.scenes.chapters-scene :refer [get-chapters-scene]]
-            [teach-by-friends.shared.layouts.root-layout :refer [create-root-layout]]))
+            [teach-by-friends.shared.layouts.root-layout :refer [create-root-layout]]
+            [teach-by-friends.shared.components.timeline :refer [timeline]]))
 
 (enable-console-print!)
 
@@ -30,7 +31,16 @@
   [root-layout (chapters-scene) {:direction direction :time 400}])
 
 (defn app-root []
-  [ui/navigation {:render-scene render-scene}])
+  [ui/view {:style {:flex 1
+                    :flex-direction "row"}}
+   [timeline {:tPosition 100
+              :countWordsOnScreen 11
+              :timestamps (clj->js (->> (range 0 70) (map #(str %))))
+              :style {:flex 1}}]
+   [ui/view {:style {:flex 5}}]])
+
+;(defn app-root []
+;  [ui/navigation {:render-scene render-scene}])
 
 (defn init []
   (.registerComponent ui/app-registry "TeachByFriends" #(r/reactify-component app-root)))
