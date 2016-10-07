@@ -17,6 +17,12 @@
        (keys)
        (sort-by identity)))
 
+(defmethod chapter-word-list :default
+  [key chapter]
+  (print key)
+  (->> chapter
+       (keys)))
+
 (defn term-to-disable [term]
   {:status const/DISABLE_TERM
    :term   term})
@@ -59,7 +65,6 @@
           filter-by-well-known-terms (reaction (filter-well-known-words @terms @well-known-terms))
           search-predicate (reaction (get @db :search-predicate))
           filtered-terms (reaction (filter-terms-by-search-predicate @filter-by-well-known-terms @search-predicate))]
-
       (reaction (->> @filtered-terms
                      (add-status-keys @term-to-translate @term-translate))))))
 

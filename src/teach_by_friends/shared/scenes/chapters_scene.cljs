@@ -1,9 +1,11 @@
 (ns teach-by-friends.shared.scenes.chapters-scene
+  (:require-macros [reagent.ratom :refer [reaction]])
   (:require [teach-by-friends.shared.ui :as ui]
             [clojure.string :as string]
             [reagent.core :as r]
             [re-frame.core :refer [subscribe dispatch]]
-            [teach-by-friends.consts :as const]))
+            [teach-by-friends.consts :as const]
+            [teach-by-friends.shared.components.timeline :refer [timeline]]))
 
 (def menu-icon-source (js/require "./images/menu-icon.png"))
 (def search-icon-source (js/require "./images/search-icon.png"))
@@ -154,10 +156,25 @@
                          :on-press #(dispatch [:toggle-search])}
    [search-icon {:style {:width 15 :height 15}}]])
 
+
+;(сomment (when (not (nil? @chapters)))
+;         [seasons-bar @chapters
+;          #(dispatch [:chapter-load %1 %2])])
+
 (defn chapters-content [activity-indicator]
   (let [chapters (subscribe [:chapters])
-        chapter (subscribe [:get-chapter])]
+        chapter (reaction (take 100 @(subscribe [:get-chapter])))
+        tPosition (ui/animated-value 100.0)
+        pan-responder (ui/create-pan-responder {:onStartShouldSetPanResponder        (fn [_ _] true)
+                                                :onStartShouldSetPanResponderCapture (fn [_ _] true)
+                                                :onMoveShouldSetPanResponder         (fn [_ _] true)
+                                                :onMoveShouldSetPanResponderCapture  (fn [_ _] true)
+                                                :onPanResponderGrant                 (fn [event _]
+                                                                                       (ui/animated-set-value tPosition (aget event "nativeEvent" "pageY")))
+                                                :onPanResponderMove                  (fn [event _]
+                                                                                       (ui/animated-set-value tPosition (aget event "nativeEvent" "pageY")))})]
     (fn chapters-content-comp []
+      (print (count @chapter))
       [ui/view {:style {:position       "absolute"
                         :left           0
                         :right          0
@@ -166,15 +183,20 @@
                         :flex           1
                         :flex-direction "column"
                         :align-items    "stretch"}}
-       (when (not (nil? @chapters))
-         [seasons-bar @chapters
-          #(dispatch [:chapter-load %1 %2])])
        (if (not (empty? @chapter))
-         [ui/list-view {:dataSource            (.cloneWithRows chapter-ds (clj->js @chapter))
-                        :enable-empty-sections true
-                        :render-row            #(r/as-element [term-row (js->clj % :keywordize-keys true) activity-indicator])
-                        :style                 {:flex             12
-                                                :background-color "white"}}]
+         [ui/view {:style {:flex             12
+                           :background-color "white"
+                           :flex-direction "row"}}
+          [timeline (-> {:tPosition          tPosition
+                         :countWordsOnScreen 11
+                         :timestamps         (clj->js @chapter)
+                         :style              {:flex 1}}
+                        (merge (ui/get-pan-handlers pan-responder)))]
+          [ui/list-view {:dataSource            (.cloneWithRows chapter-ds (clj->js @chapter))
+                         :enable-empty-sections true
+                         :render-row            #(r/as-element [term-row (js->clj % :keywordize-keys true) activity-indicator])
+                         :style                 {:flex             5
+                                                 :background-color "white"}}]]
          [ui/view {:style {:flex             (if (nil? @chapters) 13 12)
                            :background-color "white"
                            :justify-content  "center"
