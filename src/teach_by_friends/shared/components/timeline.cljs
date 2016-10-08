@@ -3,4 +3,5 @@
             [reagent.core :as r]))
 
 (def timeline
-  (r/adapt-react-class (ui/require-native-component "RCTTimeline" nil)))
+  (r/adapt-react-class
+    (ui/Animated.createAnimatedComponent (ui/require-native-component "RCTTimeline" nil))))

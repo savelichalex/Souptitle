@@ -39,9 +39,14 @@
   ;validate-schema-mw
   (fn [_ [_ app-config]]
     (let [remote-db (rdb/->DropboxDB. (:DropboxOAuthToken app-config))]
+      ;(-> (rdb/download-json remote-db const/SERIALS_ENTRY_URL)
+      ;    (.then #(dispatch [:serials-load-success %]))
+      ;    (.catch #(dispatch [:serials-load-error %])))
       (-> (rdb/download-json remote-db const/SERIALS_ENTRY_URL)
-          (.then #(dispatch [:serials-load-success %]))
-          (.catch #(dispatch [:serials-load-error %])))
+          (.then (fn [s] (rdb/download-json remote-db (:path (first s)))))
+          (.then (fn [s] (rdb/download-json remote-db (:path (first (rest s))))))
+          (.then (fn [chapters]
+                   (dispatch [:chapter-load 0 (nth chapters 0)]))))
       (-> app-db
           (assoc :remote-db remote-db)))))
 
