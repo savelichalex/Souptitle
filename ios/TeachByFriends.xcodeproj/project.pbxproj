@@ -26,6 +26,7 @@
 		841031E61D7DF53000BF5BFE /* SecretConfigManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 841031E51D7DF53000BF5BFE /* SecretConfigManager.m */; };
 		84B643BF1DA12ACF0021EA34 /* TimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B643BE1DA12ACF0021EA34 /* TimelineView.m */; };
 		84B643CD1DA12BA80021EA34 /* RCTTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B643CC1DA12BA80021EA34 /* RCTTimeline.m */; };
+		84B8C7AD1DAA502900AC0BD5 /* RCTTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B8C7AC1DAA502900AC0BD5 /* RCTTableView.m */; };
 		AF567EA9FF5F4E2E8E784D85 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18CBC71F1DE045F0B5EC3419 /* libBVLinearGradient.a */; };
 /* End PBXBuildFile section */
 
@@ -147,6 +148,8 @@
 		84B643BE1DA12ACF0021EA34 /* TimelineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineView.m; sourceTree = "<group>"; };
 		84B643CB1DA12B490021EA34 /* RCTTimeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTTimeline.h; sourceTree = "<group>"; };
 		84B643CC1DA12BA80021EA34 /* RCTTimeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTTimeline.m; sourceTree = "<group>"; };
+		84B8C7A01DAA4F6800AC0BD5 /* RCTTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTTableView.h; sourceTree = "<group>"; };
+		84B8C7AC1DAA502900AC0BD5 /* RCTTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTTableView.m; sourceTree = "<group>"; };
 		A2BFCAC88C334E03BCD50934 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -270,6 +273,8 @@
 				841031E51D7DF53000BF5BFE /* SecretConfigManager.m */,
 				84B643CB1DA12B490021EA34 /* RCTTimeline.h */,
 				84B643CC1DA12BA80021EA34 /* RCTTimeline.m */,
+				84B8C7A01DAA4F6800AC0BD5 /* RCTTableView.h */,
+				84B8C7AC1DAA502900AC0BD5 /* RCTTableView.m */,
 			);
 			name = TeachByFriends;
 			sourceTree = "<group>";
@@ -621,6 +626,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84B8C7AD1DAA502900AC0BD5 /* RCTTableView.m in Sources */,
 				84B643CD1DA12BA80021EA34 /* RCTTimeline.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				841031E41D7DF50900BF5BFE /* SecretConfig.m in Sources */,
