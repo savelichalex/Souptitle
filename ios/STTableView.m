@@ -3,12 +3,15 @@
 //  TeachByFriends
 //
 //  Created by Admin on 09.10.16.
-//  Copyright © 2016 Facebook. All rights reserved.
 //
 
-#import "RCTTableView.h"
+#import "RCTConvert.h"
+#import "RCTEventDispatcher.h"
+#import "RCTUtils.h"
+#import "UIView+React.h"
+#import "STTableView.h"
 
-@interface RCTTableView()<UITableViewDataSource, UITableViewDelegate>
+@interface STTableView()<UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 
@@ -34,7 +37,7 @@
 
 @end
 
-@implementation RCTTableView
+@implementation STTableView
 
 // MARK: - setters
 - (void)setRowHeight:(float)rowHeight {

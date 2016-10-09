@@ -5,6 +5,7 @@
             [reagent.core :as r]
             [re-frame.core :refer [subscribe dispatch]]
             [teach-by-friends.consts :as const]
+            [teach-by-friends.shared.components.table-view :refer [table-view]]
             [teach-by-friends.shared.components.timeline :refer [timeline]]))
 
 (def menu-icon-source (js/require "./images/menu-icon.png"))
@@ -173,20 +174,77 @@
         words-list-y (if (> words-list-y-temp (- @fullHeight @visibleHeight))
                        (- @fullHeight @visibleHeight)
                        words-list-y-temp)]
-    (ui/animated-set-value tPosition timeline-y)
-    (.scrollTo words-list (clj->js {:y words-list-y :animated false}))))
+    (ui/animated-set-value tPosition timeline-y)))
+    ;(.scrollTo words-list (clj->js {:y words-list-y :animated false}))
 
 (defn update-timeline-position [tPosition fullHeight visibleHeight lock event]
   (when (false? @lock)
     (let [words-list-y (aget event "nativeEvent" "contentOffset" "y")
           y-ratio (/ words-list-y @fullHeight)
           timeline-y (* @visibleHeight y-ratio)]
-      (print words-list-y timeline-y)
       (ui/animated-set-value tPosition timeline-y))))
 
+;(defn chapters-content [activity-indicator]
+;  (let [chapters (subscribe [:chapters])
+;        chapter (reaction (take 100 @(subscribe [:get-chapter])))
+;        tPosition (ui/animated-value 0.0)
+;        wordsListHeight (reaction (* (count @chapter) TERM_ROW_HEIGHT))
+;        visibleHeight (atom 0)
+;        _this (atom nil)
+;        timeline-pan-lock (atom false)
+;        pan-responder (ui/create-pan-responder {:onStartShouldSetPanResponder        (fn [_ _] true)
+;                                                :onStartShouldSetPanResponderCapture (fn [_ _] true)
+;                                                :onMoveShouldSetPanResponder         (fn [_ _] true)
+;                                                :onMoveShouldSetPanResponderCapture  (fn [_ _] true)
+;                                                :onPanResponderTerminationRequest    (fn [_ _] true)
+;                                                :onPanResponderGrant                 (partial update-positions tPosition #(.. @_this -refs -wordsList) wordsListHeight visibleHeight timeline-pan-lock)
+;                                                :onPanResponderMove                  (partial update-positions tPosition #(.. @_this -refs -wordsList) wordsListHeight visibleHeight timeline-pan-lock)
+;                                                :onPanResponderTerminate             (fn [_ _] (swap! timeline-pan-lock (fn [_] false)))
+;                                                :onPanResponderRelease               (fn [_ _] (swap! timeline-pan-lock (fn [_] false)))})]
+;    (r/create-class
+;      {:render
+;       (fn chapters-content-comp [this]
+;         (if (nil? @_this)
+;           (swap! _this #(identity this)))
+;         [ui/view {:style {:position       "absolute"
+;                           :left           0
+;                           :right          0
+;                           :top            0
+;                           :bottom         0
+;                           :flex           1
+;                           :flex-direction "column"
+;                           :align-items    "stretch"}}
+;          (if (not (empty? @chapter))
+;            [ui/view {:style {:flex             12
+;                              :background-color "white"
+;                              :flex-direction   "row"}}
+;             [timeline (-> {:tPosition          tPosition
+;                            :countWordsOnScreen 11
+;                            :timestamps         (clj->js @chapter)
+;                            :style              {:flex 1}}
+;                           (merge (ui/get-pan-handlers pan-responder)))]
+;             [ui/list-view {:ref                          "wordsList"
+;                            :initialListSize (count @chapter)
+;                            :removeClippedSubviews true
+;                            :on-layout                    (fn []
+;                                                            (swap! visibleHeight (fn [_] (.. @_this -refs -wordsList -scrollProperties -visibleLength))))
+;                            :on-scroll                    (partial update-timeline-position tPosition wordsListHeight visibleHeight timeline-pan-lock)
+;                            :scrollEventThrottle          16
+;                            :showsVerticalScrollIndicator false
+;                            :dataSource                   (.cloneWithRows chapter-ds (clj->js @chapter))
+;                            :enable-empty-sections        true
+;                            :render-row                   #(r/as-element [term-row (js->clj % :keywordize-keys true) activity-indicator])
+;                            :style                        {:flex             5
+;                                                           :background-color "white"}}]]
+;            [ui/view {:style {:flex             (if (nil? @chapters) 13 12)
+;                              :background-color "white"
+;                              :justify-content  "center"
+;                              :align-items      "center"}}
+;             [activity-indicator {:color "rgb(72, 86, 155)"}]])])})))
 (defn chapters-content [activity-indicator]
   (let [chapters (subscribe [:chapters])
         chapter (reaction (take 100 @(subscribe [:get-chapter])))
+        chapter-terms (reaction (map #(:term %) @chapter))
         tPosition (ui/animated-value 0.0)
         wordsListHeight (reaction (* (count @chapter) TERM_ROW_HEIGHT))
         visibleHeight (atom 0)
@@ -223,23 +281,16 @@
                             :timestamps         (clj->js @chapter)
                             :style              {:flex 1}}
                            (merge (ui/get-pan-handlers pan-responder)))]
-             [ui/list-view {:ref                          "wordsList"
-                            :on-layout                    (fn []
-                                                            (swap! visibleHeight (fn [_] (.. @_this -refs -wordsList -scrollProperties -visibleLength))))
-                            :on-scroll                    (partial update-timeline-position tPosition wordsListHeight visibleHeight timeline-pan-lock)
-                            :scrollEventThrottle          16
-                            :showsVerticalScrollIndicator false
-                            :dataSource                   (.cloneWithRows chapter-ds (clj->js @chapter))
-                            :enable-empty-sections        true
-                            :render-row                   #(r/as-element [term-row (js->clj % :keywordize-keys true) activity-indicator])
-                            :style                        {:flex             5
-                                                           :background-color "white"}}]]
+             [table-view {:ref "wordsList"
+                          :num-rows (count @chapter-terms)
+                          :row-height TERM_ROW_HEIGHT
+                          :render-row #(identity [ui/text {:style {:color "black"}} (nth @chapter-terms %)])
+                          :style {:flex 5}}]]
             [ui/view {:style {:flex             (if (nil? @chapters) 13 12)
                               :background-color "white"
                               :justify-content  "center"
                               :align-items      "center"}}
              [activity-indicator {:color "rgb(72, 86, 155)"}]])])})))
-
 
 (defn get-chapters-scene [activity-indicator]
   (fn chapters-scene []
