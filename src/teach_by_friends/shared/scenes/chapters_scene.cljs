@@ -174,14 +174,12 @@
                        words-list-y-temp)]
     (ui/animated-set-value tPosition timeline-y)
     (ui/animated-set-value table-margin-top words-list-y)))
-    ;(.scrollTo words-list (clj->js {:y words-list-y :animated false}))
 
-(defn update-timeline-position [tPosition fullHeight visibleHeight lock event]
-  (when (false? @lock)
-    (let [words-list-y (aget event "nativeEvent" "contentOffset" "y")
-          y-ratio (/ words-list-y @fullHeight)
-          timeline-y (* @visibleHeight y-ratio)]
-      (ui/animated-set-value tPosition timeline-y))))
+(defn update-timeline-position [tPosition fullHeight visibleHeight event]
+  (let [words-list-y (aget event "nativeEvent" "contentOffset" "y")
+        y-ratio (/ words-list-y @fullHeight)
+        timeline-y (* @visibleHeight y-ratio)]
+    (ui/animated-set-value tPosition timeline-y)))
 
 (defn chapters-content [activity-indicator]
   (let [chapters (subscribe [:chapters])
@@ -191,6 +189,7 @@
         wordsListHeight (reaction (* (count @chapter) TERM_ROW_HEIGHT))
         visibleHeight (atom 0)
         table-margin-top (ui/AnimatedValue. 0)
+        update-timeline-position-compiled (partial update-timeline-position tPosition wordsListHeight visibleHeight)
         pan-responder (ui/create-pan-responder {:onStartShouldSetPanResponder        (fn [_ _] true)
                                                 :onStartShouldSetPanResponderCapture (fn [_ _] true)
                                                 :onMoveShouldSetPanResponder         (fn [_ _] true)
@@ -220,6 +219,7 @@
                            (merge (ui/get-pan-handlers pan-responder)))]
              [table-view {:ref "wordsList"
                           :on-layout (fn [event _] (swap! visibleHeight (fn [_] (.. event -nativeEvent -layout -height))))
+                          :on-scroll update-timeline-position-compiled
                           :margin-top table-margin-top
                           :num-rows (count @chapter-terms)
                           :row-height TERM_ROW_HEIGHT

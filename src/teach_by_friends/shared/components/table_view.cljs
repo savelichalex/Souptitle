@@ -26,12 +26,13 @@
                         child-index (int (.-childIndex nativeEvent))
                         row-id (int (.-rowId nativeEvent))]
                     (swap! state (fn [s] (assoc s child-index row-id)))))]
-    (fn table-view-comp [{:keys [style on-layout render-row row-height num-rows margin-top]}]
+    (fn table-view-comp [{:keys [style on-layout on-scroll render-row row-height num-rows margin-top]}]
       [ui/view {:style style
                 :on-layout on-layout}
        (into [table-view-native {:style {:flex 1}
                                  :scrollPositionOffset margin-top
                                  :onChange on-bind
+                                 :onScroll on-scroll
                                  :rowHeight row-height
                                  :numRows num-rows}]
          (->> (range 0 ROWS_FOR_RECYCLING)

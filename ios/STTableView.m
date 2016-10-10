@@ -86,7 +86,7 @@ RCT_NOT_IMPLEMENTED(-initWithCoder:(NSCoder *)aDecoder)
   _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
   _tableView.dataSource = self;
   _tableView.delegate = self;
-  _tableView.backgroundColor = [UIColor grayColor]; // TODO: need to decide
+  _tableView.backgroundColor = [UIColor whiteColor]; // TODO: need to decide
   [self addSubview:_tableView];
 }
 
@@ -111,9 +111,6 @@ RCT_NOT_IMPLEMENTED(-initWithCoder:(NSCoder *)aDecoder)
   if (cell == nil) {
     cell = [[TableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     cell.cellView = [self getUnusedCell];
-    NSLog(@"Allocated childIndex %d for row %d", (int)cell.cellView.tag, (int)indexPath.row);
-  } else {
-    NSLog(@"Recycled childIndex %d for row %d", (int)cell.cellView.tag, (int)indexPath.row);
   }
   
   NSDictionary *event = @{
@@ -125,6 +122,16 @@ RCT_NOT_IMPLEMENTED(-initWithCoder:(NSCoder *)aDecoder)
   [_eventDispatcher sendInputEventWithName:@"onChange" body:event];
   
   return cell;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+  NSDictionary *event = @{
+                          @"target": self.reactTag,
+                          @"contentOffset": @{
+                              @"y": @((float)_tableView.contentOffset.y),
+                              }
+                          };
+  [_eventDispatcher sendInputEventWithName:@"onScroll" body:event];
 }
 
 // MARK: - helpers
