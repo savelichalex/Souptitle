@@ -19,6 +19,7 @@
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge NS_DESIGNATED_INITIALIZER;
 
+@property (nonatomic) float scrollPositionOffset;
 @property (nonatomic) float rowHeight;
 @property (nonatomic) NSInteger numRows;
 

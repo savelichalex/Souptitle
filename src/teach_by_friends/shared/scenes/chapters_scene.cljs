@@ -165,16 +165,15 @@
 ;         [seasons-bar @chapters
 ;          #(dispatch [:chapter-load %1 %2])])
 
-(defn update-positions [tPosition get-words-list fullHeight visibleHeight lock event _]
-  (swap! lock (fn [_] true))
-  (let [words-list (get-words-list)
-        timeline-y (aget event "nativeEvent" "pageY")
+(defn update-positions [tPosition table-margin-top fullHeight visibleHeight event _]
+  (let [timeline-y (aget event "nativeEvent" "pageY")
         y-ratio (/ timeline-y @visibleHeight)
         words-list-y-temp (* @fullHeight y-ratio)
         words-list-y (if (> words-list-y-temp (- @fullHeight @visibleHeight))
                        (- @fullHeight @visibleHeight)
                        words-list-y-temp)]
-    (ui/animated-set-value tPosition timeline-y)))
+    (ui/animated-set-value tPosition timeline-y)
+    (ui/animated-set-value table-margin-top words-list-y)))
     ;(.scrollTo words-list (clj->js {:y words-list-y :animated false}))
 
 (defn update-timeline-position [tPosition fullHeight visibleHeight lock event]
@@ -184,63 +183,6 @@
           timeline-y (* @visibleHeight y-ratio)]
       (ui/animated-set-value tPosition timeline-y))))
 
-;(defn chapters-content [activity-indicator]
-;  (let [chapters (subscribe [:chapters])
-;        chapter (reaction (take 100 @(subscribe [:get-chapter])))
-;        tPosition (ui/animated-value 0.0)
-;        wordsListHeight (reaction (* (count @chapter) TERM_ROW_HEIGHT))
-;        visibleHeight (atom 0)
-;        _this (atom nil)
-;        timeline-pan-lock (atom false)
-;        pan-responder (ui/create-pan-responder {:onStartShouldSetPanResponder        (fn [_ _] true)
-;                                                :onStartShouldSetPanResponderCapture (fn [_ _] true)
-;                                                :onMoveShouldSetPanResponder         (fn [_ _] true)
-;                                                :onMoveShouldSetPanResponderCapture  (fn [_ _] true)
-;                                                :onPanResponderTerminationRequest    (fn [_ _] true)
-;                                                :onPanResponderGrant                 (partial update-positions tPosition #(.. @_this -refs -wordsList) wordsListHeight visibleHeight timeline-pan-lock)
-;                                                :onPanResponderMove                  (partial update-positions tPosition #(.. @_this -refs -wordsList) wordsListHeight visibleHeight timeline-pan-lock)
-;                                                :onPanResponderTerminate             (fn [_ _] (swap! timeline-pan-lock (fn [_] false)))
-;                                                :onPanResponderRelease               (fn [_ _] (swap! timeline-pan-lock (fn [_] false)))})]
-;    (r/create-class
-;      {:render
-;       (fn chapters-content-comp [this]
-;         (if (nil? @_this)
-;           (swap! _this #(identity this)))
-;         [ui/view {:style {:position       "absolute"
-;                           :left           0
-;                           :right          0
-;                           :top            0
-;                           :bottom         0
-;                           :flex           1
-;                           :flex-direction "column"
-;                           :align-items    "stretch"}}
-;          (if (not (empty? @chapter))
-;            [ui/view {:style {:flex             12
-;                              :background-color "white"
-;                              :flex-direction   "row"}}
-;             [timeline (-> {:tPosition          tPosition
-;                            :countWordsOnScreen 11
-;                            :timestamps         (clj->js @chapter)
-;                            :style              {:flex 1}}
-;                           (merge (ui/get-pan-handlers pan-responder)))]
-;             [ui/list-view {:ref                          "wordsList"
-;                            :initialListSize (count @chapter)
-;                            :removeClippedSubviews true
-;                            :on-layout                    (fn []
-;                                                            (swap! visibleHeight (fn [_] (.. @_this -refs -wordsList -scrollProperties -visibleLength))))
-;                            :on-scroll                    (partial update-timeline-position tPosition wordsListHeight visibleHeight timeline-pan-lock)
-;                            :scrollEventThrottle          16
-;                            :showsVerticalScrollIndicator false
-;                            :dataSource                   (.cloneWithRows chapter-ds (clj->js @chapter))
-;                            :enable-empty-sections        true
-;                            :render-row                   #(r/as-element [term-row (js->clj % :keywordize-keys true) activity-indicator])
-;                            :style                        {:flex             5
-;                                                           :background-color "white"}}]]
-;            [ui/view {:style {:flex             (if (nil? @chapters) 13 12)
-;                              :background-color "white"
-;                              :justify-content  "center"
-;                              :align-items      "center"}}
-;             [activity-indicator {:color "rgb(72, 86, 155)"}]])])})))
 (defn chapters-content [activity-indicator]
   (let [chapters (subscribe [:chapters])
         chapter (reaction (take 100 @(subscribe [:get-chapter])))
@@ -248,22 +190,17 @@
         tPosition (ui/animated-value 0.0)
         wordsListHeight (reaction (* (count @chapter) TERM_ROW_HEIGHT))
         visibleHeight (atom 0)
-        _this (atom nil)
-        timeline-pan-lock (atom false)
+        table-margin-top (ui/AnimatedValue. 0)
         pan-responder (ui/create-pan-responder {:onStartShouldSetPanResponder        (fn [_ _] true)
                                                 :onStartShouldSetPanResponderCapture (fn [_ _] true)
                                                 :onMoveShouldSetPanResponder         (fn [_ _] true)
                                                 :onMoveShouldSetPanResponderCapture  (fn [_ _] true)
                                                 :onPanResponderTerminationRequest    (fn [_ _] true)
-                                                :onPanResponderGrant                 (partial update-positions tPosition #(.. @_this -refs -wordsList) wordsListHeight visibleHeight timeline-pan-lock)
-                                                :onPanResponderMove                  (partial update-positions tPosition #(.. @_this -refs -wordsList) wordsListHeight visibleHeight timeline-pan-lock)
-                                                :onPanResponderTerminate             (fn [_ _] (swap! timeline-pan-lock (fn [_] false)))
-                                                :onPanResponderRelease               (fn [_ _] (swap! timeline-pan-lock (fn [_] false)))})]
+                                                :onPanResponderGrant                 (partial update-positions tPosition table-margin-top wordsListHeight visibleHeight)
+                                                :onPanResponderMove                  (partial update-positions tPosition table-margin-top wordsListHeight visibleHeight)})]
     (r/create-class
       {:render
        (fn chapters-content-comp [this]
-         (if (nil? @_this)
-           (swap! _this #(identity this)))
          [ui/view {:style {:position       "absolute"
                            :left           0
                            :right          0
@@ -282,6 +219,8 @@
                             :style              {:flex 1}}
                            (merge (ui/get-pan-handlers pan-responder)))]
              [table-view {:ref "wordsList"
+                          :on-layout (fn [event _] (swap! visibleHeight (fn [_] (.. event -nativeEvent -layout -height))))
+                          :margin-top table-margin-top
                           :num-rows (count @chapter-terms)
                           :row-height TERM_ROW_HEIGHT
                           :render-row #(identity [ui/text {:style {:color "black"}} (nth @chapter-terms %)])

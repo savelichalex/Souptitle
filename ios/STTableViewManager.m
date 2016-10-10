@@ -13,6 +13,7 @@
 
 RCT_EXPORT_MODULE()
 
+RCT_EXPORT_VIEW_PROPERTY(scrollPositionOffset, float)
 RCT_EXPORT_VIEW_PROPERTY(rowHeight, float)
 RCT_EXPORT_VIEW_PROPERTY(numRows, NSInteger)
 

@@ -3,7 +3,9 @@
             [reagent.core :as r]))
 
 (def table-view-native
-  (r/adapt-react-class (ui/require-native-component "STTableView" nil)))
+  (r/adapt-react-class
+    (ui/Animated.createAnimatedComponent
+      (ui/require-native-component "STTableView" nil))))
 
 (def rebound-renderer
   (r/create-class
@@ -24,9 +26,11 @@
                         child-index (int (.-childIndex nativeEvent))
                         row-id (int (.-rowId nativeEvent))]
                     (swap! state (fn [s] (assoc s child-index row-id)))))]
-    (fn table-view-comp [{:keys [style render-row row-height num-rows]}]
-      [ui/view {:style style}
+    (fn table-view-comp [{:keys [style on-layout render-row row-height num-rows margin-top]}]
+      [ui/view {:style style
+                :on-layout on-layout}
        (into [table-view-native {:style {:flex 1}
+                                 :scrollPositionOffset margin-top
                                  :onChange on-bind
                                  :rowHeight row-height
                                  :numRows num-rows}]
