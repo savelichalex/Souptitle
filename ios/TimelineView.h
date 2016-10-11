@@ -26,6 +26,7 @@
 
 @property (nonatomic) float minAlpha;
 @property (nonatomic) float minWidthRatio;
+@property (nonatomic) UIColor *lineColor;
 
 @end
 

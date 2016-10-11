@@ -45,9 +45,15 @@
     [self setNeedsDisplay];
 }
 
+- (void)setLineColor:(UIColor *)lineColor {
+  _lineColor = lineColor;
+  
+  [self setNeedsDisplay];
+}
+
 - (void)drawRect:(CGRect)rect {
-    [[UIColor whiteColor] setFill];
-    UIRectFill(self.bounds);
+//    [[UIColor whiteColor] setFill];
+//    UIRectFill(self.bounds);
     CGFloat height = self.bounds.size.height;
     self->offsetBetweenLines = height / self->countOfLines;
     self->activeLine = (CGFloat) self.tPosition / self->offsetBetweenLines;
@@ -83,13 +89,9 @@
     CGFloat up = lineNumber * self->offsetBetweenLines;
     UIBezierPath *line = [[UIBezierPath alloc] init];
     CGFloat width = [self getLineWidth:lineNumber];
-    CGPoint startPoint = CGPointMake(0, up);
-    CGPoint endPoint = CGPointMake(width, up);
-    [line moveToPoint:startPoint];
-    [line addLineToPoint:endPoint];
+    CGFloat fullWidth = self.bounds.size.width;
     line.lineWidth = 2;
-    [[UIColor blackColor] setStroke];
-    [line stroke];
+    [self.lineColor setStroke];
     
     NSMutableParagraphStyle *pStyle = [[NSMutableParagraphStyle alloc] init];
     pStyle.alignment = NSTextAlignmentCenter;
@@ -97,27 +99,39 @@
     UIFont *mainLineFont = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     mainLineFont = [mainLineFont fontWithSize:self->offsetBetweenLines];
     
-    NSAttributedString *mainLineString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%f", self.tPosition] attributes:@{ NSFontAttributeName: mainLineFont, NSParagraphStyleAttributeName: pStyle}];
+    NSAttributedString *mainLineString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%f", self.tPosition] attributes:@{ NSFontAttributeName: mainLineFont, NSParagraphStyleAttributeName: pStyle, NSForegroundColorAttributeName: self.lineColor}];
     
     CGRect mainLineBounds;
     mainLineBounds.size = CGSizeMake(mainLineString.size.width*1.1, mainLineString.size.height);
-    mainLineBounds.origin = CGPointMake(width / 2 - mainLineBounds.size.width / 2, up - mainLineBounds.size.height / 2);
-    [[UIColor whiteColor] setFill];
+    mainLineBounds.origin = CGPointMake(width / 2 - mainLineBounds.size.width / 2 + (fullWidth - width), up - mainLineBounds.size.height / 2);
     UIRectFill(mainLineBounds);
-    [[UIColor blackColor] setStroke];
     [mainLineString drawInRect:mainLineBounds];
+  
+    // draw main line with 2 lines
+    [line moveToPoint:CGPointMake(fullWidth, up)];
+    [line addLineToPoint:CGPointMake(mainLineBounds.origin.x + mainLineBounds.size.width, up)];
+    [line moveToPoint:CGPointMake(mainLineBounds.origin.x, up)];
+    [line addLineToPoint:CGPointMake(fullWidth - width, up)];
+    [line stroke];
 }
 
 - (void)drawOtherLine:(int)lineNumber {
     CGFloat up = lineNumber * self->offsetBetweenLines;
     UIBezierPath *line = [[UIBezierPath alloc] init];
     CGFloat width = [self getLineWidth:lineNumber];
-    CGPoint startPoint = CGPointMake(0, up);
-    CGPoint endPoint = CGPointMake(width, up);
+    CGFloat fullWidth = self.bounds.size.width;
+    CGPoint startPoint = CGPointMake(fullWidth, up);
+    CGPoint endPoint = CGPointMake(fullWidth - width, up);
     [line moveToPoint:startPoint];
     [line addLineToPoint:endPoint];
     line.lineWidth = 0.5;
-    [[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:[self getLineAlpha:lineNumber]] setStroke];
+  
+    CGFloat red;
+    CGFloat green;
+    CGFloat blue;
+    CGFloat alpha;
+    [self.lineColor getRed:&red green:&green blue:&blue alpha:&alpha];
+    [[UIColor colorWithRed:red green:green blue:blue alpha:[self getLineAlpha:lineNumber]] setStroke];
     [line stroke];
 }
 
@@ -172,6 +186,7 @@
     self.countWordsOnScreen = 11;
     self.minAlpha = 0.1;
     self.minWidthRatio = 0.3;
+    self.lineColor = [UIColor blackColor];
 }
 
 - (id)initWithFrame:(CGRect)rect {

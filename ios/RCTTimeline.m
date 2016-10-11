@@ -3,7 +3,6 @@
 //  TeachByFriends
 //
 //  Created by Admin on 02.10.16.
-//  Copyright © 2016 Facebook. All rights reserved.
 //
 
 #import "RCTViewManager.h"
@@ -18,6 +17,7 @@ RCT_EXPORT_VIEW_PROPERTY(countWordsOnScreen, int)
 RCT_EXPORT_VIEW_PROPERTY(timestamps, NSArray)
 RCT_EXPORT_VIEW_PROPERTY(minAlpha, float)
 RCT_EXPORT_VIEW_PROPERTY(minWidthRatio, float)
+RCT_EXPORT_VIEW_PROPERTY(lineColor, UIColor)
 
 - (UIView *)view {
   return [[TimelineView alloc] init];

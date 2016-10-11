@@ -24,8 +24,10 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		841031E41D7DF50900BF5BFE /* SecretConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 841031E31D7DF50900BF5BFE /* SecretConfig.m */; };
 		841031E61D7DF53000BF5BFE /* SecretConfigManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 841031E51D7DF53000BF5BFE /* SecretConfigManager.m */; };
+		84A4CCA11DAAC07F00C9D0FD /* STTableViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A4CCA01DAAC07F00C9D0FD /* STTableViewManager.m */; };
 		84B643BF1DA12ACF0021EA34 /* TimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B643BE1DA12ACF0021EA34 /* TimelineView.m */; };
 		84B643CD1DA12BA80021EA34 /* RCTTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B643CC1DA12BA80021EA34 /* RCTTimeline.m */; };
+		84B8C7AD1DAA502900AC0BD5 /* STTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B8C7AC1DAA502900AC0BD5 /* STTableView.m */; };
 		AF567EA9FF5F4E2E8E784D85 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18CBC71F1DE045F0B5EC3419 /* libBVLinearGradient.a */; };
 /* End PBXBuildFile section */
 
@@ -143,10 +145,14 @@
 		841031E21D7DF50900BF5BFE /* SecretConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SecretConfig.h; path = TeachByFriends/SecretConfig.h; sourceTree = "<group>"; };
 		841031E31D7DF50900BF5BFE /* SecretConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SecretConfig.m; path = TeachByFriends/SecretConfig.m; sourceTree = "<group>"; };
 		841031E51D7DF53000BF5BFE /* SecretConfigManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SecretConfigManager.m; path = TeachByFriends/SecretConfigManager.m; sourceTree = "<group>"; };
+		84A4CC941DAAC04C00C9D0FD /* STTableViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STTableViewManager.h; sourceTree = "<group>"; };
+		84A4CCA01DAAC07F00C9D0FD /* STTableViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STTableViewManager.m; sourceTree = "<group>"; };
 		84B643BD1DA12ACF0021EA34 /* TimelineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineView.h; sourceTree = "<group>"; };
 		84B643BE1DA12ACF0021EA34 /* TimelineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineView.m; sourceTree = "<group>"; };
 		84B643CB1DA12B490021EA34 /* RCTTimeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTTimeline.h; sourceTree = "<group>"; };
 		84B643CC1DA12BA80021EA34 /* RCTTimeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTTimeline.m; sourceTree = "<group>"; };
+		84B8C7A01DAA4F6800AC0BD5 /* STTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STTableView.h; sourceTree = "<group>"; };
+		84B8C7AC1DAA502900AC0BD5 /* STTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STTableView.m; sourceTree = "<group>"; };
 		A2BFCAC88C334E03BCD50934 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -270,6 +276,10 @@
 				841031E51D7DF53000BF5BFE /* SecretConfigManager.m */,
 				84B643CB1DA12B490021EA34 /* RCTTimeline.h */,
 				84B643CC1DA12BA80021EA34 /* RCTTimeline.m */,
+				84B8C7A01DAA4F6800AC0BD5 /* STTableView.h */,
+				84A4CC941DAAC04C00C9D0FD /* STTableViewManager.h */,
+				84A4CCA01DAAC07F00C9D0FD /* STTableViewManager.m */,
+				84B8C7AC1DAA502900AC0BD5 /* STTableView.m */,
 			);
 			name = TeachByFriends;
 			sourceTree = "<group>";
@@ -621,12 +631,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84B8C7AD1DAA502900AC0BD5 /* STTableView.m in Sources */,
 				84B643CD1DA12BA80021EA34 /* RCTTimeline.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				841031E41D7DF50900BF5BFE /* SecretConfig.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				84B643BF1DA12ACF0021EA34 /* TimelineView.m in Sources */,
 				841031E61D7DF53000BF5BFE /* SecretConfigManager.m in Sources */,
+				84A4CCA11DAAC07F00C9D0FD /* STTableViewManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
