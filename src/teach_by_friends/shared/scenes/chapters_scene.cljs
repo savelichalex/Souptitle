@@ -5,8 +5,7 @@
             [reagent.core :as r]
             [re-frame.core :refer [subscribe dispatch]]
             [teach-by-friends.consts :as const]
-            [teach-by-friends.shared.components.table-view :refer [table-view]]
-            [teach-by-friends.shared.components.timeline :refer [timeline]]))
+            [teach-by-friends.shared.components.timeline-and-table :refer [timeline-and-table]]))
 
 (def menu-icon-source (js/require "./images/menu-icon.png"))
 (def search-icon-source (js/require "./images/search-icon.png"))
@@ -157,78 +156,31 @@
                          :on-press #(dispatch [:toggle-search])}
    [search-icon {:style {:width 15 :height 15}}]])
 
-
-;(сomment (when (not (nil? @chapters)))
-;         [seasons-bar @chapters
-;          #(dispatch [:chapter-load %1 %2])])
-
-(defn update-positions [tPosition table-margin-top fullHeight visibleHeight event _]
-  (let [timeline-y (aget event "nativeEvent" "pageY")
-        y-ratio (/ timeline-y @visibleHeight)
-        words-list-y-temp (* @fullHeight y-ratio)
-        words-list-y (if (> words-list-y-temp (- @fullHeight @visibleHeight))
-                       (- @fullHeight @visibleHeight)
-                       words-list-y-temp)]
-    (ui/animated-set-value tPosition timeline-y)
-    (ui/animated-set-value table-margin-top words-list-y)))
-
-(defn update-timeline-position [tPosition fullHeight visibleHeight event]
-  (let [words-list-y (aget event "nativeEvent" "contentOffset" "y")
-        y-ratio (/ words-list-y @fullHeight)
-        timeline-y (* @visibleHeight y-ratio)]
-    (ui/animated-set-value tPosition timeline-y)))
-
 (defn chapters-content [activity-indicator]
   (let [chapters (subscribe [:chapters])
         chapter (reaction (take 100 @(subscribe [:get-chapter])))
-        chapter-terms (reaction (map #(:term %) @chapter))
-        tPosition (ui/animated-value 0.0)
-        wordsListHeight (reaction (* (count @chapter) TERM_ROW_HEIGHT))
-        visibleHeight (atom 0)
-        table-margin-top (ui/AnimatedValue. 0)
-        update-timeline-position-compiled (partial update-timeline-position tPosition wordsListHeight visibleHeight)
-        pan-responder (ui/create-pan-responder {:onStartShouldSetPanResponder        (fn [_ _] true)
-                                                :onStartShouldSetPanResponderCapture (fn [_ _] true)
-                                                :onMoveShouldSetPanResponder         (fn [_ _] true)
-                                                :onMoveShouldSetPanResponderCapture  (fn [_ _] true)
-                                                :onPanResponderTerminationRequest    (fn [_ _] true)
-                                                :onPanResponderGrant                 (partial update-positions tPosition table-margin-top wordsListHeight visibleHeight)
-                                                :onPanResponderMove                  (partial update-positions tPosition table-margin-top wordsListHeight visibleHeight)})]
-    (r/create-class
-      {:render
-       (fn chapters-content-comp [this]
-         [ui/view {:style {:position       "absolute"
-                           :left           0
-                           :right          0
-                           :top            0
-                           :bottom         0
-                           :flex           1
-                           :flex-direction "column"
-                           :align-items    "stretch"}}
-          (if (not (empty? @chapter))
-            [ui/view {:style {:flex             12
-                              :background-color "white"
-                              :flex-direction   "row"}}
-             [table-view {:ref "wordsList"
-                          :on-layout (fn [event _] (swap! visibleHeight (fn [_] (.. event -nativeEvent -layout -height))))
-                          :on-scroll update-timeline-position-compiled
-                          :margin-top table-margin-top
-                          :num-rows (count @chapter-terms)
-                          :row-height TERM_ROW_HEIGHT
-                          :render-row #(identity [term-row (nth @chapter-terms %)])
-                          :style {:flex 5}}]
-             [timeline (-> {:tPosition          tPosition
-                            :countWordsOnScreen 11
-                            :timestamps         (clj->js @chapter)
-                            :style              {:flex 1
-                                                 :background-color "black"}
-                            :lineColor "white"}
-                           (merge (ui/get-pan-handlers pan-responder)))]]
-            [ui/view {:style {:flex             (if (nil? @chapters) 13 12)
-                              :background-color "white"
-                              :justify-content  "center"
-                              :align-items      "center"}}
-             [activity-indicator {:color "rgb(72, 86, 155)"}]])])})))
+        chapter-terms (reaction (map #(:term %) @chapter))]
+    (fn chapters-content-comp []
+      [ui/view {:style {:position       "absolute"
+                        :left           0
+                        :right          0
+                        :top            0
+                        :bottom         0
+                        :flex           1
+                        :flex-direction "column"
+                        :align-items    "stretch"}}
+       (if (not (empty? @chapter))
+         [timeline-and-table {:style {:flex             12
+                                      :background-color "black"
+                                      :flex-direction   "row"}
+                              :render-row #(identity [term-row (nth @chapter-terms %)])
+                              :chapter @chapter-terms
+                              :term-row-height TERM_ROW_HEIGHT}]
+         [ui/view {:style {:flex             (if (nil? @chapters) 13 12)
+                           :background-color "white"
+                           :justify-content  "center"
+                           :align-items      "center"}}
+          [activity-indicator {:color "rgb(72, 86, 155)"}]])])))
 
 (defn get-chapters-scene [activity-indicator]
   (fn chapters-scene []
