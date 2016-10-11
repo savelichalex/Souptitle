@@ -17,6 +17,7 @@ RCT_EXPORT_VIEW_PROPERTY(countWordsOnScreen, int)
 RCT_EXPORT_VIEW_PROPERTY(timestamps, NSArray)
 RCT_EXPORT_VIEW_PROPERTY(minAlpha, float)
 RCT_EXPORT_VIEW_PROPERTY(minWidthRatio, float)
+RCT_EXPORT_VIEW_PROPERTY(lineColor, UIColor)
 
 - (UIView *)view {
   return [[TimelineView alloc] init];

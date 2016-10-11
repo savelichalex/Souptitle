@@ -215,7 +215,9 @@
              [timeline (-> {:tPosition          tPosition
                             :countWordsOnScreen 11
                             :timestamps         (clj->js @chapter)
-                            :style              {:flex 1}}
+                            :style              {:flex 1
+                                                 :background-color "black"}
+                            :lineColor "white"}
                            (merge (ui/get-pan-handlers pan-responder)))]
              [table-view {:ref "wordsList"
                           :on-layout (fn [event _] (swap! visibleHeight (fn [_] (.. event -nativeEvent -layout -height))))

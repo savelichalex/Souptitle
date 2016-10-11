@@ -86,7 +86,8 @@ RCT_NOT_IMPLEMENTED(-initWithCoder:(NSCoder *)aDecoder)
   _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
   _tableView.dataSource = self;
   _tableView.delegate = self;
-  _tableView.backgroundColor = [UIColor whiteColor]; // TODO: need to decide
+//  _tableView.backgroundColor = [UIColor whiteColor]; // TODO: need to decide
+  _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
   [self addSubview:_tableView];
 }
 
