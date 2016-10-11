@@ -88,6 +88,8 @@ RCT_NOT_IMPLEMENTED(-initWithCoder:(NSCoder *)aDecoder)
   _tableView.delegate = self;
 //  _tableView.backgroundColor = [UIColor whiteColor]; // TODO: need to decide
   _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+  [_tableView setShowsVerticalScrollIndicator:NO];
+  _tableView.allowsSelection = NO;
   [self addSubview:_tableView];
 }
 

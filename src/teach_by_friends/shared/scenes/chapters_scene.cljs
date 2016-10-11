@@ -110,19 +110,16 @@
                              :on-press #(dispatch [:add-to-well-known term])}
        [ui/text {:style {:color "white"}} "I remember this"]]])])
 
-(def TERM_ROW_HEIGHT 60)
+(def TERM_ROW_HEIGHT 40)
 
-(defn term-row [term-raw activity-indicator]
-  (if (= (:status term-raw) const/ACTIVE_TERM)
-    [detailed-term-row term-raw activity-indicator]
-    [ui/touchable-opacity {:style    {:height              TERM_ROW_HEIGHT
-                                      :border-bottom-width 1
-                                      :border-color        "rgba(0,0,0,.1)"
-                                      :flex-direction      "column"
-                                      :justify-content     "center"
-                                      :padding-left        30}
-                           :on-press #(dispatch [:translate-term (:term term-raw)])}
-     [ui/text {:style {:font-size 20 :color "rgb(72, 86, 155)"}} (:term term-raw)]]))
+(defn term-row [item]
+  [ui/touchable-opacity {:style    {:height              TERM_ROW_HEIGHT
+                                    :flex-direction      "column"
+                                    :justify-content     "center"
+                                    :padding-left        30
+                                    :background-color "black"}
+                         :on-press #(ui/alert item)}
+   [ui/text {:style {:font-size 16 :color "white"}} item]])
 
 (defn back-button []
   [ui/touchable-opacity {:style    {:flex        1
@@ -212,21 +209,21 @@
             [ui/view {:style {:flex             12
                               :background-color "white"
                               :flex-direction   "row"}}
-             [timeline (-> {:tPosition          tPosition
-                            :countWordsOnScreen 11
-                            :timestamps         (clj->js @chapter)
-                            :style              {:flex 1
-                                                 :background-color "black"}
-                            :lineColor "white"}
-                           (merge (ui/get-pan-handlers pan-responder)))]
              [table-view {:ref "wordsList"
                           :on-layout (fn [event _] (swap! visibleHeight (fn [_] (.. event -nativeEvent -layout -height))))
                           :on-scroll update-timeline-position-compiled
                           :margin-top table-margin-top
                           :num-rows (count @chapter-terms)
                           :row-height TERM_ROW_HEIGHT
-                          :render-row #(identity [ui/text {:style {:color "black"}} (nth @chapter-terms %)])
-                          :style {:flex 5}}]]
+                          :render-row #(identity [term-row (nth @chapter-terms %)])
+                          :style {:flex 5}}]
+             [timeline (-> {:tPosition          tPosition
+                            :countWordsOnScreen 11
+                            :timestamps         (clj->js @chapter)
+                            :style              {:flex 1
+                                                 :background-color "black"}
+                            :lineColor "white"}
+                           (merge (ui/get-pan-handlers pan-responder)))]]
             [ui/view {:style {:flex             (if (nil? @chapters) 13 12)
                               :background-color "white"
                               :justify-content  "center"
