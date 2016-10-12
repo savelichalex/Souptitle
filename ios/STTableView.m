@@ -50,6 +50,11 @@
   _scrollPositionOffset = scrollPositionOffset;
 }
 
+- (void)setBackColor:(UIColor *)backColor {
+  _tableView.backgroundColor = backColor;
+  _backColor = backColor;
+}
+
 // MARK: - initialization
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge {
@@ -113,6 +118,7 @@ RCT_NOT_IMPLEMENTED(-initWithCoder:(NSCoder *)aDecoder)
   TableViewCell *cell = (TableViewCell *)[theTableView dequeueReusableCellWithIdentifier:cellIdentifier];
   if (cell == nil) {
     cell = [[TableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    cell.backgroundColor = self.backColor;
     cell.cellView = [self getUnusedCell];
   }
   

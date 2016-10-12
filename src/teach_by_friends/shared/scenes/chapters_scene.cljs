@@ -158,7 +158,7 @@
 
 (defn chapters-content [activity-indicator]
   (let [chapters (subscribe [:chapters])
-        chapter (reaction (take 100 @(subscribe [:get-chapter])))
+        chapter (subscribe [:get-chapter])
         chapter-terms (reaction (map #(:term %) @chapter))]
     (fn chapters-content-comp []
       [ui/view {:style {:position       "absolute"
@@ -171,7 +171,6 @@
                         :align-items    "stretch"}}
        (if (not (empty? @chapter))
          [timeline-and-table {:style {:flex             12
-                                      :background-color "black"
                                       :flex-direction   "row"}
                               :render-row #(identity [term-row (nth @chapter-terms %)])
                               :chapter @chapter-terms

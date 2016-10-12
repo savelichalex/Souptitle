@@ -4,6 +4,8 @@
             [teach-by-friends.shared.components.table-view :refer [table-view]]
             [teach-by-friends.shared.components.timeline :refer [timeline]]))
 
+(def TIMELINE_LINES_COUNT 70)
+
 (defn update-positions [tPosition table-margin-top fullHeight visibleHeight event _]
   (let [timeline-y (aget event "nativeEvent" "pageY")
         y-ratio (/ timeline-y @visibleHeight)
@@ -36,18 +38,20 @@
                                                 :onPanResponderMove                  update-table-position-compiled})]
     (fn timeline-and-table-comp [{:keys [style render-row]}]
       [ui/view {:style style}
-       [table-view {:ref "wordsList"
-                    :on-layout (fn [event _] (swap! visibleHeight (fn [_] (.. event -nativeEvent -layout -height))))
-                    :on-scroll update-timeline-position-compiled
+       [table-view {:ref        "wordsList"
+                    :on-layout  (fn [event _] (swap! visibleHeight (fn [_] (.. event -nativeEvent -layout -height))))
+                    :on-scroll  update-timeline-position-compiled
                     :margin-top table-margin-top
-                    :num-rows (count chapter)
+                    :num-rows   (count chapter)
                     :row-height term-row-height
                     :render-row render-row
-                    :style {:flex 5}}]
+                    :back-color "black"
+                    :style      {:flex 5}}]
        [timeline (-> {:tPosition          t-position
                       :countWordsOnScreen 11
                       :timestamps         (clj->js chapter)
-                      :style              {:flex 1
+                      :linesCount         TIMELINE_LINES_COUNT
+                      :style              {:flex             1
                                            :background-color "black"}
-                      :lineColor "white"}
+                      :lineColor          "white"}
                      (merge (ui/get-pan-handlers pan-responder)))]])))

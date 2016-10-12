@@ -18,6 +18,7 @@ RCT_EXPORT_VIEW_PROPERTY(timestamps, NSArray)
 RCT_EXPORT_VIEW_PROPERTY(minAlpha, float)
 RCT_EXPORT_VIEW_PROPERTY(minWidthRatio, float)
 RCT_EXPORT_VIEW_PROPERTY(lineColor, UIColor)
+RCT_EXPORT_VIEW_PROPERTY(linesCount, int)
 
 - (UIView *)view {
   return [[TimelineView alloc] init];
