@@ -13,7 +13,6 @@
 
 @interface TimelineView : UIView {
     float offsetBetweenLines;
-    int countOfLines;
     CGFloat activeLine;
     int activeLineInt;
     int n;
@@ -27,6 +26,7 @@
 @property (nonatomic) float minAlpha;
 @property (nonatomic) float minWidthRatio;
 @property (nonatomic) UIColor *lineColor;
+@property (nonatomic) int linesCount;
 
 @end
 

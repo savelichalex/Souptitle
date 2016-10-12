@@ -11,6 +11,8 @@
 
 @implementation TimelineView
 
+// MARK: - setters
+
 - (void)setTPosition:(float)value {
     _tPosition = value;
     
@@ -28,7 +30,6 @@
 
 - (void)setTimestamps:(NSArray *)timestamps {
     _timestamps = timestamps;
-    self->countOfLines = (int)[timestamps count];
     
     [self setNeedsDisplay];
 }
@@ -51,16 +52,24 @@
   [self setNeedsDisplay];
 }
 
+- (void)setLinesCount:(int)linesCount {
+  _linesCount = linesCount;
+  
+  [self setNeedsDisplay];
+}
+
+// MARK: - draw implementation
+
 - (void)drawRect:(CGRect)rect {
 //    [[UIColor whiteColor] setFill];
 //    UIRectFill(self.bounds);
     CGFloat height = self.bounds.size.height;
-    self->offsetBetweenLines = height / self->countOfLines;
+    self->offsetBetweenLines = height / self.linesCount;
     self->activeLine = (CGFloat) self.tPosition / self->offsetBetweenLines;
     self->activeLineInt = (int)self->activeLine;
     self->n = self.countWordsOnScreen / 2; // TODO: think about better name for `n`
     self->nRatio = 0.55 + (float)n * 0.05;
-    for (int i = 0; i < self->countOfLines; i++) {
+    for (int i = 0; i < self.linesCount; i++) {
         [self drawLine:i];
     }
 }
@@ -136,7 +145,7 @@
 }
 
 - (float)getLineAlpha:(int)currentLine {
-    return self.minAlpha + (1 - ((float)abs(currentLine - self->activeLineInt)/(float)self->countOfLines) * (1 - self.minAlpha));
+    return self.minAlpha + (1 - ((float)abs(currentLine - self->activeLineInt)/(float)self.linesCount) * (1 - self.minAlpha));
 }
 
 - (CGFloat)getLineWidth:(int)currentLine {
@@ -180,9 +189,11 @@
     return aLine - (int)aLine;
 }
 
+// MARK: - initialization
+
 - (void)initHelper {
     self.tPosition = 0.0;
-    self->countOfLines = 0;
+    self.linesCount = 0;
     self.countWordsOnScreen = 11;
     self.minAlpha = 0.1;
     self.minWidthRatio = 0.3;

@@ -22,6 +22,7 @@
 @property (nonatomic) float scrollPositionOffset;
 @property (nonatomic) float rowHeight;
 @property (nonatomic) NSInteger numRows;
+@property (nonatomic) UIColor *backColor;
 
 @end
 
