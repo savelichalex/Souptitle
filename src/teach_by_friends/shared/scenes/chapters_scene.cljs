@@ -159,8 +159,6 @@
 (defn sort-row []
   [ui/view {:style {:margin-left 13
                     :margin-right 13
-                    :padding-top 13
-                    :padding-bottom 13
                     :border-top-width 1
                     :border-top-color "rgb(155,155,155)"
                     :border-bottom-width 1
@@ -168,11 +166,17 @@
                     :flex-direction "row"}}
    [ui/touchable-opacity {:style {:flex 1
                                   :align-items "center"
-                                  :justify-content "center"}}
+                                  :justify-content "center"
+                                  :padding-top 13
+                                  :padding-bottom 13}
+                          :on-press #(dispatch [:resort-chapter :by-rank])}
     [ui/text {:style {:color "rgb(155,155,155)"}} "Timeline"]]
    [ui/touchable-opacity {:style {:flex 1
                                   :align-items "center"
-                                  :justify-content "center"}}
+                                  :justify-content "center"
+                                  :padding-top 13
+                                  :padding-bottom 13}
+                          :on-press #(dispatch [:resort-chapter :by-alphabet])}
     [ui/text {:style {:color "rgb(155,155,155)"}} "Alphabet"]]])
 
 (defn chapters-content [activity-indicator]
