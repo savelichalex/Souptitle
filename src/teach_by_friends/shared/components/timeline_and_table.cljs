@@ -7,7 +7,7 @@
 (def TIMELINE_LINES_COUNT 70)
 
 (defn update-positions [tPosition table-margin-top fullHeight visibleHeight event _]
-  (let [timeline-y (aget event "nativeEvent" "pageY")
+  (let [timeline-y (.. event -nativeEvent -locationY)
         y-ratio (/ timeline-y @visibleHeight)
         words-list-y-temp (* @fullHeight y-ratio)
         words-list-y (if (> words-list-y-temp (- @fullHeight @visibleHeight))
@@ -39,7 +39,8 @@
     (fn timeline-and-table-comp [{:keys [style render-row]}]
       [ui/view {:style style}
        [table-view {:ref        "wordsList"
-                    :on-layout  (fn [event _] (swap! visibleHeight (fn [_] (.. event -nativeEvent -layout -height))))
+                    :on-layout  (fn [event _] (swap! visibleHeight (fn [_] (.. event -nativeEvent -layout -height)))
+                                  (print (.. event -nativeEvent -layout -height)))
                     :on-scroll  update-timeline-position-compiled
                     :margin-top table-margin-top
                     :num-rows   (count chapter)

@@ -156,6 +156,29 @@
                          :on-press #(dispatch [:toggle-search])}
    [search-icon {:style {:width 15 :height 15}}]])
 
+(defn sort-row []
+  [ui/view {:style {:margin-left 13
+                    :margin-right 13
+                    :border-top-width 1
+                    :border-top-color "rgb(155,155,155)"
+                    :border-bottom-width 1
+                    :border-bottom-color "rgb(155,155,155)"
+                    :flex-direction "row"}}
+   [ui/touchable-opacity {:style {:flex 1
+                                  :align-items "center"
+                                  :justify-content "center"
+                                  :padding-top 13
+                                  :padding-bottom 13}
+                          :on-press #(dispatch [:resort-chapter :by-rank])}
+    [ui/text {:style {:color "rgb(155,155,155)"}} "Timeline"]]
+   [ui/touchable-opacity {:style {:flex 1
+                                  :align-items "center"
+                                  :justify-content "center"
+                                  :padding-top 13
+                                  :padding-bottom 13}
+                          :on-press #(dispatch [:resort-chapter :by-alphabet])}
+    [ui/text {:style {:color "rgb(155,155,155)"}} "Alphabet"]]])
+
 (defn chapters-content [activity-indicator]
   (let [chapters (subscribe [:chapters])
         chapter (subscribe [:get-chapter])
@@ -170,11 +193,14 @@
                         :flex-direction "column"
                         :align-items    "stretch"}}
        (if (not (empty? @chapter))
-         [timeline-and-table {:style {:flex             12
-                                      :flex-direction   "row"}
-                              :render-row #(identity [term-row (nth @chapter-terms %)])
-                              :chapter @chapter-terms
-                              :term-row-height TERM_ROW_HEIGHT}]
+         [ui/view {:style {:flex 12}
+                   :background-color "black"}
+          [sort-row]
+          [timeline-and-table {:style {:flex 1
+                                       :flex-direction   "row"}
+                               :render-row #(identity [term-row (nth @chapter-terms %)])
+                               :chapter @chapter-terms
+                               :term-row-height TERM_ROW_HEIGHT}]]
          [ui/view {:style {:flex             (if (nil? @chapters) 13 12)
                            :background-color "white"
                            :justify-content  "center"
