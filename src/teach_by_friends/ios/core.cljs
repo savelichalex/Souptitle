@@ -8,7 +8,9 @@
             [teach-by-friends.shared.scenes.seasons-scene :refer [get-seasons-scene]]
             [teach-by-friends.shared.scenes.chapters-scene :refer [get-chapters-scene chapters-content]]
             [teach-by-friends.shared.layouts.root-layout :refer [create-root-layout]]
-            [teach-by-friends.shared.components.timeline :refer [timeline]]))
+            [teach-by-friends.shared.components.timeline :refer [timeline]]
+            [teach-by-friends.shared.navigation :as nav])
+  (:require-macros [teach-by-friends.shared.navigation :refer [defscreen]]))
 
 (enable-console-print!)
 
@@ -31,6 +33,9 @@
   [root-layout (chapters-scene) {:direction direction :time 400}])
 
 (def chapter (chapters-content ios-ui/activity-indicator))
+
+(defscreen chapter [nav] (print nav))
+(teach-by-friends.shared.navigation/on-route {:route :chapter})
 
 (defn app-root []
   [chapter])
