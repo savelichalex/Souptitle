@@ -9,8 +9,8 @@
             [teach-by-friends.shared.scenes.chapters-scene :refer [get-chapters-scene chapters-content]]
             [teach-by-friends.shared.layouts.root-layout :refer [create-root-layout]]
             [teach-by-friends.shared.components.timeline :refer [timeline]]
-            [teach-by-friends.shared.navigation :as nav])
-  (:require-macros [teach-by-friends.shared.navigation :refer [defscreen]]))
+            [teach-by-friends.shared.navigation :refer [navigation-tabs]])
+  (:require-macros [teach-by-friends.shared.navigation :refer [defscreen get-component-name]]))
 
 (enable-console-print!)
 
@@ -33,12 +33,37 @@
   [root-layout (chapters-scene) {:direction direction :time 400}])
 
 (def chapter (chapters-content ios-ui/activity-indicator))
+(defn empty-scene1 []
+  [ui/view {:style {:flex 1
+                    :background-color "red"}}])
 
-(defscreen chapter [nav] (print nav))
-(teach-by-friends.shared.navigation/on-route {:route :chapter})
+(defn empty-scene2 []
+  [ui/view {:style {:flex 1
+                    :background-color "green"}}])
+
+(print (get-component-name chapter))
+(defscreen
+  chapter
+  [nav]
+  (print nav))
+(defscreen
+  empty-scene1
+  [nav]
+  (print nav))
+(defscreen
+  empty-scene2
+  [nav]
+  (print nav))
 
 (defn app-root []
-  [chapter])
+  (navigation-tabs {:tabsStyle {:tabBarButtonColor "rgb(151,151,151)"
+                                :tabBarSelectedButtonColor "#fff"
+                                :tabBarBackgroundColor "#000"}}
+   [chapter {:label "Words"}]
+   [empty-scene1 {:label "Favorite"}]
+   [empty-scene2 {:label "About"}]))
+;(defn app-root []
+;  [chapter])
 
 ;(defn app-root []
 ;  (let [tPosition (ui/animated-value 100.0)
@@ -66,4 +91,5 @@
 ;  [ui/navigation {:render-scene render-scene}])
 
 (defn init []
-  (.registerComponent ui/app-registry "TeachByFriends" #(r/reactify-component app-root)))
+  ;(.registerComponent ui/app-registry "TeachByFriends" #(r/reactify-component app-root)))
+  (app-root))
