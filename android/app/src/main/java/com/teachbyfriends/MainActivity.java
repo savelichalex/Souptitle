@@ -1,16 +1,17 @@
 package com.teachbyfriends;
 
-import com.facebook.react.ReactActivity;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 
 import com.rnscm.SecretConfigManagerPackage;
+import com.reactnativenavigation.activities.RootActivity;
+import com.reactnativenavigation.packages.RnnPackage;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends ReactActivity {
+public class MainActivity extends RootActivity {
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -38,9 +39,10 @@ public class MainActivity extends ReactActivity {
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new RnnPackage(), // navigation
             new LinearGradientPackage(),
             new SecretConfigManagerPackage(SecretConfig.class),
-            new RCTTimelinePackage()
+            new RCTTimelinePackage(),
         );
     }
 }
