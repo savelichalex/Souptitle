@@ -1,18 +1,19 @@
 (ns teach-by-friends.shared.navigation
-  (:require-macros [teach-by-friends.shared.navigation :refer [defscreen get-component-name]]
+  (:require-macros [teach-by-friends.shared.navigation :refer [defscreen]]
                    [reagent.ratom :refer [reaction]])
   (:require [reagent.core :as r]))
 
 (def Navigation (.. (js/require "react-native-navigation") -Navigation))
 
-(def register-component (.-registerComponent Navigation))
+(defn register-component [name comp]
+  (.registerComponent Navigation name comp))
 
 (defmulti on-route (fn [nav] (:route nav)))
 
-(defn tab-to-rnn-option [screen settings]
-  (print (get-component-name screen))
+(defn tab-to-rnn-option [[screen settings]]
+  (print (:screen-name screen))
   (clj->js
-    (merge {:screen (get-component-name screen)} settings)))
+    (merge {:screen (:screen-name screen)} settings)))
 
 (defn tabs-to-rnn-options [tabs]
   (->> tabs

@@ -10,7 +10,7 @@
             [teach-by-friends.shared.layouts.root-layout :refer [create-root-layout]]
             [teach-by-friends.shared.components.timeline :refer [timeline]]
             [teach-by-friends.shared.navigation :refer [navigation-tabs]])
-  (:require-macros [teach-by-friends.shared.navigation :refer [defscreen get-component-name]]))
+  (:require-macros [teach-by-friends.shared.navigation :refer [defscreen]]))
 
 (enable-console-print!)
 
@@ -41,16 +41,18 @@
   [ui/view {:style {:flex 1
                     :background-color "green"}}])
 
-(print (get-component-name chapter))
 (defscreen
+  chapter-screen
   chapter
   [nav]
   (print nav))
 (defscreen
+  empty-scene1-screen
   empty-scene1
   [nav]
   (print nav))
 (defscreen
+  empty-scene2-screen
   empty-scene2
   [nav]
   (print nav))
@@ -59,9 +61,9 @@
   (navigation-tabs {:tabsStyle {:tabBarButtonColor "rgb(151,151,151)"
                                 :tabBarSelectedButtonColor "#fff"
                                 :tabBarBackgroundColor "#000"}}
-   [chapter {:label "Words"}]
-   [empty-scene1 {:label "Favorite"}]
-   [empty-scene2 {:label "About"}]))
+   [chapter-screen {:label "Words"}]
+   [empty-scene1-screen {:label "Favorite"}]
+   [empty-scene2-screen {:label "About"}]))
 ;(defn app-root []
 ;  [chapter])
 
