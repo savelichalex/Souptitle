@@ -45,29 +45,36 @@
 (defscreen
   chapter-screen
   chapter
-  [nav]
-  (print nav))
+  [_]
+  {:title "Serial"
+   :navigatorStyle {:navBarTextColor "#fff"
+                    :navBarTransparent true
+                    :navBarButtonColor "#fff"
+                    :statusBarTextColorScheme "light"}})
 (defscreen
   empty-scene1-screen
   empty-scene1
-  [nav]
-  (print nav))
+  [_]
+  {:title "Favorite"
+   :navigatorStyle {:navBarTextColor "#fff"
+                    :navBarTransparent true
+                    :navBarButtonColor "#fff"
+                    :statusBarTextColorScheme "light"}})
 (defscreen
   empty-scene2-screen
   empty-scene2
-  [nav]
-  (print nav))
+  [_]
+  {:title "About"
+   :navigatorStyle {:navBarTextColor "#fff"
+                    :navBarTransparent true
+                    :navBarButtonColor "#fff"
+                    :statusBarTextColorScheme "light"}})
 
 (defn app-root []
   (navigation-tabs {:tabsStyle {:tabBarButtonColor "rgb(151,151,151)"
                                 :tabBarSelectedButtonColor "#fff"
                                 :tabBarBackgroundColor "#000"}}
-   [chapter-screen {:label "Words"
-                    :title "Serial"
-                    :navigatorStyle {:navBarTextColor "#fff"
-                                     :navBarTransparent true
-                                     :navBarButtonColor "#fff"
-                                     :statusBarTextColorScheme "light"}}]
+   [chapter-screen {:label "Words"}]
    [empty-scene1-screen {:label "Favorite"}]
    [empty-scene2-screen {:label "About"}]))
 ;(defn app-root []

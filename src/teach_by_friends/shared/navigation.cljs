@@ -9,10 +9,11 @@
   (.registerComponent Navigation name comp))
 
 (defmulti on-route (fn [nav] (:route nav)))
+(defmethod on-route :default [_] {})
 
 (defn tab-to-rnn-option [[screen settings]]
   (clj->js
-    (merge {:screen (:screen-name screen)} settings)))
+    (merge {:screen (:screen-name screen)} settings (on-route (keyword (:screen-name screen))))))
 
 (defn tabs-to-rnn-options [tabs]
   (->> tabs
