@@ -50,7 +50,8 @@
     :navigatorStyle {:navBarTextColor          "#fff"
                      :navBarTransparent        true
                      :navBarButtonColor        "#fff"
-                     :statusBarTextColorScheme "light"}}))
+                     :statusBarTextColorScheme "light"
+                     :screenColor "black"}}))
 (defscreen
   empty-scene1-screen
   ([]
@@ -61,7 +62,8 @@
     :navigatorStyle {:navBarTextColor          "#fff"
                      :navBarTransparent        true
                      :navBarButtonColor        "#fff"
-                     :statusBarTextColorScheme "light"}}))
+                     :statusBarTextColorScheme "light"
+                     :screenColor "red"}}))
 (defscreen
   empty-scene2-screen
   ([]
@@ -72,7 +74,8 @@
     :navigatorStyle {:navBarTextColor          "#fff"
                      :navBarTransparent        true
                      :navBarButtonColor        "#fff"
-                     :statusBarTextColorScheme "light"}}))
+                     :statusBarTextColorScheme "light"
+                     :screenColor "green"}}))
 
 (defn app-root []
   (navigation-tabs {:tabsStyle {:tabBarButtonColor         "rgb(151,151,151)"
