@@ -115,10 +115,9 @@
   [ui/touchable-opacity {:style    {:height              TERM_ROW_HEIGHT
                                     :flex-direction      "column"
                                     :justify-content     "center"
-                                    :padding-left        30
-                                    :background-color "black"}
+                                    :padding-left        13}
                          :on-press #(ui/alert item)}
-   [ui/text {:style {:font-size 16 :color "white"}} item]])
+   [ui/text {:style {:font-size 16 :color "rgb(155,155,155)"}} item]])
 
 (defn back-button []
   [ui/touchable-opacity {:style    {:flex        1
@@ -156,9 +155,10 @@
                          :on-press #(dispatch [:toggle-search])}
    [search-icon {:style {:width 15 :height 15}}]])
 
-(defn sort-row []
+(defn sort-row [sort-type]
   [ui/view {:style {:margin-left 13
                     :margin-right 13
+                    :margin-bottom 2
                     :border-top-width 1
                     :border-top-color "rgb(155,155,155)"
                     :border-bottom-width 1
@@ -170,18 +170,19 @@
                                   :padding-top 13
                                   :padding-bottom 13}
                           :on-press #(dispatch [:resort-chapter :by-rank])}
-    [ui/text {:style {:color "rgb(155,155,155)"}} "Timeline"]]
+    [ui/text {:style {:color (if (= sort-type :by-rank) "white" "rgb(155,155,155)")}} "Timeline"]]
    [ui/touchable-opacity {:style {:flex 1
                                   :align-items "center"
                                   :justify-content "center"
                                   :padding-top 13
                                   :padding-bottom 13}
                           :on-press #(dispatch [:resort-chapter :by-alphabet])}
-    [ui/text {:style {:color "rgb(155,155,155)"}} "Alphabet"]]])
+    [ui/text {:style {:color (if (= sort-type :by-alphabet) "white" "rgb(155,155,155)")}} "Alphabet"]]])
 
 (defn chapters-content [activity-indicator]
   (let [chapters (subscribe [:chapters])
         chapter (subscribe [:get-chapter])
+        sort-type (subscribe [:get-sort-type])
         chapter-terms (reaction (map #(:term %) @chapter))]
     (fn chapters-content-comp []
       [ui/view {:style {:position       "absolute"
@@ -190,22 +191,22 @@
                         :top            0
                         :bottom         0
                         :flex           1
+                        :padding-bottom 2
                         :flex-direction "column"
-                        :align-items    "stretch"}}
+                        :align-items    "stretch"
+                        :background-color "black"}}
+       [sort-row @sort-type]
        (if (not (empty? @chapter))
-         [ui/view {:style {:flex 12}
-                   :background-color "black"}
-          [sort-row]
-          [timeline-and-table {:style {:flex 1
-                                       :flex-direction   "row"}
-                               :render-row #(identity [term-row (nth @chapter-terms %)])
-                               :chapter @chapter-terms
-                               :term-row-height TERM_ROW_HEIGHT}]]
-         [ui/view {:style {:flex             (if (nil? @chapters) 13 12)
-                           :background-color "white"
+         [timeline-and-table {:style {:flex 1
+                                      :flex-direction   "row"}
+                              :render-row #(identity [term-row (nth @chapter-terms %)])
+                              :chapter @chapter-terms
+                              :term-row-height TERM_ROW_HEIGHT}]
+         [ui/view {:style {:flex             1
+                           :background-color "black"
                            :justify-content  "center"
                            :align-items      "center"}}
-          [activity-indicator {:color "rgb(72, 86, 155)"}]])])))
+          [activity-indicator {:color "rgb(155, 155, 155)"}]])])))
 
 (defn get-chapters-scene [activity-indicator]
   (fn chapters-scene []
