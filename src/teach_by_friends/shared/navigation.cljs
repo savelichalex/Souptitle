@@ -11,7 +11,6 @@
 (defmulti on-route (fn [nav] (:route nav)))
 
 (defn tab-to-rnn-option [[screen settings]]
-  (print (:screen-name screen))
   (clj->js
     (merge {:screen (:screen-name screen)} settings)))
 

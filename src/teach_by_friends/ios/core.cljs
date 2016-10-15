@@ -41,6 +41,7 @@
   [ui/view {:style {:flex 1
                     :background-color "green"}}])
 
+(declare chapter-screen empty-scene1-screen empty-scene2-screen)
 (defscreen
   chapter-screen
   chapter
@@ -61,7 +62,12 @@
   (navigation-tabs {:tabsStyle {:tabBarButtonColor "rgb(151,151,151)"
                                 :tabBarSelectedButtonColor "#fff"
                                 :tabBarBackgroundColor "#000"}}
-   [chapter-screen {:label "Words"}]
+   [chapter-screen {:label "Words"
+                    :title "Serial"
+                    :navigatorStyle {:navBarTextColor "#fff"
+                                     :navBarTransparent true
+                                     :navBarButtonColor "#fff"
+                                     :statusBarTextColorScheme "light"}}]
    [empty-scene1-screen {:label "Favorite"}]
    [empty-scene2-screen {:label "About"}]))
 ;(defn app-root []
