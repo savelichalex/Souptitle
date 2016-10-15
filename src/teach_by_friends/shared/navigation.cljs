@@ -9,36 +9,49 @@
   (.registerComponent Navigation name comp))
 
 (defmulti on-route (fn [nav] (:route nav)))
-(defmethod on-route :default [_] {})
+(defmethod on-route :default [_] nil)
+
+(defn wrap-screen [screen]
+  (fn [props]
+    (let [navigator (:navigator (r/props (r/current-component)))]
+      [screen (assoc props :navigator navigator)])))
+
+(defprotocol IScreen
+  (get-name [self] "Return screen name")
+  (get-component [self] "Return current component")
+  (get-settings [self] [self props] "Return settings")
+  (call-and-set-component! [self args]))
+
+(deftype Screen [name ^:mutable component settings]
+  IScreen
+  (get-name [_] name)
+  (get-component [_] (wrap-screen component))
+  (get-settings [_] (settings))
+  (get-settings [_ props] (settings props))
+  (call-and-set-component! [_ args] (set! component (apply component args))))
 
 (defn tab-to-rnn-option [[screen settings]]
   (clj->js
-    (merge {:screen (:screen-name screen)} settings (on-route (keyword (:screen-name screen))))))
+    (merge {:screen (get-name screen)} settings (get-settings screen))))
 
 (defn tabs-to-rnn-options [tabs]
   (->> tabs
        (map tab-to-rnn-option)
        (clj->js)))
 
-(defn track-route-state [nav-state]
-  (r/track! (fn []
-              (let [nav (reaction (get @re-frame.db/app-db :nav))
-                    route (:route @nav)
-                    props (:props @nav)
-                    type (:type @nav)]
-                (cond
-                  (nil? route) nil
-                  (= type :pop) (swap! nav-state (fn [] {:route route :props (assoc props :direction :to-right)}))
-                  (= type :push) (swap! nav-state (fn [] {:route route :props (assoc props :direction :to-left)}))
-                  :else (swap! nav-state (fn [] {:route route})))))))
-
 (defn navigation-tabs [settings & tabs]
-  (let [nav-state (r/atom {:route nil
-                           :props nil})
-        track-id (atom nil)]
-    (. Navigation
-       (startTabBasedApp
-         (->> {:tabs (tabs-to-rnn-options tabs)}
-              (merge settings)
-              (clj->js))))
-    (swap! track-id (fn [_] (track-route-state nav-state)))))
+  (. Navigation
+     (startTabBasedApp
+       (->> {:tabs (tabs-to-rnn-options tabs)}
+            (merge settings)
+            (clj->js)))))
+
+(defn push! [nav route props]
+  (when-let [screen (on-route {:route route})]
+    (.push nav (-> {:screen (get-name screen)}
+                   (merge (get-settings screen props))
+                   (clj->js)))))
+
+(defn pop! [nav animated]
+  (.pop nav (-> {:animated (or animated true)}
+                (clj->js))))

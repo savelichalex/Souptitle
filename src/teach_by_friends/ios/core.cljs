@@ -9,7 +9,7 @@
             [teach-by-friends.shared.scenes.chapters-scene :refer [get-chapters-scene chapters-content]]
             [teach-by-friends.shared.layouts.root-layout :refer [create-root-layout]]
             [teach-by-friends.shared.components.timeline :refer [timeline]]
-            [teach-by-friends.shared.navigation :refer [navigation-tabs]])
+            [teach-by-friends.shared.navigation :refer [navigation-tabs push!]])
   (:require-macros [teach-by-friends.shared.navigation :refer [defscreen]]))
 
 (enable-console-print!)
@@ -19,92 +19,71 @@
 (def seasons-scene (get-seasons-scene ios-ui/activity-indicator))
 (def chapters-scene (get-chapters-scene ios-ui/activity-indicator))
 
-(defmulti render-scene (fn [nav] (:route nav)))
-(defmethod render-scene :serials
-  [{{direction :direction} :props}]
-  [root-layout (serials-scene) {:direction direction :time 400}])
-
-(defmethod render-scene :seasons
-  [{{direction :direction} :props}]
-  [root-layout (seasons-scene) {:direction direction :time 400}])
-
-(defmethod render-scene :chapters
-  [{{direction :direction} :props}]
-  [root-layout (chapters-scene) {:direction direction :time 400}])
-
 (def chapter (chapters-content ios-ui/activity-indicator))
-(defn empty-scene1 []
-  [ui/view {:style {:flex 1
-                    :background-color "red"}}])
 
-(defn empty-scene2 []
-  [ui/view {:style {:flex 1
-                    :background-color "green"}}])
-
-(declare chapter-screen empty-scene1-screen empty-scene2-screen)
+(declare serials-screen chapter-screen empty-scene1-screen empty-scene2-screen)
+(defscreen
+  serials-screen
+  ([{:keys [navigator]}]
+   [ui/view {:style {:flex 1
+                     :background-color "black"
+                     :flex-direction "column"}}
+    [ui/touchable-opacity {:style {:justify-content "center"
+                                   :padding-top 20
+                                   :padding-bottom 20
+                                   :padding-left 13}
+                           :on-press #(push! navigator :chapter-screen {:title "Friends"})}
+     [ui/text {:style {:font-size 30
+                       :color "white"}}
+      "Friends"]]])
+  ([_]
+   {:title "Serials"
+    :navigatorStyle {:navBarTextColor          "#fff"
+                     :navBarTransparent        true
+                     :navBarButtonColor        "#fff"
+                     :statusBarTextColorScheme "light"}}))
 (defscreen
   chapter-screen
-  chapter
-  [_]
-  {:title "Serial"
-   :navigatorStyle {:navBarTextColor "#fff"
-                    :navBarTransparent true
-                    :navBarButtonColor "#fff"
-                    :statusBarTextColorScheme "light"}})
+  ([] [chapter])
+  ([{:keys [title]}]
+   {:title title
+    :navigatorStyle {:navBarTextColor          "#fff"
+                     :navBarTransparent        true
+                     :navBarButtonColor        "#fff"
+                     :statusBarTextColorScheme "light"
+                     :screenColor "black"}}))
 (defscreen
   empty-scene1-screen
-  empty-scene1
-  [_]
-  {:title "Favorite"
-   :navigatorStyle {:navBarTextColor "#fff"
-                    :navBarTransparent true
-                    :navBarButtonColor "#fff"
-                    :statusBarTextColorScheme "light"}})
+  ([]
+   [ui/view {:style {:flex             1
+                     :background-color "red"}}])
+  ([_]
+   {:title          "Favorite"
+    :navigatorStyle {:navBarTextColor          "#fff"
+                     :navBarTransparent        true
+                     :navBarButtonColor        "#fff"
+                     :statusBarTextColorScheme "light"
+                     :screenColor "red"}}))
 (defscreen
   empty-scene2-screen
-  empty-scene2
-  [_]
-  {:title "About"
-   :navigatorStyle {:navBarTextColor "#fff"
-                    :navBarTransparent true
-                    :navBarButtonColor "#fff"
-                    :statusBarTextColorScheme "light"}})
+  ([]
+   [ui/view {:style {:flex             1
+                     :background-color "green"}}])
+  ([_]
+   {:title          "About"
+    :navigatorStyle {:navBarTextColor          "#fff"
+                     :navBarTransparent        true
+                     :navBarButtonColor        "#fff"
+                     :statusBarTextColorScheme "light"
+                     :screenColor "green"}}))
 
 (defn app-root []
-  (navigation-tabs {:tabsStyle {:tabBarButtonColor "rgb(151,151,151)"
+  (navigation-tabs {:tabsStyle {:tabBarButtonColor         "rgb(151,151,151)"
                                 :tabBarSelectedButtonColor "#fff"
-                                :tabBarBackgroundColor "#000"}}
-   [chapter-screen {:label "Words"}]
-   [empty-scene1-screen {:label "Favorite"}]
-   [empty-scene2-screen {:label "About"}]))
-;(defn app-root []
-;  [chapter])
-
-;(defn app-root []
-;  (let [tPosition (ui/animated-value 100.0)
-;        pan-responder (ui/create-pan-responder {:onStartShouldSetPanResponder        (fn [_ _] true)
-;                                                :onStartShouldSetPanResponderCapture (fn [_ _] true)
-;                                                :onMoveShouldSetPanResponder         (fn [_ _] true)
-;                                                :onMoveShouldSetPanResponderCapture  (fn [_ _] true)
-;                                                :onPanResponderGrant                 (fn [event _]
-;                                                                                       (print
-;                                                                                         (ui/animated-set-value tPosition (aget event "nativeEvent" "pageY"))))
-;                                                :onPanResponderMove                  (fn [event _]
-;                                                                                       (print
-;                                                                                         (ui/animated-set-value tPosition (aget event "nativeEvent" "pageY"))))})]
-;
-;    [ui/view {:style {:flex           1
-;                      :flex-direction "row"}}
-;     [timeline (-> {:tPosition          tPosition
-;                    :countWordsOnScreen 11
-;                    :timestamps         (clj->js (->> (range 0 70) (map #(str %))))
-;                    :style              {:flex 1}}
-;                   (merge (ui/get-pan-handlers pan-responder)))]
-;     [ui/view {:style {:flex 5}}]]))
-
-;(defn app-root []
-;  [ui/navigation {:render-scene render-scene}])
+                                :tabBarBackgroundColor     "#000"}}
+                   [serials-screen {:label "Words"}]
+                   [empty-scene1-screen {:label "Favorite"}]
+                   [empty-scene2-screen {:label "About"}]))
 
 (defn init []
-  ;(.registerComponent ui/app-registry "TeachByFriends" #(r/reactify-component app-root)))
   (app-root))
