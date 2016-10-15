@@ -15,6 +15,7 @@ var config = {
 
 var React = require('react');
 var ReactNative = require('react-native');
+var Navigation = require('react-native-navigation').Navigation;
 var WebSocket = require('WebSocket');
 var self;
 var scriptQueue = [];
@@ -215,8 +216,13 @@ function loadApp(platform, devHost, onLoadCb) {
 }
 
 function startApp(appName, platform, devHost) {
-    ReactNative.AppRegistry.registerComponent(
-        appName, () => figwheelApp(platform, devHost));
+    Navigation.registerComponent(appName, () => figwheelApp(platform, devHost));
+    Navigation.startSingleScreenApp({
+        screen: {
+            screen: appName,
+            title: 'Waiting for Figwheel to load files'
+        }
+    });
 }
 
 function withModules(moduleById) {

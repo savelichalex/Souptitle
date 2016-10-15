@@ -1,7 +1,6 @@
 (ns teach-by-friends.handlers
   (:require
     [re-frame.core :refer [register-handler after dispatch]]
-    [schema.core :as s :include-macros true]
     [teach-by-friends.db :refer [app-db]]
     [teach-by-friends.parser :refer [parse-srt]]
     [teach-by-friends.shared.ui :as ui]

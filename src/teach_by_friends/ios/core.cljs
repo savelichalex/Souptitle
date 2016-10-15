@@ -8,7 +8,9 @@
             [teach-by-friends.shared.scenes.seasons-scene :refer [get-seasons-scene]]
             [teach-by-friends.shared.scenes.chapters-scene :refer [get-chapters-scene chapters-content]]
             [teach-by-friends.shared.layouts.root-layout :refer [create-root-layout]]
-            [teach-by-friends.shared.components.timeline :refer [timeline]]))
+            [teach-by-friends.shared.components.timeline :refer [timeline]]
+            [teach-by-friends.shared.navigation :refer [navigation-tabs]])
+  (:require-macros [teach-by-friends.shared.navigation :refer [defscreen]]))
 
 (enable-console-print!)
 
@@ -31,9 +33,52 @@
   [root-layout (chapters-scene) {:direction direction :time 400}])
 
 (def chapter (chapters-content ios-ui/activity-indicator))
+(defn empty-scene1 []
+  [ui/view {:style {:flex 1
+                    :background-color "red"}}])
+
+(defn empty-scene2 []
+  [ui/view {:style {:flex 1
+                    :background-color "green"}}])
+
+(declare chapter-screen empty-scene1-screen empty-scene2-screen)
+(defscreen
+  chapter-screen
+  chapter
+  [_]
+  {:title "Serial"
+   :navigatorStyle {:navBarTextColor "#fff"
+                    :navBarTransparent true
+                    :navBarButtonColor "#fff"
+                    :statusBarTextColorScheme "light"}})
+(defscreen
+  empty-scene1-screen
+  empty-scene1
+  [_]
+  {:title "Favorite"
+   :navigatorStyle {:navBarTextColor "#fff"
+                    :navBarTransparent true
+                    :navBarButtonColor "#fff"
+                    :statusBarTextColorScheme "light"}})
+(defscreen
+  empty-scene2-screen
+  empty-scene2
+  [_]
+  {:title "About"
+   :navigatorStyle {:navBarTextColor "#fff"
+                    :navBarTransparent true
+                    :navBarButtonColor "#fff"
+                    :statusBarTextColorScheme "light"}})
 
 (defn app-root []
-  [chapter])
+  (navigation-tabs {:tabsStyle {:tabBarButtonColor "rgb(151,151,151)"
+                                :tabBarSelectedButtonColor "#fff"
+                                :tabBarBackgroundColor "#000"}}
+   [chapter-screen {:label "Words"}]
+   [empty-scene1-screen {:label "Favorite"}]
+   [empty-scene2-screen {:label "About"}]))
+;(defn app-root []
+;  [chapter])
 
 ;(defn app-root []
 ;  (let [tPosition (ui/animated-value 100.0)
@@ -61,4 +106,5 @@
 ;  [ui/navigation {:render-scene render-scene}])
 
 (defn init []
-  (.registerComponent ui/app-registry "TeachByFriends" #(r/reactify-component app-root)))
+  ;(.registerComponent ui/app-registry "TeachByFriends" #(r/reactify-component app-root)))
+  (app-root))

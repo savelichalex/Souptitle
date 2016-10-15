@@ -69,6 +69,11 @@
                      (add-status-keys @term-to-translate @term-translate))))))
 
 (register-sub
+  :get-sort-type
+  (fn [db _]
+    (reaction (get @db :sort-chapter))))
+
+(register-sub
   :term-translate
   (fn [db _]
     (reaction (get @db :term-translate))))

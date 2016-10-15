@@ -1,5 +1,4 @@
-(ns teach-by-friends.db
-  (:require [schema.core :as s :include-macros true]))
+(ns teach-by-friends.db)
 
 ;; initial state of app-db
 (def app-db {:chapter nil
