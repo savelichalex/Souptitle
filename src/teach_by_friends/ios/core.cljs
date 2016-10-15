@@ -74,8 +74,6 @@
                      :navBarButtonColor        "#fff"
                      :statusBarTextColorScheme "light"}}))
 
-(print chapter-screen)
-
 (defn app-root []
   (navigation-tabs {:tabsStyle {:tabBarButtonColor         "rgb(151,151,151)"
                                 :tabBarSelectedButtonColor "#fff"

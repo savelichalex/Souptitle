@@ -47,7 +47,7 @@
             (clj->js)))))
 
 (defn push! [nav route props]
-  (when-let [screen (on-route route)]
+  (when-let [screen (on-route {:route route})]
     (.push nav (-> {:screen (get-name screen)}
                    (merge (get-settings screen props))
                    (clj->js)))))
