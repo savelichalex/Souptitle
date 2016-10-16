@@ -10,7 +10,8 @@
   "modules": [
     "react-native-linear-gradient",
     "react-native-controllers",
-    "react-native-navigation"
+    "react-native-navigation",
+    "react-native-blur"
   ],
   "imageDirs": [
     "images"

@@ -17,7 +17,7 @@
 (defn back-icon [{:keys [style]}]
   [ui/image {:source back-icon-source :style style}])
 
-(defn season-bar-item [style number last-number item on-change]
+(defn serial-item [style number last-number item on-change]
   [ui/touchable-opacity {:style    {:justify-content  "center"
                                     :align-items      "center"
                                     :padding-left     10
@@ -30,12 +30,9 @@
                         (merge {:font-size 25}))}
     (inc number)]])
 
-(defn seasons-bar [seasons-list on-change]
+(defn serial-item-bar [seasons-list on-change]
   (let [last-number (count seasons-list)]
-    [ui/view {:style {:flex             1
-                      :border-radius    15
-                      :margin-top       -15
-                      :background-color "rgb(132, 145, 206)"}}
+    [ui/view {:style {:height 64}}
      (into [ui/scroll-view {:horizontal                     true
                             :showsHorizontalScrollIndicator false
                             :content-container-style        {:flex          1
@@ -44,19 +41,48 @@
                                                              :padding-right 15}}]
            (map-indexed
              (fn [index item] (if (:active? item)
-                                [season-bar-item
+                                [serial-item
                                  {:color "rgb(72, 86, 155)"}
                                  index
                                  last-number
                                  item
                                  on-change]
-                                [season-bar-item
+                                [serial-item
                                  {:color "white"}
                                  index
                                  last-number
                                  item
                                  on-change]))
              seasons-list))]))
+
+(defn serials-items-bar-creator [blur-view]
+  (fn serial-items-bar [seasons-list chapters-list on-change-season on-change-chapter]
+    [ui/view {:style {:position       "absolute"
+                      :top            0
+                      :bottom         0
+                      :left           0
+                      :right          0
+                      :flex           1
+                      :flex-direction "column"}}
+     [ui/view {:style {:background-color "black"}}
+      [ui/view {:style {:margin-top  17
+                        :align-items "center"}}
+       [ui/text {:style {:color "white" :font-size 13}} "Season"]]
+      [serial-item-bar seasons-list on-change-season]
+      [ui/view {:style {:margin-left         13
+                        :margin-right        13
+                        :border-bottom-width 1
+                        :border-bottom-color "rgb(155,155,155)"}}]
+      [ui/view {:style {:margin-top  17
+                        :align-items "center"}}
+       [ui/text {:style {:color "white" :font-size 13}} "Episode"]]
+      [serial-item-bar chapters-list on-change-chapter]
+      [ui/view {:style {:border-bottom-width 1
+                        :border-bottom-color "rgb(155,155,155)"}}]]
+     [blur-view {:style {:flex 1
+                         :background-color "transparent"}
+                 :blur-type "dark"}]]))
+
 
 (def ReactNative (js/require "react-native"))
 
@@ -112,10 +138,10 @@
 (def TERM_ROW_HEIGHT 40)
 
 (defn term-row [item]
-  [ui/touchable-opacity {:style    {:height              TERM_ROW_HEIGHT
-                                    :flex-direction      "column"
-                                    :justify-content     "center"
-                                    :padding-left        13}
+  [ui/touchable-opacity {:style    {:height          TERM_ROW_HEIGHT
+                                    :flex-direction  "column"
+                                    :justify-content "center"
+                                    :padding-left    13}
                          :on-press #(ui/alert item)}
    [ui/text {:style {:font-size 16 :color "rgb(155,155,155)"}} item]])
 
@@ -156,57 +182,61 @@
    [search-icon {:style {:width 15 :height 15}}]])
 
 (defn sort-row [sort-type]
-  [ui/view {:style {:margin-left 13
-                    :margin-right 13
-                    :margin-bottom 2
-                    :border-top-width 1
-                    :border-top-color "rgb(155,155,155)"
+  [ui/view {:style {:margin-left         13
+                    :margin-right        13
+                    :margin-bottom       2
+                    :border-top-width    1
+                    :border-top-color    "rgb(155,155,155)"
                     :border-bottom-width 1
                     :border-bottom-color "rgb(155,155,155)"
-                    :flex-direction "row"}}
-   [ui/touchable-opacity {:style {:flex 1
-                                  :align-items "center"
-                                  :justify-content "center"
-                                  :padding-top 13
-                                  :padding-bottom 13}
+                    :flex-direction      "row"}}
+   [ui/touchable-opacity {:style    {:flex            1
+                                     :align-items     "center"
+                                     :justify-content "center"
+                                     :padding-top     13
+                                     :padding-bottom  13}
                           :on-press #(dispatch [:resort-chapter :by-rank])}
     [ui/text {:style {:color (if (= sort-type :by-rank) "white" "rgb(155,155,155)")}} "Timeline"]]
-   [ui/touchable-opacity {:style {:flex 1
-                                  :align-items "center"
-                                  :justify-content "center"
-                                  :padding-top 13
-                                  :padding-bottom 13}
+   [ui/touchable-opacity {:style    {:flex            1
+                                     :align-items     "center"
+                                     :justify-content "center"
+                                     :padding-top     13
+                                     :padding-bottom  13}
                           :on-press #(dispatch [:resort-chapter :by-alphabet])}
     [ui/text {:style {:color (if (= sort-type :by-alphabet) "white" "rgb(155,155,155)")}} "Alphabet"]]])
 
-(defn chapters-content [activity-indicator]
+(defn chapters-content [activity-indicator blur-view]
   (let [chapters (subscribe [:chapters])
         chapter (subscribe [:get-chapter])
         sort-type (subscribe [:get-sort-type])
-        chapter-terms (reaction (map #(:term %) @chapter))]
+        chapter-terms (reaction (map #(:term %) @chapter))
+        serial-items-bar (serials-items-bar-creator blur-view)]
     (fn chapters-content-comp []
-      [ui/view {:style {:position       "absolute"
-                        :left           0
-                        :right          0
-                        :top            0
-                        :bottom         0
-                        :flex           1
-                        :padding-bottom 2
-                        :flex-direction "column"
-                        :align-items    "stretch"
+      [ui/view {:style {:position         "absolute"
+                        :left             0
+                        :right            0
+                        :top              0
+                        :bottom           0
+                        :flex             1
+                        :padding-bottom   2
+                        :flex-direction   "column"
+                        :align-items      "stretch"
                         :background-color "black"}}
        [sort-row @sort-type]
-       (if (not (empty? @chapter))
-         [timeline-and-table {:style {:flex 1
-                                      :flex-direction   "row"}
-                              :render-row #(identity [term-row (nth @chapter-terms %)])
-                              :chapter @chapter-terms
-                              :term-row-height TERM_ROW_HEIGHT}]
-         [ui/view {:style {:flex             1
-                           :background-color "black"
-                           :justify-content  "center"
-                           :align-items      "center"}}
-          [activity-indicator {:color "rgb(155, 155, 155)"}]])])))
+       [ui/view {:style {:flex     1
+                         :position "relative"}}
+        (if (not (empty? @chapter))
+          [timeline-and-table {:style           {:flex           1
+                                                 :flex-direction "row"}
+                               :render-row      #(identity [term-row (nth @chapter-terms %)])
+                               :chapter         @chapter-terms
+                               :term-row-height TERM_ROW_HEIGHT}]
+          [ui/view {:style {:flex             1
+                            :background-color "black"
+                            :justify-content  "center"
+                            :align-items      "center"}}
+           [activity-indicator {:color "rgb(155, 155, 155)"}]])
+        [serial-items-bar (range 0 10) (range 0 10) (fn [& args] (print args)) (fn [& args] (print args))]]])))
 
 (defn get-chapters-scene [activity-indicator]
   (fn chapters-scene []

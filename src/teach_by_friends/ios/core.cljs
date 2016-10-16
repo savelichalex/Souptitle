@@ -19,7 +19,7 @@
 (def seasons-scene (get-seasons-scene ios-ui/activity-indicator))
 (def chapters-scene (get-chapters-scene ios-ui/activity-indicator))
 
-(def chapter (chapters-content ios-ui/activity-indicator))
+(def chapter (chapters-content ios-ui/activity-indicator ios-ui/blur-view))
 
 (declare serials-screen chapter-screen empty-scene1-screen empty-scene2-screen)
 (defscreen
