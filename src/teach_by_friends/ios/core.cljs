@@ -44,14 +44,15 @@
                      :statusBarTextColorScheme "light"}}))
 (defscreen
   chapter-screen
-  ([] [chapter])
+  ([props] [chapter props])
   ([{:keys [title]}]
    {:title title
     :navigatorStyle {:navBarTextColor          "#fff"
                      :navBarTransparent        true
                      :navBarButtonColor        "#fff"
                      :statusBarTextColorScheme "light"
-                     :screenColor "black"}}))
+                     :screenColor "black"}
+    :navigatorButtons {:rightButtons [{:title "Toggle" :id "toggle"}]}}))
 (defscreen
   empty-scene1-screen
   ([]

@@ -202,38 +202,51 @@
                           :on-press #(dispatch [:resort-chapter :by-alphabet])}
     [ui/text {:style {:color (if (= sort-type :by-alphabet) "white" "rgb(155,155,155)")}} "Alphabet"]]])
 
+(defn on-navigator-event [event]
+  (when (= (.-type event) "NavBarButtonPress")
+    (when (= (.-id event) "toggle")
+      (dispatch [:toggle-serials-bars]))))
+
 (defn chapters-content [activity-indicator blur-view]
   (let [chapters (subscribe [:chapters])
         chapter (subscribe [:get-chapter])
         sort-type (subscribe [:get-sort-type])
         chapter-terms (reaction (map #(:term %) @chapter))
-        serial-items-bar (serials-items-bar-creator blur-view)]
-    (fn chapters-content-comp []
-      [ui/view {:style {:position         "absolute"
-                        :left             0
-                        :right            0
-                        :top              0
-                        :bottom           0
-                        :flex             1
-                        :padding-bottom   2
-                        :flex-direction   "column"
-                        :align-items      "stretch"
-                        :background-color "black"}}
-       [sort-row @sort-type]
-       [ui/view {:style {:flex     1
-                         :position "relative"}}
-        (if (not (empty? @chapter))
-          [timeline-and-table {:style           {:flex           1
-                                                 :flex-direction "row"}
-                               :render-row      #(identity [term-row (nth @chapter-terms %)])
-                               :chapter         @chapter-terms
-                               :term-row-height TERM_ROW_HEIGHT}]
-          [ui/view {:style {:flex             1
-                            :background-color "black"
-                            :justify-content  "center"
-                            :align-items      "center"}}
-           [activity-indicator {:color "rgb(155, 155, 155)"}]])
-        [serial-items-bar (map #(identity {:active? (= % 0)}) (range 0 10)) (map #(identity {:active? (= % 0)}) (range 0 10)) (range 0 10) (fn [& args] (print args)) (fn [& args] (print args))]]])))
+        serial-items-bar (serials-items-bar-creator blur-view)
+        show-serial-bars? (subscribe [:show-serial-bars?])]
+    (fn [{:keys [navigator]}]
+      (. navigator (setOnNavigatorEvent on-navigator-event))
+      (fn chapters-content-comp [{:keys [navigator]}]
+        [ui/view {:style {:position         "absolute"
+                          :left             0
+                          :right            0
+                          :top              0
+                          :bottom           0
+                          :flex             1
+                          :padding-bottom   2
+                          :flex-direction   "column"
+                          :align-items      "stretch"
+                          :background-color "black"}}
+         [sort-row @sort-type]
+         [ui/view {:style {:flex     1
+                           :position "relative"}}
+          (if (not (empty? @chapter))
+            [timeline-and-table {:style           {:flex           1
+                                                   :flex-direction "row"}
+                                 :render-row      #(identity [term-row (nth @chapter-terms %)])
+                                 :chapter         @chapter-terms
+                                 :term-row-height TERM_ROW_HEIGHT}]
+            [ui/view {:style {:flex             1
+                              :background-color "black"
+                              :justify-content  "center"
+                              :align-items      "center"}}
+             [activity-indicator {:color "rgb(155, 155, 155)"}]])
+          (when @show-serial-bars?
+            [serial-items-bar
+             (map #(identity {:active? (= % 0)}) (range 0 10))
+             (map #(identity {:active? (= % 0)}) (range 0 10))
+             (fn [& args] (print args))
+             (fn [& args] (print args))])]]))))
 
 (defn get-chapters-scene [activity-indicator]
   (fn chapters-scene []

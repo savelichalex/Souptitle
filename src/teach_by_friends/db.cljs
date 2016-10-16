@@ -10,6 +10,7 @@
              :chapters-list nil
              :show-search? false
              :search-predicate ""
+             :show-serial-bars? false
              :well-known-terms #{}
              :nav {:route :serials
                    :props nil}})
