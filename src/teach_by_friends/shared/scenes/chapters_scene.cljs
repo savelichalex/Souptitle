@@ -17,42 +17,39 @@
 (defn back-icon [{:keys [style]}]
   [ui/image {:source back-icon-source :style style}])
 
-(defn serial-item [style number last-number item on-change]
+(defn serial-item [number last-number item active? on-change]
   [ui/touchable-opacity {:style    {:justify-content  "center"
                                     :align-items      "center"
-                                    :padding-left     10
-                                    :padding-right    10
+                                    :width 44
+                                    :height 44
+                                    :border-radius 22
+                                    :border-top-width (if active? 1 0)
+                                    :border-top-color "white"
+                                    :border-right-width (if active? 1 0)
+                                    :border-right-color "white"
+                                    :border-bottom-width (if active? 1 0)
+                                    :border-bottom-color "white"
+                                    :border-left-width (if active? 1 0)
+                                    :border-left-color "white"
                                     :margin-right     (when (not= (dec last-number) number)
                                                         25)
                                     :background-color "transparent"}
                          :on-press #(on-change number item)}
-   [ui/text {:style (-> style
-                        (merge {:font-size 25}))}
+   [ui/text {:style {:font-size 14
+                     :color (if active? "white" "rgb(155,155,155)")}}
     (inc number)]])
 
 (defn serial-item-bar [seasons-list on-change]
   (let [last-number (count seasons-list)]
     [ui/view {:style {:height 64}}
-     (into [ui/scroll-view {:horizontal                     true
+     (into [ui/scroll-view {:padding-top 10
+                            :padding-bottom 10
+                            :horizontal                     true
                             :showsHorizontalScrollIndicator false
-                            :content-container-style        {:flex          1
-                                                             :align-items   "stretch"
-                                                             :padding-left  15
-                                                             :padding-right 15}}]
+                            :content-container-style        {:flex        1
+                                                             :align-items "stretch"}}]
            (map-indexed
-             (fn [index item] (if (:active? item)
-                                [serial-item
-                                 {:color "rgb(72, 86, 155)"}
-                                 index
-                                 last-number
-                                 item
-                                 on-change]
-                                [serial-item
-                                 {:color "white"}
-                                 index
-                                 last-number
-                                 item
-                                 on-change]))
+             (fn [index item] [serial-item index last-number item (:active? item) on-change])
              seasons-list))]))
 
 (defn serials-items-bar-creator [blur-view]
@@ -79,8 +76,8 @@
       [serial-item-bar chapters-list on-change-chapter]
       [ui/view {:style {:border-bottom-width 1
                         :border-bottom-color "rgb(155,155,155)"}}]]
-     [blur-view {:style {:flex 1
-                         :background-color "transparent"}
+     [blur-view {:style     {:flex             1
+                             :background-color "transparent"}
                  :blur-type "dark"}]]))
 
 
@@ -236,7 +233,7 @@
                             :justify-content  "center"
                             :align-items      "center"}}
            [activity-indicator {:color "rgb(155, 155, 155)"}]])
-        [serial-items-bar (range 0 10) (range 0 10) (fn [& args] (print args)) (fn [& args] (print args))]]])))
+        [serial-items-bar (map #(identity {:active? (= % 0)}) (range 0 10)) (map #(identity {:active? (= % 0)}) (range 0 10)) (range 0 10) (fn [& args] (print args)) (fn [& args] (print args))]]])))
 
 (defn get-chapters-scene [activity-indicator]
   (fn chapters-scene []
