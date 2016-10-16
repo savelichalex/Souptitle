@@ -39,6 +39,8 @@ public class MainActivity extends RootActivity {
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new BlurViewPackage(),
+            new RnnPackage(),
             new RnnPackage(), // navigation
             new LinearGradientPackage(),
             new SecretConfigManagerPackage(SecretConfig.class),

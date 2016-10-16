@@ -217,3 +217,10 @@
   (fn [db [_ term]]
     (-> db
         (update :well-known-terms conj term))))
+
+;; Serials bars
+(register-handler
+  :toggle-serials-bars
+  (fn [db _]
+    (let [current-status (:show-serial-bars? db)]
+      (assoc db :show-serial-bars? (not current-status)))))

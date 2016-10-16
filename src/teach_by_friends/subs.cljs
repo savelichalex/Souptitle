@@ -102,3 +102,9 @@
   :show-search?
   (fn [db _]
     (reaction (get @db :show-search?))))
+
+;; Serial bars
+(register-sub
+  :show-serial-bars?
+  (fn [db _]
+    (reaction (get @db :show-serial-bars? ))))
