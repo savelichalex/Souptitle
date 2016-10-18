@@ -53,5 +53,17 @@
                    (clj->js)))))
 
 (defn pop! [nav animated]
-  (.pop nav (-> {:animated (or animated true)}
+  (.pop nav (-> {:animated animated}
                 (clj->js))))
+
+(defn show-modal!
+  ([nav route]
+   (show-modal! nav route {}))
+  ([nav route props]
+   (when-let [screen (on-route {:route route})]
+     (.showModal nav (-> {:screen (get-name screen)}
+                         (merge (get-settings screen props))
+                         (clj->js))))))
+
+(defn dismiss-modal! [nav animation]
+  (.dismissModal nav (clj->js {:animationType animation})))

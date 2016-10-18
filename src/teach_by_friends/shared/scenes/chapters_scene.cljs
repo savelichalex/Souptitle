@@ -5,6 +5,7 @@
             [reagent.core :as r]
             [re-frame.core :refer [subscribe dispatch]]
             [teach-by-friends.consts :as const]
+            [teach-by-friends.shared.navigation :as nav]
             [teach-by-friends.shared.components.timeline-and-table :refer [timeline-and-table]]))
 
 (def menu-icon-source (js/require "./images/menu-icon.png"))
@@ -61,6 +62,10 @@
                       :right          0
                       :flex           1
                       :flex-direction "column"}}
+     [ui/view {:style {:margin-left         13
+                       :margin-right        13
+                       :border-bottom-width 1
+                       :border-bottom-color "rgb(155,155,155)"}}]
      [ui/view {:style {:background-color "black"}}
       [ui/view {:style {:margin-top  17
                         :align-items "center"}}
@@ -202,20 +207,34 @@
                           :on-press #(dispatch [:resort-chapter :by-alphabet])}
     [ui/text {:style {:color (if (= sort-type :by-alphabet) "white" "rgb(155,155,155)")}} "Alphabet"]]])
 
-(defn on-navigator-event [event]
+(defn on-navigator-event [nav event]
   (when (= (.-type event) "NavBarButtonPress")
     (when (= (.-id event) "toggle")
-      (dispatch [:toggle-serials-bars]))))
+      (nav/show-modal! nav :serial-bars-screen {}))))
 
-(defn chapters-content [activity-indicator blur-view]
+(defn on-bars-navigator-event [nav event]
+  (when (= (.-type event) "NavBarButtonPress")
+    (when (= (.-id event) "close")
+      (nav/dismiss-modal! nav "none"))))
+
+(defn serial-bars-creator [blur-view]
+  (let [serial-items-bar (serials-items-bar-creator blur-view)]
+    (fn [{:keys [navigator]}]
+      (. navigator (setOnNavigatorEvent (partial on-bars-navigator-event navigator)))
+      (fn []
+        [serial-items-bar
+         (map #(identity {:active? (= % 0)}) (range 0 10))
+         (map #(identity {:active? (= % 0)}) (range 0 10))
+         (fn [& args] (print args))
+         (fn [& args] (print args))]))))
+
+(defn chapters-content [activity-indicator]
   (let [chapters (subscribe [:chapters])
         chapter (subscribe [:get-chapter])
         sort-type (subscribe [:get-sort-type])
-        chapter-terms (reaction (map #(:term %) @chapter))
-        serial-items-bar (serials-items-bar-creator blur-view)
-        show-serial-bars? (subscribe [:show-serial-bars?])]
+        chapter-terms (reaction (map #(:term %) @chapter))]
     (fn [{:keys [navigator]}]
-      (. navigator (setOnNavigatorEvent on-navigator-event))
+      (. navigator (setOnNavigatorEvent (partial on-navigator-event navigator)))
       (fn chapters-content-comp [{:keys [navigator]}]
         [ui/view {:style {:position         "absolute"
                           :left             0
@@ -240,13 +259,7 @@
                               :background-color "black"
                               :justify-content  "center"
                               :align-items      "center"}}
-             [activity-indicator {:color "rgb(155, 155, 155)"}]])
-          (when @show-serial-bars?
-            [serial-items-bar
-             (map #(identity {:active? (= % 0)}) (range 0 10))
-             (map #(identity {:active? (= % 0)}) (range 0 10))
-             (fn [& args] (print args))
-             (fn [& args] (print args))])]]))))
+             [activity-indicator {:color "rgb(155, 155, 155)"}]])]]))))
 
 (defn get-chapters-scene [activity-indicator]
   (fn chapters-scene []
