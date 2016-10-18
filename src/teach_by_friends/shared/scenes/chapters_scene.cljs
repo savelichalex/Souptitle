@@ -53,7 +53,7 @@
              (fn [index item] [serial-item index last-number item (:active? item) on-change])
              seasons-list))]))
 
-(defn serials-items-bar-creator [blur-view]
+(defn serials-items-bar-creator [blur-view activity-indicator]
   (fn serial-items-bar [seasons-list chapters-list on-change-season on-change-chapter]
     [ui/view {:style {:position       "absolute"
                       :top            0
@@ -70,7 +70,12 @@
       [ui/view {:style {:margin-top  17
                         :align-items "center"}}
        [ui/text {:style {:color "white" :font-size 13}} "Season"]]
-      [serial-item-bar seasons-list on-change-season]
+      (if (nil? seasons-list)
+        [ui/view {:style {:height 64
+                          :align-items "center"
+                          :justify-content "center"}}
+         [activity-indicator {:color "rgb(155, 155, 155)"}]]
+        [serial-item-bar seasons-list on-change-season])
       [ui/view {:style {:margin-left         13
                         :margin-right        13
                         :border-bottom-width 1
@@ -78,7 +83,12 @@
       [ui/view {:style {:margin-top  17
                         :align-items "center"}}
        [ui/text {:style {:color "white" :font-size 13}} "Episode"]]
-      [serial-item-bar chapters-list on-change-chapter]
+      (if (nil? chapters-list)
+        [ui/view {:style {:height 64
+                          :align-items "center"
+                          :justify-content "center"}}
+         [activity-indicator {:color "rgb(155, 155, 155)"}]]
+        [serial-item-bar chapters-list on-change-chapter])
       [ui/view {:style {:border-bottom-width 1
                         :border-bottom-color "rgb(155,155,155)"}}]]
      [blur-view {:style     {:flex             1
@@ -210,23 +220,31 @@
 (defn on-navigator-event [nav event]
   (when (= (.-type event) "NavBarButtonPress")
     (when (= (.-id event) "toggle")
+      (dispatch [:save-seasons-and-chapters])
       (nav/show-modal! nav :serial-bars-screen {}))))
 
 (defn on-bars-navigator-event [nav event]
   (when (= (.-type event) "NavBarButtonPress")
     (when (= (.-id event) "close")
+      (dispatch [:reset-seasons-and-chapter])
       (nav/dismiss-modal! nav "none"))))
 
-(defn serial-bars-creator [blur-view]
-  (let [serial-items-bar (serials-items-bar-creator blur-view)]
+(defn serial-bars-creator [blur-view activity-view]
+  (let [serial-items-bar (serials-items-bar-creator blur-view activity-view)]
     (fn [{:keys [navigator]}]
-      (. navigator (setOnNavigatorEvent (partial on-bars-navigator-event navigator)))
-      (fn []
-        [serial-items-bar
-         (map #(identity {:active? (= % 0)}) (range 0 10))
-         (map #(identity {:active? (= % 0)}) (range 0 10))
-         (fn [& args] (print args))
-         (fn [& args] (print args))]))))
+      (let [seasons (subscribe [:seasons])
+            chapters (subscribe [:chapters])]
+        (. navigator (setOnNavigatorEvent (partial on-bars-navigator-event navigator)))
+        (fn []
+          [serial-items-bar
+           @seasons
+           @chapters
+           #(do
+             (dispatch [:chapters-load %1 %2]))
+           #(do
+             (dispatch [:chapter-load %1 %2])
+             (nav/dismiss-modal! navigator "none"))
+           navigator])))))
 
 (defn chapters-content [activity-indicator]
   (let [chapters (subscribe [:chapters])

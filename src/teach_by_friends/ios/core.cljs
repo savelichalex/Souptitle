@@ -20,7 +20,7 @@
 (def chapters-scene (get-chapters-scene ios-ui/activity-indicator))
 
 (def chapter (chapters-content ios-ui/activity-indicator))
-(def serial-bars (serial-bars-creator ios-ui/blur-view))
+(def serial-bars (serial-bars-creator ios-ui/blur-view ios-ui/activity-indicator))
 
 (declare serials-screen chapter-screen empty-scene1-screen empty-scene2-screen)
 (defscreen
