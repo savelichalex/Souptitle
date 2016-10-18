@@ -6,7 +6,7 @@
             [teach-by-friends.ios.ui :as ios-ui]
             [teach-by-friends.shared.scenes.serials-scene :refer [get-serials-scene]]
             [teach-by-friends.shared.scenes.seasons-scene :refer [get-seasons-scene]]
-            [teach-by-friends.shared.scenes.chapters-scene :refer [get-chapters-scene chapters-content]]
+            [teach-by-friends.shared.scenes.chapters-scene :refer [get-chapters-scene chapters-content serial-bars-creator]]
             [teach-by-friends.shared.layouts.root-layout :refer [create-root-layout]]
             [teach-by-friends.shared.components.timeline :refer [timeline]]
             [teach-by-friends.shared.navigation :refer [navigation-tabs push!]])
@@ -19,7 +19,8 @@
 (def seasons-scene (get-seasons-scene ios-ui/activity-indicator))
 (def chapters-scene (get-chapters-scene ios-ui/activity-indicator))
 
-(def chapter (chapters-content ios-ui/activity-indicator ios-ui/blur-view))
+(def chapter (chapters-content ios-ui/activity-indicator))
+(def serial-bars (serial-bars-creator ios-ui/blur-view))
 
 (declare serials-screen chapter-screen empty-scene1-screen empty-scene2-screen)
 (defscreen
@@ -53,6 +54,19 @@
                      :statusBarTextColorScheme "light"
                      :screenColor "black"}
     :navigatorButtons {:rightButtons [{:title "Toggle" :id "toggle"}]}}))
+
+(defscreen
+  serial-bars-screen
+  ([props] [serial-bars props])
+  ([_]
+   {:title "Episode selection"
+    :animationType "none"
+    :navigatorStyle {:navBarTextColor          "#fff"
+                     :navBarTransparent        true
+                     :navBarButtonColor        "#fff"
+                     :statusBarTextColorScheme "light"}
+    :navigatorButtons {:leftButtons [{:title "Close" :id "close"}]}}))
+
 (defscreen
   empty-scene1-screen
   ([]
