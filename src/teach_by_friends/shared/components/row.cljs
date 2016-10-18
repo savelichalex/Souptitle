@@ -9,4 +9,4 @@
                                       :padding-bottom      20
                                       :padding-left        30}
                            :on-press (partial press-handler data-to-clj)}
-     [ui/text {:style {:font-size 20 :color "rgb(72, 86, 155)"}} (:title data-to-clj)]]))
+     [ui/text {:style {:font-size 30 :color "white"}} (:title data-to-clj)]]))

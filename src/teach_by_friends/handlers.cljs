@@ -44,13 +44,8 @@
       (-> (rdb/download-json remote-db const/SERIALS_ENTRY_URL)
           (.then (fn [s]
                    (dispatch [:serials-load-success s])
-                   (rdb/download-json remote-db (:path (first s)))))
-          (.then (fn [s]
-                   (dispatch [:seasons-load-success s])
-                   (rdb/download-json remote-db (:path (first (rest s))))))
-          (.then (fn [chapters]
-                   (dispatch [:chapter-load 0 (nth chapters 0)])
-                   (dispatch [:chapters-load-success chapters]))))
+                   (rdb/download-json remote-db (:path (first s))))))
+
       (-> app-db
           (assoc :remote-db remote-db)))))
 
@@ -69,11 +64,19 @@
 (register-handler
   :seasons-load
   (fn [db [_ {seasons :path title :title}]]
-    (-> (rdb/download-json (get db :remote-db) seasons)
-        (.then #(dispatch [:seasons-load-success %]))
-        (.catch #(dispatch [:seasons-load-error %])))
-    (-> db
-        (assoc :seasons-list nil))))
+    (let [remote-db (get db :remote-db)]
+      (-> (rdb/download-json remote-db seasons)
+          (.then (fn [s]
+                   (dispatch [:seasons-load-success s])
+                   (rdb/download-json remote-db (:path (first (rest s))))))
+          (.then (fn [chapters]
+                   (dispatch [:chapter-load 0 (nth chapters 0)])
+                   (dispatch [:chapters-load-success chapters])))
+          (.catch #(dispatch [:seasons-load-error %])))
+      (-> db
+          (assoc :chapter nil)
+          (assoc :seasons-list nil)
+          (assoc :chapters-list nil)))))
 
 (register-handler
   :seasons-load-success
