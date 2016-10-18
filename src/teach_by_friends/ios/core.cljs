@@ -4,7 +4,7 @@
             [teach-by-friends.subs]
             [teach-by-friends.shared.ui :as ui]
             [teach-by-friends.ios.ui :as ios-ui]
-            [teach-by-friends.shared.scenes.serials-scene :refer [get-serials-scene]]
+            [teach-by-friends.shared.scenes.serials-scene :refer [get-serials-scene serials-content]]
             [teach-by-friends.shared.scenes.seasons-scene :refer [get-seasons-scene]]
             [teach-by-friends.shared.scenes.chapters-scene :refer [get-chapters-scene chapters-content serial-bars-creator]]
             [teach-by-friends.shared.layouts.root-layout :refer [create-root-layout]]
@@ -19,24 +19,15 @@
 (def seasons-scene (get-seasons-scene ios-ui/activity-indicator))
 (def chapters-scene (get-chapters-scene ios-ui/activity-indicator))
 
+(def serials (serials-content ios-ui/activity-indicator))
 (def chapter (chapters-content ios-ui/activity-indicator))
-(def serial-bars (serial-bars-creator ios-ui/blur-view))
+(def serial-bars (serial-bars-creator ios-ui/blur-view ios-ui/activity-indicator))
 
 (declare serials-screen chapter-screen empty-scene1-screen empty-scene2-screen)
 (defscreen
   serials-screen
-  ([{:keys [navigator]}]
-   [ui/view {:style {:flex 1
-                     :background-color "black"
-                     :flex-direction "column"}}
-    [ui/touchable-opacity {:style {:justify-content "center"
-                                   :padding-top 20
-                                   :padding-bottom 20
-                                   :padding-left 13}
-                           :on-press #(push! navigator :chapter-screen {:title "Friends"})}
-     [ui/text {:style {:font-size 30
-                       :color "white"}}
-      "Friends"]]])
+  ([props]
+   [serials props])
   ([_]
    {:title "Serials"
     :navigatorStyle {:navBarTextColor          "#fff"
