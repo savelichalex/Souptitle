@@ -107,11 +107,13 @@
     
     UIFont *mainLineFont = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     mainLineFont = [mainLineFont fontWithSize:self->offsetBetweenLines];
-    
-    NSAttributedString *mainLineString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%f", self.tPosition] attributes:@{ NSFontAttributeName: mainLineFont, NSParagraphStyleAttributeName: pStyle, NSForegroundColorAttributeName: self.lineColor}];
+  
+    int linePositionInTimeStamps = (int)(self.tPosition / (self.bounds.size.height / [self.timestamps count]));
+    NSString *currentTimestamp = self.timestamps[linePositionInTimeStamps];
+    NSAttributedString *mainLineString = [[NSAttributedString alloc] initWithString:currentTimestamp attributes:@{ NSFontAttributeName: mainLineFont, NSParagraphStyleAttributeName: pStyle, NSForegroundColorAttributeName: self.lineColor}];
     
     CGRect mainLineBounds;
-    mainLineBounds.size = CGSizeMake(mainLineString.size.width*1.1, mainLineString.size.height);
+    mainLineBounds.size = CGSizeMake(mainLineString.size.width*1.2, mainLineString.size.height);
     mainLineBounds.origin = CGPointMake(width / 2 - mainLineBounds.size.width / 2 + (fullWidth - width), up - mainLineBounds.size.height / 2);
     UIRectFill(mainLineBounds);
     [mainLineString drawInRect:mainLineBounds];
