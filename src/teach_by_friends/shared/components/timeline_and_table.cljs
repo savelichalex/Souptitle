@@ -36,7 +36,7 @@
                                                 :onPanResponderTerminationRequest    (fn [_ _] true)
                                                 :onPanResponderGrant                 update-table-position-compiled
                                                 :onPanResponderMove                  update-table-position-compiled})]
-    (fn timeline-and-table-comp [{:keys [style render-row]}]
+    (fn timeline-and-table-comp [{:keys [style render-row timeline-list]}]
       [ui/view {:style style}
        [table-view {:ref        "wordsList"
                     :on-layout  (fn [event _] (swap! visibleHeight (fn [_] (.. event -nativeEvent -layout -height)))
@@ -50,7 +50,7 @@
                     :style      {:flex 5}}]
        [timeline (-> {:tPosition          t-position
                       :countWordsOnScreen 11
-                      :timestamps         (clj->js chapter)
+                      :timestamps         (clj->js timeline-list)
                       :linesCount         TIMELINE_LINES_COUNT
                       :style              {:flex             1
                                            :background-color "black"}

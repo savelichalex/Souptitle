@@ -250,7 +250,8 @@
   (let [chapters (subscribe [:chapters])
         chapter (subscribe [:get-chapter])
         sort-type (subscribe [:get-sort-type])
-        chapter-terms (reaction (map #(:term %) @chapter))]
+        chapter-terms (reaction (map #(:term %) @chapter))
+        timeline-list (subscribe [:get-timeline-list])]
     (fn [{:keys [navigator]}]
       (. navigator (setOnNavigatorEvent (partial on-navigator-event navigator)))
       (fn chapters-content-comp [{:keys [navigator]}]
@@ -272,6 +273,7 @@
                                                    :flex-direction "row"}
                                  :render-row      #(identity [term-row (nth @chapter-terms %)])
                                  :chapter         @chapter-terms
+                                 :timeline-list   @timeline-list
                                  :term-row-height TERM_ROW_HEIGHT}]
             [ui/view {:style {:flex             1
                               :background-color "black"

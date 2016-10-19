@@ -1,7 +1,8 @@
 (ns teach-by-friends.subs
   (:require-macros [reagent.ratom :refer [reaction]])
   (:require [re-frame.core :refer [register-sub]]
-            [teach-by-friends.consts :as const]))
+            [teach-by-friends.consts :as const]
+            [clojure.string :as string]))
 
 (defmulti chapter-word-list (fn [type _] type))
 (defmethod chapter-word-list :by-rank
@@ -18,8 +19,36 @@
        (sort-by identity)))
 
 (defmethod chapter-word-list :default
-  [key chapter]
-  (print key)
+  [_ chapter]
+  (->> chapter
+       (keys)))
+
+(defn ms-to-mm:ss [ms]
+  (let [minutes (js/Math.floor (/ ms 60000))
+        seconds (-> ms (mod 60000) (/ 1000) (js/Math.floor))]
+    (str
+      (if (< minutes 10) "0" "")
+      minutes
+      ":"
+      (if (< seconds 10) "0" "")
+      seconds)))
+
+(defmulti timeline-list (fn [type _] type))
+(defmethod timeline-list :by-rank
+  [_ chapter]
+  (->> chapter
+       (map (fn [[_ [first-val]]] {:time (ms-to-mm:ss (:from first-val)) :rank (:overall-number first-val)}))
+       (sort-by :rank)
+       (map :time)))
+
+(defmethod timeline-list :by-alphabet
+  [_ chapter]
+  (->> chapter
+       (map (fn [[key _]] (-> key (first) (string/upper-case))))
+       (sort-by identity)))
+
+(defmethod timeline-list :default
+  [_ chapter]
   (->> chapter
        (keys)))
 
@@ -67,6 +96,13 @@
           filtered-terms (reaction (filter-terms-by-search-predicate @filter-by-well-known-terms @search-predicate))]
       (reaction (->> @filtered-terms
                      (add-status-keys @term-to-translate @term-translate))))))
+
+(register-sub ;; TODO: see at use case when need to use search
+  :get-timeline-list
+  (fn [db _]
+    (let [sort-type (reaction (:sort-chapter @db))]
+      (reaction (timeline-list @sort-type (get @db :chapter))))))
+
 
 (register-sub
   :get-sort-type
