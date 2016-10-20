@@ -63,7 +63,7 @@
 
 (register-handler
   :seasons-load
-  (fn [db [_ {seasons :path title :title}]]
+  (fn [db [_ {seasons :path title :title cover :cover}]]
     (let [remote-db (get db :remote-db)]
       (-> (rdb/download-json remote-db seasons)
           (.then (fn [s]
@@ -74,6 +74,7 @@
                    (dispatch [:chapters-load-success chapters])))
           (.catch #(dispatch [:seasons-load-error %])))
       (-> db
+          (assoc :serial-cover-image cover)
           (assoc :chapter nil)
           (assoc :seasons-list nil)
           (assoc :chapters-list nil)))))

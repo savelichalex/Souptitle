@@ -194,7 +194,8 @@
    [search-icon {:style {:width 15 :height 15}}]])
 
 (defn sort-row [sort-type]
-  [ui/view {:style {:margin-left         13
+  [ui/view {:style {:margin-top 100
+                    :margin-left         13
                     :margin-right        13
                     :margin-bottom       2
                     :border-top-width    1
@@ -246,25 +247,36 @@
              (nav/dismiss-modal! navigator "none"))
            navigator])))))
 
+(defn serial-cover [image-uri]
+  [ui/image {:source {:uri @image-uri}
+             :resize-mode "cover"
+             :style {:width (ui/get-device-width)
+                     :height 100
+                     :position "absolute"
+                     :top 0}}]
+  [ui/linear-gradient {:colors ["rgba(0,0,0,1)" "rgba(0,0,0,0)"]
+                       :start  [0.5 1.0] :end [0.5 0.0]
+                       :style  {:height 100
+                                :width (ui/get-device-width)
+                                :position "absolute"
+                                :top 0}}])
+
 (defn chapters-content [activity-indicator]
-  (let [chapters (subscribe [:chapters])
-        chapter (subscribe [:get-chapter])
+  (let [chapter (subscribe [:get-chapter])
         sort-type (subscribe [:get-sort-type])
         chapter-terms (reaction (map #(:term %) @chapter))
-        timeline-list (subscribe [:get-timeline-list])]
+        timeline-list (subscribe [:get-timeline-list])
+        cover (subscribe [:get-cover-image])]
     (fn [{:keys [navigator]}]
       (. navigator (setOnNavigatorEvent (partial on-navigator-event navigator)))
       (fn chapters-content-comp [{:keys [navigator]}]
-        [ui/view {:style {:position         "absolute"
-                          :left             0
-                          :right            0
-                          :top              0
-                          :bottom           0
-                          :flex             1
+        [ui/view {:style {:flex 1
                           :padding-bottom   2
                           :flex-direction   "column"
                           :align-items      "stretch"
-                          :background-color "black"}}
+                          :background-color "black"
+                          :position "relative"}}
+         [serial-cover @cover]
          [sort-row @sort-type]
          [ui/view {:style {:flex     1
                            :position "relative"}}

@@ -25,6 +25,13 @@
 (def text-input (r/adapt-react-class (.-TextInput ReactNative)))
 (def status-bar (r/adapt-react-class (.-StatusBar ReactNative)))
 
+(def Dimensions (. ReactNative -Dimensions))
+
+(defn get-device-width []
+  (-> Dimensions (.get "window") (.-width)))
+(defn get-device-height []
+  (-> Dimensions (.get "window") (.-height)))
+
 (defn alert [title]
   (.alert (.-Alert ReactNative) title))
 

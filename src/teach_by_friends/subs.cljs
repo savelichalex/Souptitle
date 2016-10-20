@@ -139,3 +139,9 @@
   :show-serial-bars?
   (fn [db _]
     (reaction (get @db :show-serial-bars?))))
+
+;; Cover image
+(register-sub
+  :get-cover-image
+  (fn [db _]
+    (reaction (get @db :serial-cover-image))))
