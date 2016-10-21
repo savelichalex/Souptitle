@@ -194,7 +194,8 @@
    [search-icon {:style {:width 15 :height 15}}]])
 
 (defn sort-row [sort-type]
-  [ui/view {:style {:margin-left         13
+  [ui/view {:style {:margin-top 64
+                    :margin-left         13
                     :margin-right        13
                     :margin-bottom       2
                     :border-top-width    1
@@ -208,14 +209,18 @@
                                      :padding-top     13
                                      :padding-bottom  13}
                           :on-press #(dispatch [:resort-chapter :by-rank])}
-    [ui/text {:style {:color (if (= sort-type :by-rank) "white" "rgb(155,155,155)")}} "Timeline"]]
+    [ui/text {:style {:color (if (= sort-type :by-rank) "white" "rgb(155,155,155)")
+                      :background-color "transparent"}}
+     "Timeline"]]
    [ui/touchable-opacity {:style    {:flex            1
                                      :align-items     "center"
                                      :justify-content "center"
                                      :padding-top     13
                                      :padding-bottom  13}
                           :on-press #(dispatch [:resort-chapter :by-alphabet])}
-    [ui/text {:style {:color (if (= sort-type :by-alphabet) "white" "rgb(155,155,155)")}} "Alphabet"]]])
+    [ui/text {:style {:color (if (= sort-type :by-alphabet) "white" "rgb(155,155,155)")
+                      :background-color "transparent"}}
+     "Alphabet"]]])
 
 (defn on-navigator-event [nav event]
   (when (= (.-type event) "NavBarButtonPress")
@@ -246,26 +251,44 @@
              (nav/dismiss-modal! navigator "none"))
            navigator])))))
 
+(def static-cover (js/require "./images/cover.png"))
+
+(defn serial-cover [image-uri sort-type]
+  (let [height (r/atom 0)
+        on-layout (fn [event _] (swap! height (fn [_] (.. event -nativeEvent -layout -height))))]
+    (fn serial-cover-comp [image-uri sort-type]
+      [ui/view {:style {:position "relative"}
+                :on-layout on-layout}
+       [ui/image {:source {:uri image-uri}
+                  :resize-mode "cover"
+                  :style {:width (ui/get-device-width)
+                          :height @height
+                          :position "absolute"
+                          :top 0}}]
+       [ui/linear-gradient {:colors ["rgba(0,0,0,1)" "rgba(0,0,0,0.3)"]
+                            :start  [0.5 1.0] :end [0.5 0.0]
+                            :style  {:width (ui/get-device-width)
+                                     :height @height
+                                     :position "absolute"
+                                     :top 0}}]
+       [sort-row sort-type]])))
+
 (defn chapters-content [activity-indicator]
-  (let [chapters (subscribe [:chapters])
-        chapter (subscribe [:get-chapter])
+  (let [chapter (subscribe [:get-chapter])
         sort-type (subscribe [:get-sort-type])
         chapter-terms (reaction (map #(:term %) @chapter))
-        timeline-list (subscribe [:get-timeline-list])]
+        timeline-list (subscribe [:get-timeline-list])
+        cover (subscribe [:get-cover-image])]
     (fn [{:keys [navigator]}]
       (. navigator (setOnNavigatorEvent (partial on-navigator-event navigator)))
       (fn chapters-content-comp [{:keys [navigator]}]
-        [ui/view {:style {:position         "absolute"
-                          :left             0
-                          :right            0
-                          :top              0
-                          :bottom           0
-                          :flex             1
+        [ui/view {:style {:flex 1
                           :padding-bottom   2
                           :flex-direction   "column"
                           :align-items      "stretch"
-                          :background-color "black"}}
-         [sort-row @sort-type]
+                          :background-color "black"
+                          :position "relative"}}
+         [serial-cover @cover @sort-type]
          [ui/view {:style {:flex     1
                            :position "relative"}}
           (if (not (empty? @chapter))

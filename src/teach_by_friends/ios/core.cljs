@@ -41,6 +41,8 @@
    {:title title
     :navigatorStyle {:navBarTextColor          "#fff"
                      :navBarTransparent        true
+                     :navBarTranslucent        true
+                     :drawUnderNavBar          true
                      :navBarButtonColor        "#fff"
                      :statusBarTextColorScheme "light"
                      :screenColor "black"}
@@ -61,12 +63,15 @@
 (defscreen
   empty-scene1-screen
   ([]
-   [ui/view {:style {:flex             1
-                     :background-color "red"}}])
+   [ui/view {:style {:flex 1
+                     :flex-direction "column"
+                     :position "relative"}}])
   ([_]
    {:title          "Favorite"
     :navigatorStyle {:navBarTextColor          "#fff"
                      :navBarTransparent        true
+                     :navBarTranslucent        true
+                     :drawUnderNavBar          true
                      :navBarButtonColor        "#fff"
                      :statusBarTextColorScheme "light"
                      :screenColor "red"}}))
