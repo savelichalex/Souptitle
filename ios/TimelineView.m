@@ -109,6 +109,9 @@
     mainLineFont = [mainLineFont fontWithSize:self->offsetBetweenLines];
   
     int linePositionInTimeStamps = (int)(self.tPosition / (self.bounds.size.height / [self.timestamps count]));
+    if (linePositionInTimeStamps < 0) {
+      linePositionInTimeStamps = 0;
+    }
     NSString *currentTimestamp = self.timestamps[linePositionInTimeStamps];
     NSAttributedString *mainLineString = [[NSAttributedString alloc] initWithString:currentTimestamp attributes:@{ NSFontAttributeName: mainLineFont, NSParagraphStyleAttributeName: pStyle, NSForegroundColorAttributeName: self.lineColor}];
     

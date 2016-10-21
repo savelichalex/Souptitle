@@ -40,6 +40,7 @@
   ([{:keys [title]}]
    {:title title
     :navigatorStyle {:navBarTextColor          "#fff"
+                     :navBarTransparent        true
                      :navBarTranslucent        true
                      :drawUnderNavBar          true
                      :navBarButtonColor        "#fff"

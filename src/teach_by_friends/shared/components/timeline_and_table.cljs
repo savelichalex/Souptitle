@@ -39,8 +39,7 @@
     (fn timeline-and-table-comp [{:keys [style render-row timeline-list]}]
       [ui/view {:style style}
        [table-view {:ref        "wordsList"
-                    :on-layout  (fn [event _] (swap! visibleHeight (fn [_] (.. event -nativeEvent -layout -height)))
-                                  (print (.. event -nativeEvent -layout -height)))
+                    :on-layout  (fn [event _] (swap! visibleHeight (fn [_] (.. event -nativeEvent -layout -height))))
                     :on-scroll  update-timeline-position-compiled
                     :margin-top table-margin-top
                     :num-rows   (count chapter)
