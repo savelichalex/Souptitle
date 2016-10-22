@@ -4,10 +4,22 @@
 
 (defn row [data press-handler]
   (let [data-to-clj (js->clj data :keywordize-keys true)]
-    [ui/touchable-opacity {:style    {:border-bottom-width 1
-                                      :border-color        "rgba(0,0,0,.1)"
-                                      :padding-top         20
-                                      :padding-bottom      20
-                                      :padding-left        30}
+    [ui/touchable-opacity {:style    {:position "relative"
+                                      :height 100}
                            :on-press (partial press-handler data-to-clj)}
-     [ui/text {:style {:font-size 30 :color "white"}} (capitalize (:title data-to-clj))]]))
+     [ui/image {:source {:uri (:cover data-to-clj)}
+                :resize-mode "cover"
+                :style {:width (ui/get-device-width)
+                        :height 100}}]
+     [ui/linear-gradient {:colors ["rgba(0,0,0,0.6)" "rgba(0,0,0,0)"]
+                          :start  [0.0 0.5] :end [1.0 0.5]
+                          :style  {:width (ui/get-device-width)
+                                   :height 100
+                                   :position "absolute"
+                                   :top 0}}]
+     [ui/text {:style {:position "absolute"
+                       :font-size 14
+                       :color "white"
+                       :left 16
+                       :bottom 10}}
+      (capitalize (:title data-to-clj))]]))
