@@ -106,16 +106,14 @@
         (.then #(dispatch [:term-translate-success term %]))
         (.catch #(print %)))
     (-> db
-        (assoc :term-to-translate term)
         (assoc :term-translate nil))))
 
 (register-handler
   :term-translate-success
   (fn [db [_ term translate]]
-    (let [in-chapter (first (get-in db [:chapter term]))]
-      (-> db
-          (assoc :term-translate (-> in-chapter
-                                     (assoc :translate (:text translate))))))))
+    (print translate)
+    (-> db
+        (assoc :term-translate (:text translate)))))
 
 (register-handler
   :nav/pop-term
