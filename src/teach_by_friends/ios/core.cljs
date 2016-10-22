@@ -58,7 +58,7 @@
     :navigatorStyle {:navBarTextColor          "#fff"
                      :navBarTransparent        true
                      :navBarButtonColor        "#fff"
-                     :navBarNoBorder true
+                     :navBarNoBorder false
                      :statusBarTextColorScheme "light"}
     :navigatorButtons {:leftButtons [{:icon (get-icon :close) :id "close"}]}}))
 
