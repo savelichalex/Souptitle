@@ -14,13 +14,12 @@
 (defmethod chapter-word-list :by-alphabet
   [_ chapter]
   (->> chapter
-       (keys)
-       (sort-by identity)))
+       (map (fn [[key [first-val]]] {:term key :sentence (:sentence first-val)}))
+       (sort-by :term)))
 
 (defmethod chapter-word-list :default
   [_ chapter]
-  (->> chapter
-       (keys)))
+  (chapter-word-list :by-rank chapter))
 
 (defn ms-to-mm:ss [ms]
   (let [minutes (js/Math.floor (/ ms 60000))
