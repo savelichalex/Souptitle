@@ -7,6 +7,7 @@
             [teach-by-friends.consts :as const]
             [teach-by-friends.shared.navigation :as nav]
             [teach-by-friends.shared.icons :refer [get-icon]]
+            [teach-by-friends.shared.components.term-row :refer [term-row]]
             [teach-by-friends.shared.components.timeline-and-table :refer [timeline-and-table]]))
 
 (defn serial-item [number last-number item active? on-change]
@@ -133,19 +134,6 @@
                                         :padding-bottom             10}
                              :on-press #(dispatch [:add-to-well-known term])}
        [ui/text {:style {:color "white"}} "I remember this"]]])])
-
-(def TERM_ROW_HEIGHT 40)
-
-(defn term-row [item nav]
-  (let [term (:term item)]
-    [ui/touchable-opacity {:style    {:height          TERM_ROW_HEIGHT
-                                      :flex-direction  "column"
-                                      :justify-content "center"
-                                      :padding-left    13}
-                           :on-press #(do
-                                       (dispatch [:translate-term term])
-                                       (nav/show-modal! nav :translate-screen item))}
-     [ui/text {:style {:font-size 16 :color "rgb(155,155,155)"}} term]]))
 
 (defn back-button []
   [ui/touchable-opacity {:style    {:flex        1
@@ -342,10 +330,15 @@
           (if (not (empty? @chapter))
             [timeline-and-table {:style           {:flex           1
                                                    :flex-direction "row"}
-                                 :render-row      #(identity [term-row (nth @chapter %) navigator])
+                                 :render-row      (fn [index]
+                                                    [term-row
+                                                     (nth @chapter index)
+                                                     #(do
+                                                       (dispatch [:translate-term (:term (nth @chapter index))])
+                                                       (nav/show-modal! navigator :translate-screen (nth @chapter index)))])
                                  :chapter         @chapter
                                  :timeline-list   @timeline-list
-                                 :term-row-height TERM_ROW_HEIGHT}]
+                                 :term-row-height const/TERM_ROW_HEIGHT}]
             [ui/view {:style {:flex             1
                               :background-color "black"
                               :justify-content  "center"

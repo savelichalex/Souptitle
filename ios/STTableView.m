@@ -69,6 +69,8 @@
       _bridge = [_bridge valueForKey:@"parentBridge"];
     }
     _unusedCells = [NSMutableArray array];
+    _scrollPositionOffset = 0;
+    _backColor = [UIColor clearColor];
     
     [self createTableView];
   }

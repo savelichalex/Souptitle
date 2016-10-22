@@ -138,3 +138,9 @@
   :get-cover-image
   (fn [db _]
     (reaction (get @db :serial-cover-image))))
+
+;; Well known words
+(register-sub
+  :get-well-known-words
+  (fn [db _]
+    (reaction (get @db :well-known-terms))))

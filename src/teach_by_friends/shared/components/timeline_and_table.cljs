@@ -4,7 +4,7 @@
             [teach-by-friends.shared.components.table-view :refer [table-view]]
             [teach-by-friends.shared.components.timeline :refer [timeline]]))
 
-(def TIMELINE_LINES_COUNT 70)
+(def TIMELINE_LINES_COUNT 60)
 
 (defn update-positions [tPosition table-margin-top fullHeight visibleHeight event _]
   (let [timeline-y (.. event -nativeEvent -locationY)

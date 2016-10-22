@@ -29,13 +29,15 @@
     (fn table-view-comp [{:keys [style on-layout on-scroll render-row row-height num-rows margin-top back-color]}]
       [ui/view {:style style
                 :on-layout on-layout}
-       (into [table-view-native {:style {:flex 1}
-                                 :scrollPositionOffset margin-top
-                                 :onChange on-bind
-                                 :onScroll on-scroll
-                                 :rowHeight row-height
-                                 :numRows num-rows
-                                 :backColor back-color}]
+       (into [table-view-native (->> {:style {:flex 1}
+                                      :scrollPositionOffset margin-top
+                                      :onChange on-bind
+                                      :onScroll on-scroll
+                                      :rowHeight row-height
+                                      :numRows num-rows
+                                      :backColor back-color}
+                                     (filter #(not (nil? (second %))))
+                                     (into {}))]
          (->> (range 0 ROWS_FOR_RECYCLING)
               (map #(identity [rebound-renderer {:key (str "r_" %)
                                                  :bound-to (nth @state %)
