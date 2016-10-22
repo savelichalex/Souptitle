@@ -256,6 +256,12 @@
                             :align-items "center"
                             :justify-content "center"}
                     :blur-type "dark"}
+         [ui/touchable-opacity {:style {:position "absolute"
+                                        :top 0
+                                        :right 0
+                                        :bottom 0
+                                        :left 0}
+                                :on-press #(nav/dismiss-modal! navigator "none")}]
          [ui/view {:style {:border-top-color "rgb(155,155,155)"
                            :border-top-width 1
                            :border-bottom-color "rgb(155,155,155)"
@@ -270,7 +276,11 @@
                            :padding-right 15}}
           [ui/view {:style {:flex-direction "row"}}
            [ui/text {:style {:color "white" :font-size 14 :flex 1}} term]
-           [ui/touchable-opacity {:on-press #(nav/dismiss-modal! navigator "none")}
+           [ui/touchable-opacity {:on-press #(nav/dismiss-modal! navigator "none")
+                                  :hit-slop {:top 10
+                                             :right 10
+                                             :bottom 10
+                                             :left 10}}
             [ui/image {:source (get-icon :close)
                        :style {:width 16
                                :height 16}}]]]
@@ -285,7 +295,10 @@
              (into [ui/view]
                    (for [tr-term @translate]
                      [ui/text {:style {:color "white" :font-size 14}} tr-term])))
-           [ui/text {:style {:color "rgb(155,155,155)" :font-size 14}} "In sentence:"]
+           [ui/text {:style {:color "rgb(155,155,155)"
+                             :font-size 14
+                             :margin-top 10}}
+            "In sentence:"]
            [sentence-with-term sentence term]]]]))))
 
 
