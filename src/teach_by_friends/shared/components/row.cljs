@@ -1,5 +1,6 @@
 (ns teach-by-friends.shared.components.row
-  (:require [teach-by-friends.shared.ui :as ui]))
+  (:require [teach-by-friends.shared.ui :as ui]
+            [clojure.string :refer [capitalize]]))
 
 (defn row [data press-handler]
   (let [data-to-clj (js->clj data :keywordize-keys true)]
@@ -9,4 +10,4 @@
                                       :padding-bottom      20
                                       :padding-left        30}
                            :on-press (partial press-handler data-to-clj)}
-     [ui/text {:style {:font-size 30 :color "white"}} (:title data-to-clj)]]))
+     [ui/text {:style {:font-size 30 :color "white"}} (capitalize (:title data-to-clj))]]))

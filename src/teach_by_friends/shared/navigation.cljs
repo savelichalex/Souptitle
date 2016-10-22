@@ -52,9 +52,12 @@
                    (merge (get-settings screen props))
                    (clj->js)))))
 
-(defn pop! [nav animated]
-  (.pop nav (-> {:animated animated}
-                (clj->js))))
+(defn pop!
+  ([nav]
+   (pop! nav true))
+  ([nav animated]
+   (.pop nav (-> {:animated animated}
+                 (clj->js)))))
 
 (defn show-modal!
   ([nav route]

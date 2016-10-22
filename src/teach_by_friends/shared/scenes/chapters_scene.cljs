@@ -212,7 +212,9 @@
   (when (= (.-type event) "NavBarButtonPress")
     (when (= (.-id event) "toggle")
       (dispatch [:save-seasons-and-chapters])
-      (nav/show-modal! nav :serial-bars-screen {}))))
+      (nav/show-modal! nav :serial-bars-screen {}))
+    (when (= (.-id event) "back")
+      (nav/pop! nav))))
 
 (defn on-bars-navigator-event [nav event]
   (when (= (.-type event) "NavBarButtonPress")

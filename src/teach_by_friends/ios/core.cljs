@@ -1,5 +1,6 @@
 (ns teach-by-friends.ios.core
   (:require [reagent.core :as r]
+            [clojure.string :refer [capitalize]]
             [teach-by-friends.handlers]
             [teach-by-friends.subs]
             [teach-by-friends.shared.ui :as ui]
@@ -28,7 +29,7 @@
   ([props]
    [serials props])
   ([_]
-   {:title "Serials"
+   {:title "Souptitle"
     :navigatorStyle {:navBarTextColor          "#fff"
                      :navBarTransparent        true
                      :navBarButtonColor        "#fff"
@@ -37,7 +38,7 @@
   chapter-screen
   ([props] [chapter props])
   ([{:keys [title]}]
-   {:title title
+   {:title (capitalize title)
     :navigatorStyle {:navBarTextColor          "#fff"
                      :navBarTransparent        true
                      :navBarTranslucent        true
@@ -45,7 +46,8 @@
                      :navBarButtonColor        "#fff"
                      :statusBarTextColorScheme "light"
                      :screenColor "black"}
-    :navigatorButtons {:rightButtons [{:title "Toggle" :id "toggle"}]}}))
+    :navigatorButtons {:leftButtons [{:icon (get-icon :back) :id "back"}]
+                       :rightButtons [{:icon (get-icon :episodes) :id "toggle"}]}}))
 
 (defscreen
   serial-bars-screen
@@ -56,8 +58,9 @@
     :navigatorStyle {:navBarTextColor          "#fff"
                      :navBarTransparent        true
                      :navBarButtonColor        "#fff"
+                     :navBarNoBorder true
                      :statusBarTextColorScheme "light"}
-    :navigatorButtons {:leftButtons [{:title "Close" :id "close"}]}}))
+    :navigatorButtons {:leftButtons [{:icon (get-icon :close) :id "close"}]}}))
 
 (defscreen
   empty-scene1-screen
