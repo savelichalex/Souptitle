@@ -1,22 +1,22 @@
 (ns teach-by-friends.ios.core
   (:require [reagent.core :as r]
+            [clojure.string :refer [capitalize]]
             [teach-by-friends.handlers]
             [teach-by-friends.subs]
             [teach-by-friends.shared.ui :as ui]
             [teach-by-friends.ios.ui :as ios-ui]
             [teach-by-friends.shared.scenes.serials-scene :refer [get-serials-scene serials-content]]
-            [teach-by-friends.shared.scenes.seasons-scene :refer [get-seasons-scene]]
             [teach-by-friends.shared.scenes.chapters-scene :refer [get-chapters-scene chapters-content serial-bars-creator]]
             [teach-by-friends.shared.layouts.root-layout :refer [create-root-layout]]
             [teach-by-friends.shared.components.timeline :refer [timeline]]
-            [teach-by-friends.shared.navigation :refer [navigation-tabs push!]])
+            [teach-by-friends.shared.navigation :refer [navigation-tabs push!]]
+            [teach-by-friends.shared.icons :refer [get-icon]])
   (:require-macros [teach-by-friends.shared.navigation :refer [defscreen]]))
 
 (enable-console-print!)
 
 (def root-layout (create-root-layout {:bar-style "light-content"}))
 (def serials-scene (get-serials-scene ios-ui/activity-indicator))
-(def seasons-scene (get-seasons-scene ios-ui/activity-indicator))
 (def chapters-scene (get-chapters-scene ios-ui/activity-indicator))
 
 (def serials (serials-content ios-ui/activity-indicator))
@@ -29,7 +29,7 @@
   ([props]
    [serials props])
   ([_]
-   {:title "Serials"
+   {:title "Souptitle"
     :navigatorStyle {:navBarTextColor          "#fff"
                      :navBarTransparent        true
                      :navBarButtonColor        "#fff"
@@ -38,7 +38,7 @@
   chapter-screen
   ([props] [chapter props])
   ([{:keys [title]}]
-   {:title title
+   {:title (capitalize title)
     :navigatorStyle {:navBarTextColor          "#fff"
                      :navBarTransparent        true
                      :navBarTranslucent        true
@@ -46,7 +46,8 @@
                      :navBarButtonColor        "#fff"
                      :statusBarTextColorScheme "light"
                      :screenColor "black"}
-    :navigatorButtons {:rightButtons [{:title "Toggle" :id "toggle"}]}}))
+    :navigatorButtons {:leftButtons [{:icon (get-icon :back) :id "back"}]
+                       :rightButtons [{:icon (get-icon :episodes) :id "toggle"}]}}))
 
 (defscreen
   serial-bars-screen
@@ -57,8 +58,9 @@
     :navigatorStyle {:navBarTextColor          "#fff"
                      :navBarTransparent        true
                      :navBarButtonColor        "#fff"
+                     :navBarNoBorder true
                      :statusBarTextColorScheme "light"}
-    :navigatorButtons {:leftButtons [{:title "Close" :id "close"}]}}))
+    :navigatorButtons {:leftButtons [{:icon (get-icon :close) :id "close"}]}}))
 
 (defscreen
   empty-scene1-screen
@@ -92,9 +94,12 @@
   (navigation-tabs {:tabsStyle {:tabBarButtonColor         "rgb(151,151,151)"
                                 :tabBarSelectedButtonColor "#fff"
                                 :tabBarBackgroundColor     "#000"}}
-                   [serials-screen {:label "Words"}]
-                   [empty-scene1-screen {:label "Favorite"}]
-                   [empty-scene2-screen {:label "About"}]))
+                   [serials-screen {:label "Words"
+                                    :icon (get-icon :words)}]
+                   [empty-scene1-screen {:label "Favorite"
+                                         :icon (get-icon :favorites)}]
+                   [empty-scene2-screen {:label "About"
+                                         :icon (get-icon :information)}]))
 
 (defn init []
   (app-root))

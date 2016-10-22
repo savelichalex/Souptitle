@@ -8,16 +8,6 @@
             [teach-by-friends.shared.navigation :as nav]
             [teach-by-friends.shared.components.timeline-and-table :refer [timeline-and-table]]))
 
-(def menu-icon-source (js/require "./images/menu-icon.png"))
-(def search-icon-source (js/require "./images/search-icon.png"))
-(def back-icon-source (js/require "./images/back-icon.png"))
-(defn menu-icon [{:keys [style]}]
-  [ui/image {:source menu-icon-source :style style}])
-(defn search-icon [{:keys [style]}]
-  [ui/image {:source search-icon-source :style style}])
-(defn back-icon [{:keys [style]}]
-  [ui/image {:source back-icon-source :style style}])
-
 (defn serial-item [number last-number item active? on-change]
   [ui/touchable-opacity {:style    {:justify-content  "center"
                                     :align-items      "center"
@@ -95,10 +85,6 @@
                              :background-color "transparent"}
                  :blur-type "dark"}]]))
 
-
-(def ReactNative (js/require "react-native"))
-
-(def chapter-ds (ReactNative.ListView.DataSource. #js{:rowHasChanged not=}))
 
 (defn sentence-with-term [props sentence raw-term]
   (let [pattern (re-pattern raw-term)
@@ -226,7 +212,9 @@
   (when (= (.-type event) "NavBarButtonPress")
     (when (= (.-id event) "toggle")
       (dispatch [:save-seasons-and-chapters])
-      (nav/show-modal! nav :serial-bars-screen {}))))
+      (nav/show-modal! nav :serial-bars-screen {}))
+    (when (= (.-id event) "back")
+      (nav/pop! nav))))
 
 (defn on-bars-navigator-event [nav event]
   (when (= (.-type event) "NavBarButtonPress")
@@ -250,8 +238,6 @@
              (dispatch [:chapter-load %1 %2])
              (nav/dismiss-modal! navigator "none"))
            navigator])))))
-
-(def static-cover (js/require "./images/cover.png"))
 
 (defn serial-cover [image-uri sort-type]
   (let [height (r/atom 0)
