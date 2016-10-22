@@ -8,9 +8,8 @@
 (defmethod chapter-word-list :by-rank
   [_ chapter]
   (->> chapter
-       (map (fn [[key [first-val]]] {:term key :rank (:overall-number first-val)}))
-       (sort-by :rank)
-       (map :term)))
+       (map (fn [[key [first-val]]] {:term key :rank (:overall-number first-val) :sentence (:sentence first-val)}))
+       (sort-by :rank)))
 
 (defmethod chapter-word-list :by-alphabet
   [_ chapter]
@@ -86,23 +85,18 @@
 (register-sub
   :get-chapter
   (fn [db _]
-    (let [term-to-translate (reaction (get @db :term-to-translate))
-          term-translate (reaction (get @db :term-translate))
-          sort-type (reaction (:sort-chapter @db))
+    (let [sort-type (reaction (:sort-chapter @db))
           terms (reaction (chapter-word-list @sort-type (get @db :chapter)))
           well-known-terms (reaction (get @db :well-known-terms))
           filter-by-well-known-terms (reaction (filter-well-known-words @terms @well-known-terms))
-          search-predicate (reaction (get @db :search-predicate))
-          filtered-terms (reaction (filter-terms-by-search-predicate @filter-by-well-known-terms @search-predicate))]
-      (reaction (->> @filtered-terms
-                     (add-status-keys @term-to-translate @term-translate))))))
+          search-predicate (reaction (get @db :search-predicate))]
+      (reaction (filter-terms-by-search-predicate @filter-by-well-known-terms @search-predicate)))))
 
 (register-sub ;; TODO: see at use case when need to use search
   :get-timeline-list
   (fn [db _]
     (let [sort-type (reaction (:sort-chapter @db))]
       (reaction (timeline-list @sort-type (get @db :chapter))))))
-
 
 (register-sub
   :get-sort-type

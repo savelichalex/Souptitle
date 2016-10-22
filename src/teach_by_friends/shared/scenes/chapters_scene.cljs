@@ -6,6 +6,7 @@
             [re-frame.core :refer [subscribe dispatch]]
             [teach-by-friends.consts :as const]
             [teach-by-friends.shared.navigation :as nav]
+            [teach-by-friends.shared.icons :refer [get-icon]]
             [teach-by-friends.shared.components.timeline-and-table :refer [timeline-and-table]]))
 
 (defn serial-item [number last-number item active? on-change]
@@ -86,13 +87,13 @@
                  :blur-type "dark"}]]))
 
 
-(defn sentence-with-term [props sentence raw-term]
+(defn sentence-with-term [sentence raw-term]
   (let [pattern (re-pattern raw-term)
         splited-sentence (string/split sentence pattern)]
-    [ui/text props
-     [ui/text {:style {:font-size 20 :color "rgba(255,255,255,.6)"}} (first splited-sentence)]
-     [ui/text {:style {:font-size 20 :color "white"}} raw-term]
-     [ui/text {:style {:font-size 20 :color "rgba(255,255,255,.6)"}} (first (rest splited-sentence))]]))
+    [ui/text
+     [ui/text {:style {:font-size 14 :color "rgb(155,155,155)"}} (first splited-sentence)]
+     [ui/text {:style {:font-size 14 :color "white"}} raw-term]
+     [ui/text {:style {:font-size 14 :color "rgb(155,155,155)"}} (first (rest splited-sentence))]]))
 
 (defn detailed-term-row [{:keys [term translate]} activity-indicator]
   [ui/view {:style {:padding-left  10
@@ -135,13 +136,16 @@
 
 (def TERM_ROW_HEIGHT 40)
 
-(defn term-row [item]
-  [ui/touchable-opacity {:style    {:height          TERM_ROW_HEIGHT
-                                    :flex-direction  "column"
-                                    :justify-content "center"
-                                    :padding-left    13}
-                         :on-press #(ui/alert item)}
-   [ui/text {:style {:font-size 16 :color "rgb(155,155,155)"}} item]])
+(defn term-row [item nav]
+  (let [term (:term item)]
+    [ui/touchable-opacity {:style    {:height          TERM_ROW_HEIGHT
+                                      :flex-direction  "column"
+                                      :justify-content "center"
+                                      :padding-left    13}
+                           :on-press #(do
+                                       (dispatch [:translate-term term])
+                                       (nav/show-modal! nav :translate-screen item))}
+     [ui/text {:style {:font-size 16 :color "rgb(155,155,155)"}} term]]))
 
 (defn back-button []
   [ui/touchable-opacity {:style    {:flex        1
@@ -239,6 +243,52 @@
              (nav/dismiss-modal! navigator "none"))
            navigator])))))
 
+(defn translate-creator [blur-view activity-view]
+  (fn [{:keys [navigator]}]
+    (let [translate (subscribe [:term-translate])]
+      (fn [{:keys [term sentence]}]
+        [blur-view {:style {:position "absolute"
+                            :top 0
+                            :right 0
+                            :bottom 0
+                            :left 0
+                            :flex 1
+                            :align-items "center"
+                            :justify-content "center"}
+                    :blur-type "dark"}
+         [ui/view {:style {:border-top-color "rgb(155,155,155)"
+                           :border-top-width 1
+                           :border-bottom-color "rgb(155,155,155)"
+                           :border-bottom-width 1
+                           :background-color "black"
+                           :flex-direction "column"
+                           :position "relative"
+                           :width (ui/get-device-width)
+                           :padding-top 10
+                           :padding-bottom 10
+                           :padding-left 15
+                           :padding-right 15}}
+          [ui/view {:style {:flex-direction "row"}}
+           [ui/text {:style {:color "white" :font-size 14 :flex 1}} term]
+           [ui/touchable-opacity {:on-press #(nav/dismiss-modal! navigator "none")}
+            [ui/image {:source (get-icon :close)
+                       :style {:width 16
+                               :height 16}}]]]
+          [ui/view {:style {:margin-top 10
+                            :padding-left 10
+                            :padding-right 10
+                            :border-left-color "white"
+                            :border-left-width 1
+                            :flex-direction "column"}}
+           (if (nil? @translate)
+             [activity-view {:color "rgb(155,155,155)"}]
+             (into [ui/view]
+                   (for [tr-term @translate]
+                     [ui/text {:style {:color "white" :font-size 14}} tr-term])))
+           [ui/text {:style {:color "rgb(155,155,155)" :font-size 14}} "In sentence:"]
+           [sentence-with-term sentence term]]]]))))
+
+
 (defn serial-cover [image-uri sort-type]
   (let [height (r/atom 0)
         on-layout (fn [event _] (swap! height (fn [_] (.. event -nativeEvent -layout -height))))]
@@ -262,7 +312,6 @@
 (defn chapters-content [activity-indicator]
   (let [chapter (subscribe [:get-chapter])
         sort-type (subscribe [:get-sort-type])
-        chapter-terms (reaction (map #(:term %) @chapter))
         timeline-list (subscribe [:get-timeline-list])
         cover (subscribe [:get-cover-image])]
     (fn [{:keys [navigator]}]
@@ -280,8 +329,8 @@
           (if (not (empty? @chapter))
             [timeline-and-table {:style           {:flex           1
                                                    :flex-direction "row"}
-                                 :render-row      #(identity [term-row (nth @chapter-terms %)])
-                                 :chapter         @chapter-terms
+                                 :render-row      #(identity [term-row (nth @chapter %) navigator])
+                                 :chapter         @chapter
                                  :timeline-list   @timeline-list
                                  :term-row-height TERM_ROW_HEIGHT}]
             [ui/view {:style {:flex             1

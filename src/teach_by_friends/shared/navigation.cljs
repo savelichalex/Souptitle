@@ -64,7 +64,8 @@
    (show-modal! nav route {}))
   ([nav route props]
    (when-let [screen (on-route {:route route})]
-     (.showModal nav (-> {:screen (get-name screen)}
+     (.showModal nav (-> {:screen (get-name screen)
+                          :passProps props}
                          (merge (get-settings screen props))
                          (clj->js))))))
 

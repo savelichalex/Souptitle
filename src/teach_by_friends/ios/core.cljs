@@ -6,7 +6,7 @@
             [teach-by-friends.shared.ui :as ui]
             [teach-by-friends.ios.ui :as ios-ui]
             [teach-by-friends.shared.scenes.serials-scene :refer [get-serials-scene serials-content]]
-            [teach-by-friends.shared.scenes.chapters-scene :refer [get-chapters-scene chapters-content serial-bars-creator]]
+            [teach-by-friends.shared.scenes.chapters-scene :refer [get-chapters-scene chapters-content serial-bars-creator translate-creator]]
             [teach-by-friends.shared.layouts.root-layout :refer [create-root-layout]]
             [teach-by-friends.shared.components.timeline :refer [timeline]]
             [teach-by-friends.shared.navigation :refer [navigation-tabs push!]]
@@ -21,6 +21,7 @@
 
 (def serials (serials-content ios-ui/activity-indicator))
 (def chapter (chapters-content ios-ui/activity-indicator))
+(def translate (translate-creator ios-ui/blur-view ios-ui/activity-indicator))
 (def serial-bars (serial-bars-creator ios-ui/blur-view ios-ui/activity-indicator))
 
 (declare serials-screen chapter-screen empty-scene1-screen empty-scene2-screen)
@@ -61,6 +62,13 @@
                      :navBarNoBorder false
                      :statusBarTextColorScheme "light"}
     :navigatorButtons {:leftButtons [{:icon (get-icon :close) :id "close"}]}}))
+
+(defscreen
+  translate-screen
+  ([props] [translate props])
+  ([_]
+   {:animationType "none"
+    :navigatorStyle {:navBarHidden true}}))
 
 (defscreen
   empty-scene1-screen
