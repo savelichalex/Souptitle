@@ -18,22 +18,24 @@
 (defn well-known-words-comp []
   (let [well-known-words (subscribe [:get-well-known-words])]
     (fn [{:keys [navigator]}]
-      [ui/view {:style {:flex 1
-                        :flex-direction "column"
-                        :align-items "center"
-                        :justify-content "center"}}
-       (if (or (nil? @well-known-words) (empty? @well-known-words))
-         [empty-well-known-words]
-         [table-view {:num-rows   (count @well-known-words)
-                      :row-height const/TERM_ROW_HEIGHT
-                      :render-row (fn [index]
-                                    [term-row
-                                     (nth @well-known-words index)
-                                     #(do
-                                       (dispatch [:translate-term (:term (nth @well-known-words index))])
-                                       (nav/show-modal! navigator :translate-screen (nth @well-known-words index)))])
-                      :back-color "black"
-                      :style      {:flex 5}}])])))
+      (let [words-empty? (or (nil? @well-known-words) (empty? @well-known-words))]
+        [ui/view {:style {:flex 1
+                          :flex-direction "column"
+                          :align-items (if words-empty? "center" "stretch")
+                          :justify-content "center"}}
+         (if words-empty?
+           [empty-well-known-words]
+           [table-view {:num-rows   (count @well-known-words)
+                        :row-height const/TERM_ROW_HEIGHT
+                        :render-row (fn [index]
+                                      [term-row
+                                       (nth @well-known-words index)
+                                       #(do
+                                         (dispatch [:translate-term (:term (nth @well-known-words index))])
+                                         (nav/show-modal! navigator :translate-screen (-> (nth @well-known-words index)
+                                                                                          (assoc :show-add-to-favorite? false))))])
+                        :back-color "black"
+                        :style      {:flex 1}}])]))))
 
 
 (defscreen

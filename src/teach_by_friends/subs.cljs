@@ -76,10 +76,11 @@
            (filter #(.test pattern %))))))
 
 (defn filter-well-known-words [terms well-known-terms]
-  (if (empty? well-known-terms)
-    terms
-    (->> terms
-         (filter #(not (contains? well-known-terms %))))))
+  (let [well-known-only-terms (->> well-known-terms (map :term) (into #{}))]
+    (if (empty? well-known-only-terms)
+      terms
+      (->> terms
+           (filter #(not (contains? well-known-only-terms (:term %))))))))
 
 (register-sub
   :get-chapter
@@ -143,4 +144,5 @@
 (register-sub
   :get-well-known-words
   (fn [db _]
-    (reaction (get @db :well-known-terms))))
+    (reaction (->> (get @db :well-known-terms)
+                   (sort-by :term)))))
