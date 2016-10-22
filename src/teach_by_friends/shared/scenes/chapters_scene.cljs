@@ -343,12 +343,15 @@
             [timeline-and-table {:style           {:flex           1
                                                    :flex-direction "row"}
                                  :render-row      (fn [index]
-                                                    [term-row
-                                                     (nth @chapter index)
-                                                     #(do
-                                                       (dispatch [:translate-term (:term (nth @chapter index))])
-                                                       (nav/show-modal! navigator :translate-screen (-> (nth @chapter index)
-                                                                                                        (assoc :show-add-to-favorite? true))))])
+                                                    (if (< index (count @chapter))
+                                                      [term-row
+                                                       (nth @chapter index)
+                                                       #(do
+                                                         (dispatch [:translate-term (:term (nth @chapter index))])
+                                                         (nav/show-modal! navigator :translate-screen (-> (nth @chapter index)
+                                                                                                          (assoc :show-add-to-favorite? true))))]
+                                                      [term-row
+                                                       {:term ""}]))
                                  :chapter         @chapter
                                  :timeline-list   @timeline-list
                                  :term-row-height const/TERM_ROW_HEIGHT}]

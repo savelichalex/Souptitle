@@ -55,6 +55,11 @@
   _backColor = backColor;
 }
 
+- (void)setNumRows:(NSInteger)numRows {
+  _numRows = numRows;
+  [self.tableView reloadData];
+}
+
 // MARK: - initialization
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge {
@@ -116,12 +121,14 @@ RCT_NOT_IMPLEMENTED(-initWithCoder:(NSCoder *)aDecoder)
 
 - (UITableViewCell* )tableView:(UITableView *)theTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   static NSString *cellIdentifier = @"CustomCell";
-  
   TableViewCell *cell = (TableViewCell *)[theTableView dequeueReusableCellWithIdentifier:cellIdentifier];
   if (cell == nil) {
     cell = [[TableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     cell.backgroundColor = self.backColor;
     cell.cellView = [self getUnusedCell];
+    NSLog(@"Allocated childIndex %d for row %d", (int)cell.cellView.tag, (int)indexPath.row);
+  } else {
+    NSLog(@"Recycled childIndex %d for row %d", (int)cell.cellView.tag, (int)indexPath.row);
   }
   
   NSDictionary *event = @{

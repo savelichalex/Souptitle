@@ -108,9 +108,12 @@
     UIFont *mainLineFont = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     mainLineFont = [mainLineFont fontWithSize:self->offsetBetweenLines];
   
-    int linePositionInTimeStamps = (int)(self.tPosition / (self.bounds.size.height / [self.timestamps count]));
+    NSUInteger timestampsCount = [self.timestamps count];
+    NSInteger linePositionInTimeStamps = (int)(self.tPosition / (self.bounds.size.height / timestampsCount));
     if (linePositionInTimeStamps < 0) {
       linePositionInTimeStamps = 0;
+    } else if (linePositionInTimeStamps > timestampsCount) {
+      linePositionInTimeStamps = timestampsCount;
     }
     NSString *currentTimestamp = self.timestamps[linePositionInTimeStamps];
     NSAttributedString *mainLineString = [[NSAttributedString alloc] initWithString:currentTimestamp attributes:@{ NSFontAttributeName: mainLineFont, NSParagraphStyleAttributeName: pStyle, NSForegroundColorAttributeName: self.lineColor}];

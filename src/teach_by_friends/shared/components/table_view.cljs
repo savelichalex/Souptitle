@@ -18,7 +18,7 @@
 
 (def ROWS_FOR_RECYCLING 20)
 
-(defn table-view []
+(defn table-view [{:keys [style on-layout on-scroll render-row row-height num-rows margin-top back-color]}]
   (let [bindings (vec (range 0 ROWS_FOR_RECYCLING))
         state (r/atom bindings)
         on-bind (fn [event]
