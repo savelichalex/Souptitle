@@ -126,9 +126,6 @@ RCT_NOT_IMPLEMENTED(-initWithCoder:(NSCoder *)aDecoder)
     cell = [[TableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     cell.backgroundColor = self.backColor;
     cell.cellView = [self getUnusedCell];
-    NSLog(@"Allocated childIndex %d for row %d", (int)cell.cellView.tag, (int)indexPath.row);
-  } else {
-    NSLog(@"Recycled childIndex %d for row %d", (int)cell.cellView.tag, (int)indexPath.row);
   }
   
   NSDictionary *event = @{
