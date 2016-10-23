@@ -8,6 +8,7 @@
             [teach-by-friends.shared.scenes.serials-scene :refer [get-serials-scene serials-content]]
             [teach-by-friends.shared.scenes.chapters-scene :refer [get-chapters-scene chapters-content serial-bars-creator translate-creator]]
             [teach-by-friends.shared.scenes.well-known-screen :refer [well-known-screen]]
+            [teach-by-friends.shared.scenes.about-screen :refer [about-screen]]
             [teach-by-friends.shared.layouts.root-layout :refer [create-root-layout]]
             [teach-by-friends.shared.components.timeline :refer [timeline]]
             [teach-by-friends.shared.navigation :refer [navigation-tabs push!]]
@@ -71,34 +72,6 @@
    {:animationType "none"
     :navigatorStyle {:navBarHidden true}}))
 
-(defscreen
-  empty-scene1-screen
-  ([]
-   [ui/view {:style {:flex 1
-                     :flex-direction "column"
-                     :position "relative"}}])
-  ([_]
-   {:title          "Favorite"
-    :navigatorStyle {:navBarTextColor          "#fff"
-                     :navBarTransparent        true
-                     :navBarTranslucent        true
-                     :drawUnderNavBar          true
-                     :navBarButtonColor        "#fff"
-                     :statusBarTextColorScheme "light"
-                     :screenColor "red"}}))
-(defscreen
-  empty-scene2-screen
-  ([]
-   [ui/view {:style {:flex             1
-                     :background-color "green"}}])
-  ([_]
-   {:title          "About"
-    :navigatorStyle {:navBarTextColor          "#fff"
-                     :navBarTransparent        true
-                     :navBarButtonColor        "#fff"
-                     :statusBarTextColorScheme "light"
-                     :screenColor "green"}}))
-
 (defn app-root []
   (navigation-tabs {:tabsStyle {:tabBarButtonColor         "rgb(151,151,151)"
                                 :tabBarSelectedButtonColor "#fff"
@@ -107,8 +80,8 @@
                                     :icon (get-icon :words)}]
                    [well-known-screen {:label "Favorite"
                                        :icon (get-icon :favorites)}]
-                   [empty-scene2-screen {:label "About"
-                                         :icon (get-icon :information)}]))
+                   [about-screen {:label "About"
+                                  :icon (get-icon :information)}]))
 
 (defn init []
   (app-root))
