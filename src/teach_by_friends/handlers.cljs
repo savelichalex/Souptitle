@@ -5,7 +5,8 @@
     [teach-by-friends.parser :refer [parse-srt]]
     [teach-by-friends.shared.ui :as ui]
     [teach-by-friends.remote-db-service :as rdb]
-    [teach-by-friends.consts :as const]))
+    [teach-by-friends.consts :as const]
+    [teach-by-friends.shared.well-known-words-service :as wservice]))
 
 ;; -- Middleware ------------------------------------------------------------
 ;;
@@ -24,7 +25,9 @@
   SecretConfigManager
   "SecretConfig"
   (fn [a] (dispatch [:initialize-db (js->clj a :keywordize-keys true)])))
-;;
+
+(-> (wservice/restore-well-known-words)
+    (.then #(dispatch [:restore-well-known-words %])))
 
 (defn get-query-string-for-translate [term lang]
   (str
@@ -204,9 +207,18 @@
 (register-handler
   :add-to-well-known
   (fn [db [_ term sentence]]
+    (let [old-well-known-words (:well-known-terms db)
+          new-well-known-words (-> old-well-known-words (conj {:term term
+                                                               :sentence sentence}))]
+      (wservice/save-well-known-words new-well-known-words)
+      (-> db
+          (assoc :well-known-terms new-well-known-words)))))
+
+(register-handler
+  :restore-well-known-words
+  (fn [db [_ well-known-words]]
     (-> db
-        (update :well-known-terms conj {:term term
-                                        :sentence sentence}))))
+        (assoc :well-known-terms well-known-words))))
 
 ;; Serials bars
 (register-handler
