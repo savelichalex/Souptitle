@@ -7,6 +7,7 @@
             [teach-by-friends.consts :as const]
             [teach-by-friends.shared.navigation :as nav]
             [teach-by-friends.shared.icons :refer [get-icon]]
+            [teach-by-friends.shared.components.term-row :refer [term-row]]
             [teach-by-friends.shared.components.timeline-and-table :refer [timeline-and-table]]))
 
 (defn serial-item [number last-number item active? on-change]
@@ -134,19 +135,6 @@
                              :on-press #(dispatch [:add-to-well-known term])}
        [ui/text {:style {:color "white"}} "I remember this"]]])])
 
-(def TERM_ROW_HEIGHT 40)
-
-(defn term-row [item nav]
-  (let [term (:term item)]
-    [ui/touchable-opacity {:style    {:height          TERM_ROW_HEIGHT
-                                      :flex-direction  "column"
-                                      :justify-content "center"
-                                      :padding-left    13}
-                           :on-press #(do
-                                       (dispatch [:translate-term term])
-                                       (nav/show-modal! nav :translate-screen item))}
-     [ui/text {:style {:font-size 16 :color "rgb(155,155,155)"}} term]]))
-
 (defn back-button []
   [ui/touchable-opacity {:style    {:flex        1
                                     :align-items "center"}
@@ -246,7 +234,7 @@
 (defn translate-creator [blur-view activity-view]
   (fn [{:keys [navigator]}]
     (let [translate (subscribe [:term-translate])]
-      (fn [{:keys [term sentence]}]
+      (fn [{:keys [term sentence show-add-to-favorite?]}]
         [blur-view {:style {:position "absolute"
                             :top 0
                             :right 0
@@ -276,6 +264,18 @@
                            :padding-right 15}}
           [ui/view {:style {:flex-direction "row"}}
            [ui/text {:style {:color "white" :font-size 14 :flex 1}} term]
+           (when show-add-to-favorite?
+             [ui/touchable-opacity {:on-press #(do
+                                                (dispatch [:add-to-well-known term sentence])
+                                                (nav/dismiss-modal! navigator "none"))
+                                    :style {:margin-right 26}
+                                    :hit-slop {:top 10
+                                               :right 10
+                                               :bottom 10
+                                               :left 10}}
+              [ui/image {:source (get-icon :favorites)
+                         :style {:width 16
+                                 :height 16}}]])
            [ui/touchable-opacity {:on-press #(nav/dismiss-modal! navigator "none")
                                   :hit-slop {:top 10
                                              :right 10
@@ -342,10 +342,19 @@
           (if (not (empty? @chapter))
             [timeline-and-table {:style           {:flex           1
                                                    :flex-direction "row"}
-                                 :render-row      #(identity [term-row (nth @chapter %) navigator])
+                                 :render-row      (fn [index]
+                                                    (if (< index (count @chapter))
+                                                      [term-row
+                                                       (nth @chapter index)
+                                                       #(do
+                                                         (dispatch [:translate-term (:term (nth @chapter index))])
+                                                         (nav/show-modal! navigator :translate-screen (-> (nth @chapter index)
+                                                                                                          (assoc :show-add-to-favorite? true))))]
+                                                      [term-row
+                                                       {:term ""}]))
                                  :chapter         @chapter
                                  :timeline-list   @timeline-list
-                                 :term-row-height TERM_ROW_HEIGHT}]
+                                 :term-row-height const/TERM_ROW_HEIGHT}]
             [ui/view {:style {:flex             1
                               :background-color "black"
                               :justify-content  "center"

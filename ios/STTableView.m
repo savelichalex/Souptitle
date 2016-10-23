@@ -55,6 +55,11 @@
   _backColor = backColor;
 }
 
+- (void)setNumRows:(NSInteger)numRows {
+  _numRows = numRows;
+  [self.tableView reloadData];
+}
+
 // MARK: - initialization
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge {
@@ -69,6 +74,8 @@
       _bridge = [_bridge valueForKey:@"parentBridge"];
     }
     _unusedCells = [NSMutableArray array];
+    _scrollPositionOffset = 0;
+    _backColor = [UIColor clearColor];
     
     [self createTableView];
   }
@@ -114,7 +121,6 @@ RCT_NOT_IMPLEMENTED(-initWithCoder:(NSCoder *)aDecoder)
 
 - (UITableViewCell* )tableView:(UITableView *)theTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   static NSString *cellIdentifier = @"CustomCell";
-  
   TableViewCell *cell = (TableViewCell *)[theTableView dequeueReusableCellWithIdentifier:cellIdentifier];
   if (cell == nil) {
     cell = [[TableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];

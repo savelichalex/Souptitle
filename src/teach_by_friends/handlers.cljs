@@ -111,7 +111,6 @@
 (register-handler
   :term-translate-success
   (fn [db [_ term translate]]
-    (print translate)
     (-> db
         (assoc :term-translate (:text translate)))))
 
@@ -204,9 +203,10 @@
 
 (register-handler
   :add-to-well-known
-  (fn [db [_ term]]
+  (fn [db [_ term sentence]]
     (-> db
-        (update :well-known-terms conj term))))
+        (update :well-known-terms conj {:term term
+                                        :sentence sentence}))))
 
 ;; Serials bars
 (register-handler

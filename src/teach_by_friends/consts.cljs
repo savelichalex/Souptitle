@@ -8,3 +8,7 @@
 
 (def SERIALS_ENTRY_URL
   "/serials.json")
+
+;; UI
+
+(def TERM_ROW_HEIGHT 40)
