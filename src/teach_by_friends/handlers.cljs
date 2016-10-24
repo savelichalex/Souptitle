@@ -21,13 +21,23 @@
 (def NativeModules (.-NativeModules ReactNative))
 
 (def SecretConfigManager (.-SecretConfigManager NativeModules))
-(.getConfig
-  SecretConfigManager
-  "SecretConfig"
-  (fn [a] (dispatch [:initialize-db (js->clj a :keywordize-keys true)])))
+(defmulti initialize (fn [type] type))
+(defmethod initialize :load-config
+  [_]
+  (.getConfig
+    SecretConfigManager
+    "SecretConfig"
+    (fn [a] (dispatch [:initialize-db (js->clj a :keywordize-keys true)]))))
+(defmethod initialize :load-well-known-words
+  [_]
+  (-> (wservice/restore-well-known-words)
+      (.then #(dispatch [:restore-well-known-words %]))))
 
-(-> (wservice/restore-well-known-words)
-    (.then #(dispatch [:restore-well-known-words %])))
+(defn inject-on-app-start [& args]
+  (initialize :load-config))
+  ;(initialize :load-well-known-words))
+
+(inject-on-app-start)
 
 (defn get-query-string-for-translate [term lang]
   (str
@@ -208,8 +218,19 @@
   :add-to-well-known
   (fn [db [_ term sentence]]
     (let [old-well-known-words (:well-known-terms db)
-          new-well-known-words (-> old-well-known-words (conj {:term term
-                                                               :sentence sentence}))]
+          new-well-known-words (-> old-well-known-words
+                                   (assoc term {:term term
+                                                :sentence sentence}))]
+      (wservice/save-well-known-words new-well-known-words)
+      (-> db
+          (assoc :well-known-terms new-well-known-words)))))
+
+(register-handler
+  :remove-from-well-known
+  (fn [db [_ term]]
+    (let [old-well-known-words (:well-known-terms db)
+          new-well-known-words (-> old-well-known-words
+                                   (dissoc term))]
       (wservice/save-well-known-words new-well-known-words)
       (-> db
           (assoc :well-known-terms new-well-known-words)))))

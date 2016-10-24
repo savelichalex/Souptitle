@@ -233,8 +233,9 @@
 
 (defn translate-creator [blur-view activity-view]
   (fn [{:keys [navigator]}]
-    (let [translate (subscribe [:term-translate])]
-      (fn [{:keys [term sentence show-add-to-favorite?]}]
+    (let [translate (subscribe [:term-translate])
+          well-known-words (subscribe [:get-raw-well-known-words])]
+      (fn [{:keys [term sentence]}]
         [blur-view {:style {:position "absolute"
                             :top 0
                             :right 0
@@ -264,16 +265,23 @@
                            :padding-right 15}}
           [ui/view {:style {:flex-direction "row"}}
            [ui/text {:style {:color "white" :font-size 14 :flex 1}} term]
-           (when show-add-to-favorite?
-             [ui/touchable-opacity {:on-press #(do
-                                                (dispatch [:add-to-well-known term sentence])
-                                                (nav/dismiss-modal! navigator "none"))
+           (if (contains? @well-known-words term)
+             [ui/touchable-opacity {:on-press #(dispatch [:remove-from-well-known term])
                                     :style {:margin-right 26}
                                     :hit-slop {:top 10
                                                :right 10
                                                :bottom 10
                                                :left 10}}
-              [ui/image {:source (get-icon :favorites)
+              [ui/image {:source (get-icon :favorites-fill)
+                         :style {:width 16
+                                 :height 16}}]]
+             [ui/touchable-opacity {:on-press #(dispatch [:add-to-well-known term sentence])
+                                    :style {:margin-right 26}
+                                    :hit-slop {:top 10
+                                               :right 10
+                                               :bottom 10
+                                               :left 10}}
+              [ui/image {:source (get-icon :favorites-active)
                          :style {:width 16
                                  :height 16}}]])
            [ui/touchable-opacity {:on-press #(nav/dismiss-modal! navigator "none")
@@ -348,8 +356,7 @@
                                                        (nth @chapter index)
                                                        #(do
                                                          (dispatch [:translate-term (:term (nth @chapter index))])
-                                                         (nav/show-modal! navigator :translate-screen (-> (nth @chapter index)
-                                                                                                          (assoc :show-add-to-favorite? true))))]
+                                                         (nav/show-modal! navigator :translate-screen (nth @chapter index)))]
                                                       [term-row
                                                        {:term ""}]))
                                  :chapter         @chapter

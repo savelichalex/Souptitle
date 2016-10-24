@@ -77,11 +77,14 @@
                                 :tabBarSelectedButtonColor "#fff"
                                 :tabBarBackgroundColor     "#000"}}
                    [serials-screen {:label "Words"
-                                    :icon (get-icon :words)}]
+                                    :icon (get-icon :words)
+                                    :selectedIcon (get-icon :words-active)}]
                    [well-known-screen {:label "Favorite"
-                                       :icon (get-icon :favorites)}]
+                                       :icon (get-icon :favorites)
+                                       :selectedIcon (get-icon :favorites-fill)}]
                    [about-screen {:label "About"
-                                  :icon (get-icon :information)}]))
+                                  :icon (get-icon :information)
+                                  :selectedIcon (get-icon :information-active)}]))
 
 (defn init []
   (app-root))
