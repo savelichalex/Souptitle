@@ -20,14 +20,26 @@
 (def ReactNative (js/require "react-native"))
 (def NativeModules (.-NativeModules ReactNative))
 
+(defmulti initialize (fn [type] type))
 (def SecretConfigManager (.-SecretConfigManager NativeModules))
-(.getConfig
-  SecretConfigManager
-  "SecretConfig"
-  (fn [a] (dispatch [:initialize-db (js->clj a :keywordize-keys true)])))
+(defmethod initialize :load-config
+  [_]
+  (.getConfig
+    SecretConfigManager
+    "SecretConfig"
+    (fn [a] (dispatch [:initialize-db (js->clj a :keywordize-keys true)]))))
+(defmethod initialize :load-well-known-words
+  [_]
+  (-> (wservice/restore-well-known-words)
+      (.then #(dispatch [:restore-well-known-words %]))))
 
-(-> (wservice/restore-well-known-words)
-    (.then #(dispatch [:restore-well-known-words %])))
+(defn init [& args]
+  (for [method args]
+    (initialize method)))
+
+(init
+  :load-config)
+  ;:load-well-known-words)
 
 (defn get-query-string-for-translate [term lang]
   (str
