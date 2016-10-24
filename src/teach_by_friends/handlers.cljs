@@ -20,8 +20,8 @@
 (def ReactNative (js/require "react-native"))
 (def NativeModules (.-NativeModules ReactNative))
 
-(defmulti initialize (fn [type] type))
 (def SecretConfigManager (.-SecretConfigManager NativeModules))
+(defmulti initialize (fn [type] type))
 (defmethod initialize :load-config
   [_]
   (.getConfig
@@ -33,13 +33,11 @@
   (-> (wservice/restore-well-known-words)
       (.then #(dispatch [:restore-well-known-words %]))))
 
-(defn init [& args]
-  (for [method args]
-    (initialize method)))
+(defn inject-on-app-start [& args]
+  (initialize :load-config))
+  ;(initialize :load-well-known-words))
 
-(init
-  :load-config)
-  ;:load-well-known-words)
+(inject-on-app-start)
 
 (defn get-query-string-for-translate [term lang]
   (str
