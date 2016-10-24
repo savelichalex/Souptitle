@@ -208,8 +208,19 @@
   :add-to-well-known
   (fn [db [_ term sentence]]
     (let [old-well-known-words (:well-known-terms db)
-          new-well-known-words (-> old-well-known-words (conj {:term term
-                                                               :sentence sentence}))]
+          new-well-known-words (-> old-well-known-words
+                                   (assoc term {:term term
+                                                :sentence sentence}))]
+      (wservice/save-well-known-words new-well-known-words)
+      (-> db
+          (assoc :well-known-terms new-well-known-words)))))
+
+(register-handler
+  :remove-from-well-known
+  (fn [db [_ term]]
+    (let [old-well-known-words (:well-known-terms db)
+          new-well-known-words (-> old-well-known-words
+                                   (dissoc term))]
       (wservice/save-well-known-words new-well-known-words)
       (-> db
           (assoc :well-known-terms new-well-known-words)))))
