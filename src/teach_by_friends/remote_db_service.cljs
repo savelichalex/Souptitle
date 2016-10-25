@@ -42,8 +42,7 @@
           DROPBOX_DOWNLOAD_URL
           {:headers {:Authorization (str "Bearer " auth-api-key)
                      :Dropbox-API-Arg (to-json {:path path})}})
-        (parse-response)
-        (.catch #(print %))))
+        (parse-response)))
   (download-json [self path]
     (-> (download self path)
         (response-from-json))))

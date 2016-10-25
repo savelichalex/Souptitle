@@ -148,3 +148,9 @@
     (reaction (->> (get @db :well-known-terms)
                    (map (fn [[_ item]] item))
                    (sort-by :term)))))
+
+;; Network error
+(register-sub
+  :get-network-error
+  (fn [db _]
+    (reaction (get @db :network-error))))
