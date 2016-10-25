@@ -6,7 +6,8 @@
     [teach-by-friends.shared.ui :as ui]
     [teach-by-friends.remote-db-service :as rdb]
     [teach-by-friends.consts :as const]
-    [teach-by-friends.shared.well-known-words-service :as wservice]))
+    [teach-by-friends.shared.well-known-words-service :as wservice]
+    [teach-by-friends.shared.navigation :as nav]))
 
 ;; -- Middleware ------------------------------------------------------------
 ;;
@@ -46,6 +47,18 @@
     "&lang=en-" lang
     "&key=" const/YANDEX_TRANSLATE_API_KEY))
 
+;;------- API proxy to save last request ---------
+;; need to decide how make it better!!!
+;; I thought about make it trough interceptors while migrate to re-frame 0.8
+(def ^:private last-api-call (atom nil))
+(defn api-proxy [cb]
+  (swap! last-api-call (fn [_] cb))
+  (cb))
+(defn apply-last-api-call []
+  (when-let [last @last-api-call]
+    (last)))
+;;------------------------------------------------
+
 (register-handler
   :initialize-db
   ;validate-schema-mw
@@ -54,11 +67,14 @@
       ;(-> (rdb/download-json remote-db const/SERIALS_ENTRY_URL)
       ;    (.then #(dispatch [:serials-load-success %]))
       ;    (.catch #(dispatch [:serials-load-error %])))
-      (-> (rdb/download-json remote-db const/SERIALS_ENTRY_URL)
-          (.then (fn [s]
-                   (dispatch [:serials-load-success s])
-                   (rdb/download-json remote-db (:path (first s))))))
-
+      (api-proxy
+        #(-> (rdb/download-json remote-db const/SERIALS_ENTRY_URL)
+             (.then (fn [s]
+                      (dispatch [:serials-load-success s])))
+             (.catch (fn [err]
+                       (if (= (.-message err) "Network request failed")
+                         (dispatch [:show-network-error])
+                         (print err))))))
       (-> app-db
           (assoc :remote-db remote-db)))))
 
@@ -78,14 +94,18 @@
   :seasons-load
   (fn [db [_ {seasons :path title :title cover :cover}]]
     (let [remote-db (get db :remote-db)]
-      (-> (rdb/download-json remote-db seasons)
-          (.then (fn [s]
-                   (dispatch [:seasons-load-success s])
-                   (rdb/download-json remote-db (:path (first (rest s))))))
-          (.then (fn [chapters]
-                   (dispatch [:chapter-load 0 (nth chapters 0)])
-                   (dispatch [:chapters-load-success chapters])))
-          (.catch #(dispatch [:seasons-load-error %])))
+      (api-proxy
+        #(-> (rdb/download-json remote-db seasons)
+             (.then (fn [s]
+                      (dispatch [:seasons-load-success s])
+                      (rdb/download-json remote-db (:path (first (rest s))))))
+             (.then (fn [chapters]
+                      (dispatch [:chapter-load 0 (nth chapters 0)])
+                      (dispatch [:chapters-load-success chapters])))
+             (.catch (fn [err]
+                       (if (= (.-message err) "Network request failed")
+                         (dispatch [:show-network-error])
+                         (print err))))))
       (-> db
           (assoc :serial-cover-image cover)
           (assoc :chapter nil)
@@ -113,11 +133,15 @@
 (register-handler
   :translate-term
   (fn [db [_ term]]
-    (-> (js/fetch (get-query-string-for-translate term (:target-lang db)))
-        (rdb/parse-response)
-        (rdb/response-from-json)
-        (.then #(dispatch [:term-translate-success term %]))
-        (.catch #(print %)))
+    (api-proxy
+      #(-> (js/fetch (get-query-string-for-translate term (:target-lang db)))
+           (rdb/parse-response)
+           (rdb/response-from-json)
+           (.then (fn [translate] (dispatch [:term-translate-success term translate])))
+           (.catch (fn [err]
+                     (if (= (.-message err) "Network request failed")
+                       (dispatch [:show-network-error])
+                       (print err))))))
     (-> db
         (assoc :term-translate nil))))
 
@@ -153,9 +177,13 @@
 (register-handler
   :chapters-load
   (fn [db [_ season-number {chapters :path}]]
-    (-> (rdb/download-json (get db :remote-db) chapters)
-        (.then #(dispatch [:chapters-load-success %]))
-        (.catch #(dispatch [:chapters-load-error %])))
+    (api-proxy
+      #(-> (rdb/download-json (get db :remote-db) chapters)
+           (.then (fn [chts] (dispatch [:chapters-load-success chts])))
+           (.catch (fn [err]
+                     (if (= (.-message err) "Network request failed")
+                       (dispatch [:show-network-error])
+                       (print err))))))
     (-> db
         (update :seasons-list #(->> %
                                     (map-indexed (fn [index season]
@@ -178,9 +206,13 @@
 (register-handler
   :chapter-load
   (fn [db [_ number {srt :path}]]
-    (-> (rdb/download (get db :remote-db) srt)
-        (.then #(dispatch [:srt-load-success (parse-srt %)]))
-        (.catch #(dispatch [:srt-load-error %])))
+    (api-proxy
+      #(-> (rdb/download (get db :remote-db) srt)
+           (.then (fn [srt] (dispatch [:srt-load-success (parse-srt srt)])))
+           (.catch (fn [err]
+                     (if (= (.-message err) "Network request failed")
+                       (dispatch [:show-network-error])
+                       (print err))))))
     (-> db
         (update :chapters-list #(->> %
                                      (map-indexed (fn [index chapter]
@@ -247,3 +279,18 @@
   (fn [db _]
     (let [current-status (:show-serial-bars? db)]
       (assoc db :show-serial-bars? (not current-status)))))
+
+;; Navigation
+
+;; Errors handling
+(register-handler
+  :show-network-error
+  (fn [db _]
+    (nav/show-modal! (nav/get-current-navigator) :network-error-screen)
+    db))
+
+(register-handler
+  :call-last-api
+  (fn [db _]
+    (apply-last-api-call)
+    db))

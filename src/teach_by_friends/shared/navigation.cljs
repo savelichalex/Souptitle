@@ -1,7 +1,9 @@
 (ns teach-by-friends.shared.navigation
   (:require-macros [teach-by-friends.shared.navigation :refer [defscreen]]
                    [reagent.ratom :refer [reaction]])
-  (:require [reagent.core :as r]))
+  (:require [reagent.core :as r]
+            [re-frame.core :refer [subscribe dispatch]]
+            [teach-by-friends.shared.ui :as ui]))
 
 (def Navigation (.. (js/require "react-native-navigation") -Navigation))
 
@@ -11,9 +13,16 @@
 (defmulti on-route (fn [nav] (:route nav)))
 (defmethod on-route :default [_] nil)
 
+(def ^:private current-navigator (atom nil))
+(defn set-current-navigator [nav]
+  (swap! current-navigator (fn [_] nav)))
+(defn get-current-navigator []
+  @current-navigator)
+
 (defn wrap-screen [screen]
   (fn [props]
     (let [navigator (:navigator (r/props (r/current-component)))]
+      (set-current-navigator navigator)
       [screen (assoc props :navigator navigator)])))
 
 (defprotocol IScreen

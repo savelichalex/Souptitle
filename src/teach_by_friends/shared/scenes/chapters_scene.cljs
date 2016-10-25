@@ -96,81 +96,6 @@
      [ui/text {:style {:font-size 14 :color "white"}} raw-term]
      [ui/text {:style {:font-size 14 :color "rgb(155,155,155)"}} (first (rest splited-sentence))]]))
 
-(defn detailed-term-row [{:keys [term translate]} activity-indicator]
-  [ui/view {:style {:padding-left  10
-                    :padding-right 10}}
-   (if (nil? translate)
-     [ui/view {:style {:border-radius    15
-                       :background-color "rgb(132, 145, 206)"
-                       :padding-top      15
-                       :padding-bottom   15
-                       :padding-left     15
-                       :padding-right    15
-                       :flex-direction   "column"
-                       :align-items      "stretch"}}
-
-      [ui/text {:style {:font-size 20 :color "white"}} term]
-      [ui/view {:style {:justify-content "center"
-                        :align-items     "center"}}
-       [activity-indicator {:color "white"}]]]
-     [ui/view {:style {:border-radius    15
-                       :background-color "rgb(132, 145, 206)"
-                       :flex-direction   "column"
-                       :align-items      "stretch"}}
-
-      [ui/view {:style {:margin-top   15
-                        :margin-left  15
-                        :margin-right 15}}
-
-       [ui/text {:style {:font-size 20 :color "white" :margin-bottom 10}} term]
-       [ui/text {:style {:font-size 20 :color "white" :margin-bottom 10}} (first (:translate translate))]
-       [sentence-with-term {:style {:margin-bottom 10}} (:sentence translate) (:raw translate)]]
-      [ui/touchable-opacity {:style    {:background-color           "rgb(72, 86, 155)"
-                                        :justify-content            "center"
-                                        :align-items                "center"
-                                        :border-bottom-left-radius  15
-                                        :border-bottom-right-radius 15
-                                        :padding-top                10
-                                        :padding-bottom             10}
-                             :on-press #(dispatch [:add-to-well-known term])}
-       [ui/text {:style {:color "white"}} "I remember this"]]])])
-
-(defn back-button []
-  [ui/touchable-opacity {:style    {:flex        1
-                                    :align-items "center"}
-                         :on-press #(dispatch [:back-to-seasons])}
-   [back-icon {:style {:width 20 :height 20}}]])
-
-(defn chapter-title []
-  (let [title (subscribe [:season-title])
-        show-search? (subscribe [:show-search?])]
-    (if (not @show-search?)
-      [ui/text {:style {:color     "white"
-                        :font-size 30}}
-       (string/upper-case
-         (str "season " @title))]
-      [ui/view {:style {:position    "absolute"
-                        :top         0
-                        :left        5
-                        :right       5
-                        :bottom      0
-                        :flex        5
-                        :align-items "stretch"}}
-       [ui/view {:style {:border-radius    15
-                         :background-color "white"
-                         :padding-left     15
-                         :padding-right    15}}
-        [ui/text-input {:auto-capitalize "none"
-                        :style           {:color  "rgb(72, 86, 155)"
-                                          :height 30}
-                        :on-change-text  #(dispatch [:change-search-predicate %])}]]])))
-
-(defn right-button []
-  [ui/touchable-opacity {:style    {:flex        1
-                                    :align-items "center"}
-                         :on-press #(dispatch [:toggle-search])}
-   [search-icon {:style {:width 15 :height 15}}]])
-
 (defn sort-row [sort-type]
   [ui/view {:style {:margin-top 64
                     :margin-left         13
@@ -367,10 +292,3 @@
                               :justify-content  "center"
                               :align-items      "center"}}
              [activity-indicator {:color "rgb(155, 155, 155)"}]])]]))))
-
-(defn get-chapters-scene [activity-indicator]
-  (fn chapters-scene []
-    {:nav-bar {:left-button  back-button
-               :title        chapter-title
-               :right-button right-button}
-     :content (chapters-content activity-indicator)}))
