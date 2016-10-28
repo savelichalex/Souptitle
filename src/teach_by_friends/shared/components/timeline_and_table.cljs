@@ -3,6 +3,7 @@
   (:require [teach-by-friends.shared.ui :as ui]
             [teach-by-friends.shared.components.table-view :refer [table-view]]
             [teach-by-friends.shared.components.timeline :refer [timeline]]
+            [teach-by-friends.shared.components.timeline-label :refer [timeline-label]]
             [reagent.core :as r]))
 
 (def TIMELINE_LINES_COUNT 60)
@@ -25,16 +26,22 @@
 
 (defn update-timeline-position-with-label
   [tPosition fullHeight visibleHeight label show-label? label-top label-height timeline-list event]
-  (let [words-list-y (aget event "nativeEvent" "contentOffset" "y")
+  (let [timeline-y (.. event -nativeEvent -locationY)
+        y-ratio (/ timeline-y @visibleHeight)
+        words-list-y-temp (* @fullHeight y-ratio)
+        words-list-y (if (> words-list-y-temp (- @fullHeight @visibleHeight))
+                       (- @fullHeight @visibleHeight)
+                       words-list-y-temp)
         y-ratio (/ words-list-y @fullHeight)
         timeline-y (* @visibleHeight y-ratio)
         timeline-list-count (count @timeline-list)
         line-position-temp (/ timeline-y (/ @visibleHeight timeline-list-count))
-        line-position (if (< line-position-temp 0)
-                        0
-                        (if (> line-position-temp timeline-list-count)
-                          timeline-list-count
-                          line-position-temp))]
+        line-position (js/Math.ceil (if (< line-position-temp 0)
+                                      0
+                                      (if (> line-position-temp timeline-list-count)
+                                        timeline-list-count
+                                        line-position-temp)))]
+    (print timeline-list-count line-position)
     (ui/animated-set-value tPosition timeline-y)
     (when (false? @show-label?)
       (swap! show-label? (fn [_] true)))
@@ -53,7 +60,7 @@
         visibleHeight (atom 0)
         table-margin-top (ui/animated-value 0)
         timeline-label-height 25
-        show-timeline-label? (atom false)
+        show-timeline-label? (r/atom true)
         label (ui/animated-value "")
         timeline-label-top (ui/animated-value 0)
         timeline-list-atom (atom nil)
@@ -87,16 +94,17 @@
                        :row-height term-row-height
                        :render-row render-row
                        :back-color "black"
-                       :style      {:flex 5}}]
+                       :style      {:flex 1}}]
           [timeline (-> {:tPosition          t-position
                          :countWordsOnScreen 11
                          :timestamps         (clj->js timeline-list)
                          :linesCount         TIMELINE_LINES_COUNT
-                         :style              {:flex             1
+                         :style              {:width 70
                                               :background-color "black"}
                          :lineColor          "white"}
                         (merge (ui/get-pan-handlers pan-responder)))]
           (when (true? show-timeline-label?)
             [timeline-label {:height timeline-label-height
                              :top timeline-label-top
-                             :timestamps timeline-list}])])})))
+                             :label label
+                             :right 70}])])})))
