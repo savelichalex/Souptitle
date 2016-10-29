@@ -25,7 +25,7 @@
     (ui/animated-set-value tPosition timeline-y)))
 
 (defn update-timeline-position-with-label
-  [tPosition fullHeight visibleHeight label show-label? label-top label-height timeline-list event]
+  [tPosition table-margin-top fullHeight visibleHeight label show-label? label-top label-height timeline-list event]
   (let [timeline-y (.. event -nativeEvent -locationY)
         y-ratio (/ timeline-y @visibleHeight)
         words-list-y-temp (* @fullHeight y-ratio)
@@ -41,8 +41,8 @@
                                       (if (> line-position-temp timeline-list-count)
                                         timeline-list-count
                                         line-position-temp)))]
-    (print timeline-list-count line-position)
     (ui/animated-set-value tPosition timeline-y)
+    (ui/animated-set-value table-margin-top words-list-y)
     (when (false? @show-label?)
       (swap! show-label? (fn [_] true)))
     (ui/animated-set-value label-top (- timeline-y (/ label-height 2)))
@@ -60,13 +60,13 @@
         visibleHeight (atom 0)
         table-margin-top (ui/animated-value 0)
         timeline-label-height 25
-        show-timeline-label? (r/atom true)
+        show-timeline-label? (r/atom false)
         label (ui/animated-value "")
-        timeline-label-top (ui/animated-value 0)
+        timeline-label-top (ui/animated-value 50)
         timeline-list-atom (atom nil)
         update-timeline-position-compiled (partial update-timeline-position t-position wordsListHeight visibleHeight)
         update-timeline-position-with-label-compiled
-          (partial update-timeline-position-with-label t-position wordsListHeight visibleHeight label show-timeline-label? timeline-label-top timeline-label-height timeline-list-atom)
+          (partial update-timeline-position-with-label t-position table-margin-top wordsListHeight visibleHeight label show-timeline-label? timeline-label-top timeline-label-height timeline-list-atom)
         update-table-position-compiled (partial update-positions t-position table-margin-top wordsListHeight visibleHeight)
         close-label-compiled (partial close-label show-timeline-label?)
         pan-responder (ui/create-pan-responder {:onStartShouldSetPanResponder        (fn [_ _] true)
@@ -85,7 +85,8 @@
        :reagent-render
        (fn [{:keys [chapter style render-row timeline-list]}]
          (swap! timeline-list-atom (fn [_] timeline-list))
-         [ui/view {:style style}
+         [ui/view {:style (-> style
+                              (assoc :position "relative"))}
           [table-view {:ref        "wordsList"
                        :on-layout  (fn [event _] (swap! visibleHeight (fn [_] (.. event -nativeEvent -layout -height))))
                        :on-scroll  update-timeline-position-compiled
@@ -103,8 +104,8 @@
                                               :background-color "black"}
                          :lineColor          "white"}
                         (merge (ui/get-pan-handlers pan-responder)))]
-          (when (true? show-timeline-label?)
+          (when (true? @show-timeline-label?)
             [timeline-label {:height timeline-label-height
                              :top timeline-label-top
                              :label label
-                             :right 70}])])})))
+                             :right 75}])])})))
