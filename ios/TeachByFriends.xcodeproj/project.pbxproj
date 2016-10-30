@@ -30,6 +30,8 @@
 		84B643BF1DA12ACF0021EA34 /* TimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B643BE1DA12ACF0021EA34 /* TimelineView.m */; };
 		84B643CD1DA12BA80021EA34 /* RCTTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B643CC1DA12BA80021EA34 /* RCTTimeline.m */; };
 		84B8C7AD1DAA502900AC0BD5 /* STTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B8C7AC1DAA502900AC0BD5 /* STTableView.m */; };
+		84C57E331DC294E7002283CD /* STText.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C57E321DC294E7002283CD /* STText.m */; };
+		84C57E361DC296D2002283CD /* STTextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C57E351DC296D2002283CD /* STTextManager.m */; };
 		AF567EA9FF5F4E2E8E784D85 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18CBC71F1DE045F0B5EC3419 /* libBVLinearGradient.a */; };
 /* End PBXBuildFile section */
 
@@ -170,6 +172,10 @@
 		84B643CC1DA12BA80021EA34 /* RCTTimeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTTimeline.m; sourceTree = "<group>"; };
 		84B8C7A01DAA4F6800AC0BD5 /* STTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STTableView.h; sourceTree = "<group>"; };
 		84B8C7AC1DAA502900AC0BD5 /* STTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STTableView.m; sourceTree = "<group>"; };
+		84C57E241DC29457002283CD /* STText.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STText.h; sourceTree = "<group>"; };
+		84C57E321DC294E7002283CD /* STText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STText.m; sourceTree = "<group>"; };
+		84C57E341DC296C1002283CD /* STTextManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STTextManager.h; sourceTree = "<group>"; };
+		84C57E351DC296D2002283CD /* STTextManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STTextManager.m; sourceTree = "<group>"; };
 		A2BFCAC88C334E03BCD50934 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		B33873D8503D4F728D92DFA6 /* RNBlur.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNBlur.xcodeproj; path = "../node_modules/react-native-blur/ios/RNBlur.xcodeproj"; sourceTree = "<group>"; };
 		DD682C0B6C614253A0506199 /* libRNBlur.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBlur.a; sourceTree = "<group>"; };
@@ -301,6 +307,10 @@
 				84A4CC941DAAC04C00C9D0FD /* STTableViewManager.h */,
 				84A4CCA01DAAC07F00C9D0FD /* STTableViewManager.m */,
 				84B8C7AC1DAA502900AC0BD5 /* STTableView.m */,
+				84C57E241DC29457002283CD /* STText.h */,
+				84C57E321DC294E7002283CD /* STText.m */,
+				84C57E341DC296C1002283CD /* STTextManager.h */,
+				84C57E351DC296D2002283CD /* STTextManager.m */,
 			);
 			name = TeachByFriends;
 			sourceTree = "<group>";
@@ -696,6 +706,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84C57E331DC294E7002283CD /* STText.m in Sources */,
 				84B8C7AD1DAA502900AC0BD5 /* STTableView.m in Sources */,
 				84B643CD1DA12BA80021EA34 /* RCTTimeline.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
@@ -704,6 +715,7 @@
 				84B643BF1DA12ACF0021EA34 /* TimelineView.m in Sources */,
 				841031E61D7DF53000BF5BFE /* SecretConfigManager.m in Sources */,
 				84A4CCA11DAAC07F00C9D0FD /* STTableViewManager.m in Sources */,
+				84C57E361DC296D2002283CD /* STTextManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

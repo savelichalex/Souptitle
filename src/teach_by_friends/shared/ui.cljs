@@ -47,6 +47,9 @@
 (defn animated-set-value [an val]
   (.setValue an val))
 
+(defn animated-get-value [an]
+  (.__getValue an))
+
 (defn animated-parallel
   ([& animations]
    (.. Animated (parallel (clj->js animations)))))
