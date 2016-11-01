@@ -26,6 +26,8 @@
 (def translate (translate-creator ios-ui/blur-view ios-ui/activity-indicator))
 (def serial-bars (serial-bars-creator ios-ui/blur-view ios-ui/activity-indicator))
 
+(def logo-image (js/require "./images/logo.png"))
+
 (declare serials-screen chapter-screen empty-scene1-screen empty-scene2-screen)
 (defscreen
   serials-screen
@@ -33,6 +35,7 @@
    [serials props])
   ([_]
    {:title "Souptitle"
+    :titleImage logo-image
     :navigatorStyle {:navBarTextColor          "#fff"
                      :navBarTransparent        true
                      :navBarButtonColor        "#fff"
