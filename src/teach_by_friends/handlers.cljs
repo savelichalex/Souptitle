@@ -35,8 +35,8 @@
       (.then #(dispatch [:restore-well-known-words %]))))
 
 (defn inject-on-app-start [& args]
-  (initialize :load-config))
-  ;(initialize :load-well-known-words))
+  (initialize :load-config)
+  (initialize :load-well-known-words))
 
 (inject-on-app-start)
 
@@ -64,9 +64,6 @@
   ;validate-schema-mw
   (fn [_ [_ app-config]]
     (let [remote-db (rdb/->DropboxDB. (:DropboxOAuthToken app-config))]
-      ;(-> (rdb/download-json remote-db const/SERIALS_ENTRY_URL)
-      ;    (.then #(dispatch [:serials-load-success %]))
-      ;    (.catch #(dispatch [:serials-load-error %])))
       (api-proxy
         #(-> (rdb/download-json remote-db const/SERIALS_ENTRY_URL)
              (.then (fn [s]
