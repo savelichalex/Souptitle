@@ -26,7 +26,8 @@
 
 (defn update-timeline-position-with-label
   [tPosition table-margin-top fullHeight visibleHeight label show-label? label-top label-height timeline-list event]
-  (let [timeline-y (.. event -nativeEvent -locationY)
+  (let [timeline-y-real (.. event -nativeEvent -locationY)
+        timeline-y (if (> timeline-y-real 0) timeline-y-real 0)
         y-ratio (/ timeline-y @visibleHeight)
         words-list-y-temp (* @fullHeight y-ratio)
         words-list-y (if (> words-list-y-temp (- @fullHeight @visibleHeight))
