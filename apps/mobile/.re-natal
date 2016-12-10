@@ -1,0 +1,19 @@
+{
+  "name": "SouptitleMobile",
+  "interface": "reagent6",
+  "androidHost": "localhost",
+  "iosHost": "localhost",
+  "envRoots": {
+    "dev": "env/dev",
+    "prod": "env/prod"
+  },
+  "modules": [
+    "react-native-linear-gradient",
+    "react-native-controllers",
+    "react-native-navigation",
+    "react-native-blur"
+  ],
+  "imageDirs": [
+    "images"
+  ]
+}

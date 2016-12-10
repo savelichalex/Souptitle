@@ -1,0 +1,6 @@
+target: rn
+ios:
+  folder: ios/SouptitleMobile
+android:
+  folder: android/app/src/main/java/com/souptitlemobile
+  package: com.souptitlemobile
