@@ -7,6 +7,16 @@
 
 (def ExScreen (r/adapt-react-class (js/require "./screen.js")))
 
+(defn check-value [func]
+  (fn [[key val]]
+    (if (map? val)
+      [(->camelCaseString key) (func val)]
+      [(->camelCaseString key) val])))
+
+(defn transform-params [params]
+  (into {}
+        (map params (check-value transform-params))))
+
 (defn screen [route-params children]
-  [ExScreen (transform-keys ->camelCaseString route-params)
+  [ExScreen (transform-keys route-params)
    children])
