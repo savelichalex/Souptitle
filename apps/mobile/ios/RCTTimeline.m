@@ -5,7 +5,7 @@
 //  Created by Admin on 02.10.16.
 //
 
-#import "RCTViewManager.h"
+#import <React/RCTViewManager.h>
 #import "RCTTimeline.h"
 
 @implementation RCTTimeline

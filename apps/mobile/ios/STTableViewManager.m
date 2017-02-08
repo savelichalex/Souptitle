@@ -5,7 +5,7 @@
 //  Created by Admin on 09.10.16.
 //
 
-#import "RCTViewManager.h"
+#import <React/RCTViewManager.h>
 #import "STTableViewManager.h"
 #import "STTableView.h"
 

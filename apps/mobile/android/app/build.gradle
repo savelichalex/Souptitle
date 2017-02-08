@@ -145,8 +145,7 @@ dependencies {
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"
     compile "com.facebook.react:react-native:+"  // From node_modules
-    debugCompile project(path: ':react-native-navigation', configuration: 'libraryDebug')
-    releaseCompile project(path: ':react-native-navigation', configuration: 'libraryRelease')
+    compile project(':react-native-navigation')
 }
 
 buildscript {
