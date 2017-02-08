@@ -1,6 +1,7 @@
 (ns teach-by-friends.shared.scenes.about-screen
   (:require [reagent.core :as r]
-    [teach-by-friends.shared.ui :as ui])
+            [teach-by-friends.shared.ui :as ui]
+            [souptitle.shared.components.screen :refer [screen]])
   (:require-macros [teach-by-friends.shared.navigation :refer [defscreen]]))
 
 (def about-text "
@@ -20,14 +21,19 @@ by Alexey Savelev and Eugene Bondarev")
                      :text-align "center"}}
     about-text]])
 
-(defscreen
-  about-screen
-  ([props]
-   [about-comp props])
-  ([_]
-   {:title          "About"
-    :navigatorStyle {:navBarTextColor          "#fff"
-                     :navBarTransparent        true
-                     :navBarButtonColor        "#fff"
-                     :statusBarTextColorScheme "light"
-                     :screenColor "black"}}))
+;; (defscreen
+;;   about-screen
+;;   ([props]
+;;    [about-comp props])
+;;   ([_]
+;;    {:title          "About"
+;;     :navigatorStyle {:navBarTextColor          "#fff"
+;;                      :navBarTransparent        true
+;;                      :navBarButtonColor        "#fff"
+;;                      :statusBarTextColorScheme "light"
+;;                      :screenColor "black"}}))
+
+(defn get-about-screen []
+  (fn []
+    [screen {:navigation-bar {:title "About"}}
+     [about-comp]]))

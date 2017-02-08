@@ -38,14 +38,20 @@
                         :style      {:flex 1}}])]))))
 
 
-(defscreen
-  well-known-screen
-  ([props]
-   [well-known-words-comp props])
-  ([_]
-   {:title          "Favorite"
-    :navigatorStyle {:navBarTextColor          "#fff"
-                     :navBarTransparent        true
-                     :navBarButtonColor        "#fff"
-                     :statusBarTextColorScheme "light"
-                     :screenColor "black"}}))
+;; (defscreen
+;;   well-known-screen
+;;   ([props]
+;;    [well-known-words-comp props])
+;;   ([_]
+;;    {:title          "Favorite"
+;;     :navigatorStyle {:navBarTextColor          "#fff"
+;;                      :navBarTransparent        true
+;;                      :navBarButtonColor        "#fff"
+;;                      :statusBarTextColorScheme "light"
+;;                      :screenColor "black"}}))
+
+(defn get-well-known-screen []
+  (fn []
+    [screen {:navigation-bar {:title "Favorite"
+                              :tintColor "#fff"}}
+     [well-known-words-comp]]))

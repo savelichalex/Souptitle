@@ -292,3 +292,8 @@
                               :justify-content  "center"
                               :align-items      "center"}}
              [activity-indicator {:color "rgb(155, 155, 155)"}]])]]))))
+
+(defn get-chapter-screen [activity-indicator]
+  (fn []
+    [screen {:navigation-bar {:title ""}}
+     [chapters-content activity-indicator]]))

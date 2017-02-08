@@ -3,7 +3,8 @@
             [reagent.core :as r]
             [re-frame.core :refer [subscribe dispatch dispatch-sync]]
             [teach-by-friends.shared.components.row :refer [row]]
-            [teach-by-friends.shared.navigation :as nav]))
+            [teach-by-friends.shared.navigation :as nav]
+            [souptitle.shared.components.screen :refer [screen]]))
 
 (def ReactNative (js/require "react-native"))
 
@@ -26,14 +27,9 @@
          [ui/view {:style {:flex 1 :justify-content "center" :align-items "center"}}
           [activity-indicator {:color "rgb(155, 155, 155)"}]])])))
 
-(defn serials-title []
-  [ui/text {:style {:color "white"
-                    :font-size 30}}
-   (clojure.string/upper-case "serials")])
-
 (defn get-serials-scene [activity-indicator]
   (fn serials-scene []
-    {:nav-bar {:left-button nil
-               :title serials-title
-               :right-button nil}
-     :content (serials-content activity-indicator)}))
+    [screen {:navigation-bar {:title (clojure.string/upper-case "serials")
+                              :title-style {:color "white"
+                                            :font-size 30}}}
+     [serials-content activity-indicator]]))
