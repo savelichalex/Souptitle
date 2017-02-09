@@ -1,6 +1,6 @@
-(ns teach-by-friends.parser
+(ns souptitle-mobile.parser
   (:require [clojure.string :as string]
-            [teach-by-friends.stop-words :refer [stop-words]]
+            [souptitle-mobile.stop-words :refer [stop-words]]
             [clojure.set :as set]))
 
 (def time-regex #"(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})\r?\n([^\r\n]+)\r?\n([^\r\n]*)")

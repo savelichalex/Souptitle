@@ -1,20 +1,20 @@
-(ns teach-by-friends.ios.core
+(ns souptitle-mobile.ios.core
   (:require [reagent.core :as r]
             [re-frame.core :refer [dispatch]]
             [clojure.string :refer [capitalize]]
-            [teach-by-friends.handlers]
-            [teach-by-friends.subs]
-            [teach-by-friends.shared.ui :as ui]
-            [teach-by-friends.ios.ui :as ios-ui]
-            [teach-by-friends.shared.scenes.serials-scene :refer [get-serials-scene serials-content]]
-            [teach-by-friends.shared.scenes.chapters-scene :refer [chapters-content serial-bars-creator translate-creator]]
-            [teach-by-friends.shared.scenes.well-known-screen :refer [well-known-screen]]
-            [teach-by-friends.shared.scenes.about-screen :refer [about-screen]]
-            [teach-by-friends.shared.layouts.root-layout :refer [create-root-layout]]
-            [teach-by-friends.shared.components.timeline :refer [timeline]]
-            [teach-by-friends.shared.navigation :refer [navigation-tabs push! dismiss-modal!]]
-            [teach-by-friends.shared.icons :refer [get-icon]])
-  (:require-macros [teach-by-friends.shared.navigation :refer [defscreen]]))
+            [souptitle-mobile.handlers]
+            [souptitle-mobile.subs]
+            [souptitle-mobile.shared.ui :as ui]
+            [souptitle-mobile.ios.ui :as ios-ui]
+            [souptitle-mobile.shared.scenes.serials-scene :refer [get-serials-scene serials-content]]
+            [souptitle-mobile.shared.scenes.chapters-scene :refer [chapters-content serial-bars-creator translate-creator]]
+            [souptitle-mobile.shared.scenes.well-known-screen :refer [well-known-screen]]
+            [souptitle-mobile.shared.scenes.about-screen :refer [about-screen]]
+            [souptitle-mobile.shared.layouts.root-layout :refer [create-root-layout]]
+            [souptitle-mobile.shared.components.timeline :refer [timeline]]
+            [souptitle-mobile.shared.navigation :refer [navigation-tabs push! dismiss-modal!]]
+            [souptitle-mobile.shared.icons :refer [get-icon]])
+  (:require-macros [souptitle-mobile.shared.navigation :refer [defscreen]]))
 
 (enable-console-print!)
 

@@ -1,6 +1,6 @@
-(ns teach-by-friends.shared.layouts.root-layout
-  (:require [teach-by-friends.shared.ui :as ui]
-            [teach-by-friends.shared.animations :as anim]))
+(ns souptitle-mobile.shared.layouts.root-layout
+  (:require [souptitle-mobile.shared.ui :as ui]
+            [souptitle-mobile.shared.animations :as anim]))
 
 (defn create-root-layout [nav-bar-config]
   (fn root-layout [{{lb :left-button title :title rb :right-button} :nav-bar content :content} {:keys [direction time]}]

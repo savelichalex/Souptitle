@@ -1,6 +1,6 @@
-(ns teach-by-friends.ios.ui
+(ns souptitle-mobile.ios.ui
   (:require [reagent.core :as r]
-            [teach-by-friends.shared.ui :as ui]))
+            [souptitle-mobile.shared.ui :as ui]))
 
 (def activity-indicator (r/adapt-react-class (. ui/ReactNative -ActivityIndicatorIOS)))
 

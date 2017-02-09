@@ -1,4 +1,4 @@
-(ns teach-by-friends.db)
+(ns souptitle-mobile.db)
 
 ;; initial state of app-db
 (def app-db {:chapter nil

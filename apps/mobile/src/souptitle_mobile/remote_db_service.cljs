@@ -1,4 +1,4 @@
-(ns teach-by-friends.remote-db-service)
+(ns souptitle-mobile.remote-db-service)
 
 (defn fetch
   ([url]

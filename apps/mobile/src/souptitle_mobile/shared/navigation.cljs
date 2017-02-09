@@ -1,9 +1,9 @@
-(ns teach-by-friends.shared.navigation
-  (:require-macros [teach-by-friends.shared.navigation :refer [defscreen]]
+(ns souptitle-mobile.shared.navigation
+  (:require-macros [souptitle-mobile.shared.navigation :refer [defscreen]]
                    [reagent.ratom :refer [reaction]])
   (:require [reagent.core :as r]
             [re-frame.core :refer [subscribe dispatch]]
-            [teach-by-friends.shared.ui :as ui]))
+            [souptitle-mobile.shared.ui :as ui]))
 
 (def Navigation (.. (js/require "react-native-navigation") -Navigation))
 

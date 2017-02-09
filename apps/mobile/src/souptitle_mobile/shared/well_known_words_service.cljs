@@ -1,5 +1,5 @@
-(ns teach-by-friends.shared.well-known-words-service
-  (:require [teach-by-friends.shared.ui :as ui]
+(ns souptitle-mobile.shared.well-known-words-service
+  (:require [souptitle-mobile.shared.ui :as ui]
             [cognitect.transit :as transit]))
 
 (def AsyncStorage (. ui/ReactNative -AsyncStorage))

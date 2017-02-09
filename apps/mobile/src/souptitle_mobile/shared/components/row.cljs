@@ -1,5 +1,5 @@
-(ns teach-by-friends.shared.components.row
-  (:require [teach-by-friends.shared.ui :as ui]
+(ns souptitle-mobile.shared.components.row
+  (:require [souptitle-mobile.shared.ui :as ui]
             [clojure.string :refer [capitalize]]))
 
 (defn row [data press-handler]

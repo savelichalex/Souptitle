@@ -1,6 +1,6 @@
-(ns teach-by-friends.shared.components.term-row
-  (:require [teach-by-friends.shared.ui :as ui]
-            [teach-by-friends.consts :as const]))
+(ns souptitle-mobile.shared.components.term-row
+  (:require [souptitle-mobile.shared.ui :as ui]
+            [souptitle-mobile.consts :as const]))
 
 (defn term-row [item on-press]
   (let [term (:term item)]

@@ -1,7 +1,7 @@
-(ns teach-by-friends.subs
+(ns souptitle-mobile.subs
   (:require-macros [reagent.ratom :refer [reaction]])
   (:require [re-frame.core :refer [register-sub subscribe]]
-            [teach-by-friends.consts :as const]
+            [souptitle-mobile.consts :as const]
             [clojure.string :as string]))
 
 (defmulti chapter-word-list (fn [type _] type))

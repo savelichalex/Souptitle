@@ -1,13 +1,13 @@
-(ns teach-by-friends.handlers
+(ns souptitle-mobile.handlers
   (:require
     [re-frame.core :refer [register-handler after dispatch]]
-    [teach-by-friends.db :refer [app-db]]
-    [teach-by-friends.parser :refer [parse-srt]]
-    [teach-by-friends.shared.ui :as ui]
-    [teach-by-friends.remote-db-service :as rdb]
-    [teach-by-friends.consts :as const]
-    [teach-by-friends.shared.well-known-words-service :as wservice]
-    [teach-by-friends.shared.navigation :as nav]))
+    [souptitle-mobile.db :refer [app-db]]
+    [souptitle-mobile.parser :refer [parse-srt]]
+    [souptitle-mobile.shared.ui :as ui]
+    [souptitle-mobile.remote-db-service :as rdb]
+    [souptitle-mobile.consts :as const]
+    [souptitle-mobile.shared.well-known-words-service :as wservice]
+    [souptitle-mobile.shared.navigation :as nav]))
 
 ;; -- Middleware ------------------------------------------------------------
 ;;

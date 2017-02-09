@@ -1,4 +1,4 @@
-(ns teach-by-friends.shared.icons)
+(ns souptitle-mobile.shared.icons)
 
 (def back (js/require "./images/back.png"))
 (def close (js/require "./images/close.png"))

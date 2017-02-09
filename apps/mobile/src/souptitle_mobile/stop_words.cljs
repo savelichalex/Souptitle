@@ -1,4 +1,4 @@
-(ns teach-by-friends.stop-words
+(ns souptitle-mobile.stop-words
   (:require [clojure.string :as string]))
 
 (def stop-words-raw

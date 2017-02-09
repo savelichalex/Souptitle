@@ -1,10 +1,10 @@
-(ns teach-by-friends.shared.scenes.serials-scene
-  (:require [teach-by-friends.shared.ui :as ui :refer [DataSource]]
+(ns souptitle-mobile.shared.scenes.serials-scene
+  (:require [souptitle-mobile.shared.ui :as ui :refer [DataSource]]
             [reagent.core :as r]
             [re-frame.core :refer [subscribe dispatch dispatch-sync]]
-            [teach-by-friends.shared.components.row :refer [row]]
-            [teach-by-friends.shared.navigation :as nav]
-            [souptitle.shared.components.screen :refer [screen]]))
+            [souptitle-mobile.shared.components.row :refer [row]]
+            [souptitle-mobile.shared.navigation :as nav]
+            [souptitle-mobile.shared.components.screen :refer [screen]]))
 
 (def ReactNative (js/require "react-native"))
 

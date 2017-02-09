@@ -1,4 +1,4 @@
-(ns souptitle.shared.components.screen
+(ns souptitle-mobile.shared.components.screen
   (:require [camel-snake-kebab.extras :refer [transform-keys]
              camel-snake-kebab :refer [->camelCaseString]
              reagent.core :as r]))

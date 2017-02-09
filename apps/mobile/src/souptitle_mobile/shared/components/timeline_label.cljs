@@ -1,6 +1,6 @@
-(ns teach-by-friends.shared.components.timeline-label
+(ns souptitle-mobile.shared.components.timeline-label
   (:require [reagent.core :as r]
-            [teach-by-friends.shared.ui :as ui]))
+            [souptitle-mobile.shared.ui :as ui]))
 
 (def st-text
   (r/adapt-react-class

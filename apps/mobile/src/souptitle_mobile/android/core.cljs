@@ -1,12 +1,12 @@
-(ns teach-by-friends.android.core
+(ns souptitle-mobile.android.core
   (:require [reagent.core :as r :refer [atom]]
-            [teach-by-friends.handlers]
-            [teach-by-friends.subs]
-            [teach-by-friends.shared.ui :as ui]
-            [teach-by-friends.android.ui :as android-ui]
-            [teach-by-friends.shared.scenes.serials-scene :refer [get-serials-scene]]
-            [teach-by-friends.shared.layouts.root-layout :refer [create-root-layout]]
-            [teach-by-friends.shared.components.timeline :refer [timeline]]))
+            [souptitle-mobile.handlers]
+            [souptitle-mobile.subs]
+            [souptitle-mobile.shared.ui :as ui]
+            [souptitle-mobile.android.ui :as android-ui]
+            [souptitle-mobile.shared.scenes.serials-scene :refer [get-serials-scene]]
+            [souptitle-mobile.shared.layouts.root-layout :refer [create-root-layout]]
+            [souptitle-mobile.shared.components.timeline :refer [timeline]]))
 
 (enable-console-print!)
 

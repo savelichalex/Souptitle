@@ -1,12 +1,12 @@
-(ns teach-by-friends.shared.scenes.well-known-screen
+(ns souptitle-mobile.shared.scenes.well-known-screen
   (:require [reagent.core :as r]
             [re-frame.core :refer [subscribe dispatch]]
-            [teach-by-friends.shared.ui :as ui]
-            [teach-by-friends.shared.components.term-row :refer [term-row]]
-            [teach-by-friends.shared.components.table-view :refer [table-view]]
-            [teach-by-friends.consts :as const]
-            [teach-by-friends.shared.navigation :as nav])
-  (:require-macros [teach-by-friends.shared.navigation :refer [defscreen]]))
+            [souptitle-mobile.shared.ui :as ui]
+            [souptitle-mobile.shared.components.term-row :refer [term-row]]
+            [souptitle-mobile.shared.components.table-view :refer [table-view]]
+            [souptitle-mobile.consts :as const]
+            [souptitle-mobile.shared.navigation :as nav]
+            [souptitle-mobile.shared.components.screen :refer [screen]]))
 
 (def empty-text "Here you can see your well known words to repeat them")
 

@@ -1,8 +1,7 @@
-(ns teach-by-friends.shared.scenes.about-screen
+(ns souptitle-mobile.shared.scenes.about-screen
   (:require [reagent.core :as r]
-            [teach-by-friends.shared.ui :as ui]
-            [souptitle.shared.components.screen :refer [screen]])
-  (:require-macros [teach-by-friends.shared.navigation :refer [defscreen]]))
+            [souptitle-mobile.shared.ui :as ui]
+            [souptitle-mobile.shared.components.screen :refer [screen]]))
 
 (def about-text "
 Made with love

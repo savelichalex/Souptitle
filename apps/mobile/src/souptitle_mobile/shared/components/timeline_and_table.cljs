@@ -1,9 +1,9 @@
-(ns teach-by-friends.shared.components.timeline-and-table
+(ns souptitle-mobile.shared.components.timeline-and-table
   (:require-macros [reagent.ratom :refer [reaction]])
-  (:require [teach-by-friends.shared.ui :as ui]
-            [teach-by-friends.shared.components.table-view :refer [table-view]]
-            [teach-by-friends.shared.components.timeline :refer [timeline]]
-            [teach-by-friends.shared.components.timeline-label :refer [timeline-label]]
+  (:require [souptitle-mobile.shared.ui :as ui]
+            [souptitle-mobile.shared.components.table-view :refer [table-view]]
+            [souptitle-mobile.shared.components.timeline :refer [timeline]]
+            [souptitle-mobile.shared.components.timeline-label :refer [timeline-label]]
             [reagent.core :as r]))
 
 (def TIMELINE_LINES_COUNT 60)

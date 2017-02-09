@@ -1,5 +1,5 @@
-(ns teach-by-friends.shared.components.table-view
-  (:require [teach-by-friends.shared.ui :as ui]
+(ns souptitle-mobile.shared.components.table-view
+  (:require [souptitle-mobile.shared.ui :as ui]
             [reagent.core :as r]))
 
 (def table-view-native

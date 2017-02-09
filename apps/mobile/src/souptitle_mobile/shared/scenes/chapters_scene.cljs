@@ -1,14 +1,15 @@
-(ns teach-by-friends.shared.scenes.chapters-scene
+(ns souptitle-mobile.shared.scenes.chapters-scene
   (:require-macros [reagent.ratom :refer [reaction]])
-  (:require [teach-by-friends.shared.ui :as ui]
+  (:require [souptitle-mobile.shared.ui :as ui]
             [clojure.string :as string]
             [reagent.core :as r]
             [re-frame.core :refer [subscribe dispatch]]
-            [teach-by-friends.consts :as const]
-            [teach-by-friends.shared.navigation :as nav]
-            [teach-by-friends.shared.icons :refer [get-icon]]
-            [teach-by-friends.shared.components.term-row :refer [term-row]]
-            [teach-by-friends.shared.components.timeline-and-table :refer [timeline-and-table]]))
+            [souptitle-mobile.consts :as const]
+            [souptitle-mobile.shared.navigation :as nav]
+            [souptitle-mobile.shared.icons :refer [get-icon]]
+            [souptitle-mobile.shared.components.term-row :refer [term-row]]
+            [souptitle-mobile.shared.components.timeline-and-table :refer [timeline-and-table]]
+            [souptitle-mobile.shared.components.screen :refer [screen]]))
 
 (defn serial-item [number last-number item active? on-change]
   [ui/touchable-opacity {:style    {:justify-content  "center"

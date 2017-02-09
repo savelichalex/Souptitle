@@ -1,6 +1,6 @@
-(ns teach-by-friends.shared.animations
+(ns souptitle-mobile.shared.animations
   (:require [reagent.core :as r]
-            [teach-by-friends.shared.ui :as ui]))
+            [souptitle-mobile.shared.ui :as ui]))
 
 (defn with-opacity-transition [_ & children]
   (let [state (r/atom {:animated   false
