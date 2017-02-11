@@ -1,47 +1,36 @@
-(ns souptitle-mobile.android.core
-  (:require [reagent.core :as r :refer [atom]]
+(ns souptitle-mobile.ios.core
+  (:require [reagent.core :as r]
+            [re-frame.core :refer [dispatch]]
+            [clojure.string :refer [capitalize]]
             [souptitle-mobile.handlers]
             [souptitle-mobile.subs]
             [souptitle-mobile.shared.ui :as ui]
             [souptitle-mobile.android.ui :as android-ui]
-            [souptitle-mobile.shared.scenes.serials-scene :refer [get-serials-scene]]
-            [souptitle-mobile.shared.layouts.root-layout :refer [create-root-layout]]
-            [souptitle-mobile.shared.components.timeline :refer [timeline]]))
+            [souptitle-mobile.shared.scenes.serials-scene :refer [get-serials-screen]]
+            [souptitle-mobile.shared.scenes.chapters-scene :refer [get-chapter-screen serial-bars-creator translate-creator]]
+            [souptitle-mobile.shared.scenes.well-known-screen :refer get-[well-known-screen]]
+            [souptitle-mobile.shared.scenes.about-screen :refer [get-about-screen]]
+            [souptitle-mobile.shared.icons :refer [get-icon]]))
 
 (enable-console-print!)
 
-(def root-layout (create-root-layout {:background-color "rgb(72, 86, 155)"}))
-(def serials-scene (get-serials-scene android-ui/activity-indicator))
+(def about-screen (get-about-screen))
+(def chapter-screen (get-chapter-screen android-ui/activity-indicator))
+(def serials-screen (get-serials-screen android-ui/activity-indicator))
+(def well-known-screen (get-well-known-screen))
 
-(defmulti render-scene (fn [nav] (:route nav)))
-(defmethod render-scene :serials
-  [{{direction :direction} :props}]
-  [root-layout (serials-scene) {:direction direction :time 400}])
+(def translate (translate-creator android-ui/blur-view android-ui/activity-indicator))
+(def serial-bars (serial-bars-creator android-ui/blur-view android-ui/activity-indicator))
 
-(defn app-root []
-  (let [tPosition (ui/animated-value 100.0)
-        pan-responder (ui/create-pan-responder {:onStartShouldSetPanResponder        (fn [_ _] true)
-                                                :onStartShouldSetPanResponderCapture (fn [_ _] true)
-                                                :onMoveShouldSetPanResponder         (fn [_ _] true)
-                                                :onMoveShouldSetPanResponderCapture  (fn [_ _] true)
-                                                :onPanResponderGrant                 (fn [event _]
-                                                                                       (print
-                                                                                         (ui/animated-set-value tPosition (aget event "nativeEvent" "pageY"))))
-                                                :onPanResponderMove                  (fn [event _]
-                                                                                       (print
-                                                                                         (ui/animated-set-value tPosition (aget event "nativeEvent" "pageY"))))})]
+(def network-error (get-network-error-modal))
 
-    [ui/view {:style {:flex           1
-                      :flex-direction "row"}}
-     [timeline (-> {:tPosition          tPosition
-                    :countWordsOnScreen 11
-                    :timestamps         (clj->js (->> (range 0 70) (map #(str %))))
-                    :style              {:flex 1}}
-                   (merge (ui/get-pan-handlers pan-responder)))]
-     [ui/view {:style {:flex 5}}]]))
-
-;(defn app-root []
-;  [ui/navigation {:render-scene render-scene}])
+(def main-tabs
+  (create-tab-navigator {:Serials #(r/reactify-component serials-screen)
+                         :WellKnown #(r/reactify-component well-known-screen)
+                         :About #(r/reactify-component about-screen)}))
 
 (defn init []
-  (.registerComponent ui/app-registry "TeachByFriends" #(r/reactify-component app-root)))
+  (.registerComponent
+   ui/app-registry
+   "Souptitle"
+   main-tabs)
