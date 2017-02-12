@@ -4,7 +4,6 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
-import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -13,24 +12,34 @@ import com.facebook.soloader.SoLoader;
 import java.util.Arrays;
 import java.util.List;
 
-// vendor
-import com.reactnativenavigation.NavigationApplication;
+public class MainApplication extends Application implements ReactApplication {
 
-public class MainApplication extends NavigationApplication {
+  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+    @Override
+    public boolean getUseDeveloperSupport() {
+      return BuildConfig.DEBUG;
+    }
+
+    @Override
+    protected List<ReactPackage> getPackages() {
+      return Arrays.<ReactPackage>asList(
+        new MainReactPackage(),
+        new BlurViewPackage(),
+        new LinearGradientPackage(),
+        new SecretConfigManagerPackage(SecretConfig.class),
+        new STTimelinePackage(),
+      );
+    }
+  };
 
   @Override
-  public boolean isDebug() {
-      return BuildConfig.DEBUG;
+  public ReactNativeHost getReactNativeHost() {
+    return mReactNativeHost;
   }
 
-  @NotNull
   @Override
-  public List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-                                         new BlurViewPackage(),
-                                         new LinearGradientPackage(),
-                                         new SecretConfigManagerPackage(SecretConfig.class),
-                                         new STTimelinePackage(),
-                                         );
+  public void onCreate() {
+    super.onCreate();
+    SoLoader.init(this, /* native exopackage */ false);
   }
 }

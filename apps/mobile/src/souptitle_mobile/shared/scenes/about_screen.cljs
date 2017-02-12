@@ -32,7 +32,12 @@ by Alexey Savelev and Eugene Bondarev")
 ;;                      :statusBarTextColorScheme "light"
 ;;                      :screenColor "black"}}))
 
+;; (defn get-about-screen []
+;;   (fn []
+;;     [screen {:navigation-bar {:title "About"}}
+;;      [about-comp]]))
+
 (defn get-about-screen []
   (fn []
     [screen {:navigation-bar {:title "About"}}
-     [about-comp]]))
+     [ui/view "About"]]))

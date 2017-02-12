@@ -1,5 +1,5 @@
 (ns souptitle-mobile.shared.utils
-  (:require [camel-snake-kebab :refer [->camelCaseString]]))
+  (:require [camel-snake-kebab.core :refer [->camelCaseString]]))
 
 (defn check-value [func]
   (fn [[key val]]
