@@ -29,8 +29,12 @@
                          :WellKnown #(r/reactify-component well-known-screen)
                          :About #(r/reactify-component about-screen)}))
 
+(defn app-root
+  [main-tabs])
+
 (defn init []
+  (print "sdfsdf")
   (.registerComponent
    ui/app-registry
    "Souptitle"
-   (fn [] main-tabs)))
+   #(r/reactify-component app-root)))

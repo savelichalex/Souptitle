@@ -23,6 +23,7 @@
                                                       :figwheel     true
                                                       :compiler     {:output-to     "target/ios/not-used.js"
                                                                      :main          "env.ios.main"
+                                                                     :libs ["src/souptitle_mobile/shared/components/screen.js"]
                                                                      :output-dir    "target/ios"
                                                                      :optimizations :none}}
                                                      {:id           "android"

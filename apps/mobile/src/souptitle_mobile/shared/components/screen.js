@@ -1,22 +1,23 @@
-const React = require('react');
+goog.provide('souptitleMobile.js.screenBase')
 
-class Screen extends React.Component {
-  constructor({ route }) {
-    super();
-    this.setRouteParams(route);
+souptitleMobile.shared.screenBase.getScreenComponent = function getScreenComponent(React) {
+  var Component = React.Component;
+  function Screen(props) {
+    Component.call(this);
+    this.setRouteParams(props.route);
   }
 
-  componentWillReceiveProps({ route }) {
-    this.setRouteParams(route);
-  }
-
-  setRouteParams(params) {
+  Screen.prototype = Object.create(Component.prototype);
+  Screen.prototype.constructor = Screen;
+  Screen.prototype.componentWillReceiveProps = function componentWillReceiveProps(props) {
+    this.setRouteParams(props.route);
+  };
+  Screen.prototype.setRouteParams = function setRouteParams(params) {
     Screen.prototype.route = params;
-  }
-
-  render() {
+  };
+  Screen.prototype.render = function render() {
     return this.props.children;
-  }
-}
+  };
 
-module.exports = Screen;
+  return Screen;
+};
