@@ -1,7 +1,7 @@
 (ns souptitle-mobile.shared.components.screen
   (:require [reagent.core :as r]
             [souptitle-mobile.shared.utils :refer [transform-params]]
-            [souptitleMobile.js.screenBase :as screen-base]))
+            [souptitle-mobile.shared.components.screen-base :as screen-base]))
 
 ;; TODO: add camel-snake-kebab to deps
 

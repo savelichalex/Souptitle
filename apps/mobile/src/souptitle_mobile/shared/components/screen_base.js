@@ -1,6 +1,6 @@
-goog.provide('souptitleMobile.js.screenBase')
+goog.provide('souptitle_mobile.shared.components.screen_base')
 
-souptitleMobile.shared.screenBase.getScreenComponent = function getScreenComponent(React) {
+souptitle_mobile.shared.components.screen_base.getScreenComponent = function getScreenComponent(React) {
   var Component = React.Component;
   function Screen(props) {
     Component.call(this);
