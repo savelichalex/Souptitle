@@ -12,3 +12,6 @@ pom.xml.asc
 .nrepl-port
 buck-out
 .buckd
+.DS_Store
+.git
+.idea/*
