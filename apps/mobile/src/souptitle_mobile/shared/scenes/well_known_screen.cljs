@@ -66,4 +66,5 @@
                               :tintColor "#fff"}
              :tab-bar {:label "Favorite"
                        :icon (r/reactify-component well-known-tab-icon)}}
-     [ui/view "Well known"]]))
+     [ui/view
+      [ui/text {:style {:color "white"}} "Well known"]]]))

@@ -10,7 +10,8 @@
             [souptitle-mobile.shared.scenes.chapters-scene :refer [get-chapter-screen serial-bars-creator translate-creator]]
             [souptitle-mobile.shared.scenes.well-known-screen :refer [get-well-known-screen]]
             [souptitle-mobile.shared.scenes.about-screen :refer [get-about-screen]]
-            [souptitle-mobile.shared.icons :refer [get-icon]]))
+            [souptitle-mobile.shared.icons :refer [get-icon]]
+            [souptitle-mobile.shared.navigation :refer [create-tab-navigator]]))
 
 (enable-console-print!)
 
@@ -22,18 +23,19 @@
 (def translate (translate-creator ios-ui/blur-view ios-ui/activity-indicator))
 (def serial-bars (serial-bars-creator ios-ui/blur-view ios-ui/activity-indicator))
 
-(def network-error (get-network-error-modal))
-
 (def main-tabs
-  (create-tab-navigator {:Serials #(r/reactify-component serials-screen)
-                         :WellKnown #(r/reactify-component well-known-screen)
-                         :About #(r/reactify-component about-screen)}))
+  (create-tab-navigator
+   {:serials {:screen (r/reactify-component serials-screen)}
+    :well-known {:screen (r/reactify-component well-known-screen)}
+    :about {:screen (r/reactify-component about-screen)}}
+   {:tab-bar-options {:style {:background-color "black"}
+                      :active-tint-color "white"
+                      :inactive-tint-color "#ccc"}}))
 
-(defn app-root
+(defn app-root []
   [main-tabs])
 
 (defn init []
-  (print "sdfsdf")
   (.registerComponent
    ui/app-registry
    "Souptitle"

@@ -1,10 +1,12 @@
 (ns souptitle-mobile.shared.scenes.network-error
-  (:require [souptitle-mobile.shared.ui :as ui]))
+  (:require [souptitle-mobile.shared.ui :as ui]
+            [re-frame.core :refer [dispatch]]
+            [souptitle-mobile.shared.navigation :refer [dismiss-modal!]]))
 
 (def inet-error-image (js/require "./images/internet_error.png"))
 
 (defn get-network-error-modal []
-  (fn []
+  (fn [{:keys [navigator]}]
     [ui/view {:style {:flex 1
                       :flex-direction "column"
                       :align-items "center"

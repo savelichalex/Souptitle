@@ -1,5 +1,8 @@
 (ns souptitle-mobile.shared.navigation
-  (:require [souptitle-mobile.shared.utils :refer [transform-params]]))
+  (:refer-clojure :exclude [pop!])
+  (:require-macros [reagent.ratom :refer [reaction]])
+  (:require [souptitle-mobile.shared.utils :refer [transform-params]]
+            [reagent.core :as r]))
 
 (def Navigation (js/require "react-navigation"))
 (def StackNavigator (. Navigation -StackNavigator))
@@ -32,7 +35,23 @@
            (render-scene @nav-state)))})))
 
 (defn create-stack-navigator [params]
-  (StackNavigator (transform-params params)))
+  (r/adapt-react-class (StackNavigator (clj->js (transform-params params)))))
 
-(defn create-tab-navigator [params]
-  (TabNavigator (transform-params params)))
+(defn create-tab-navigator
+  ([params]
+   (create-tab-navigator params {}))
+  ([params tab-config]
+   (r/adapt-react-class
+    (TabNavigator
+     (clj->js (transform-params params))
+     (clj->js (transform-params tab-config))))))
+
+
+(defn push!
+  ([a b c]))
+(defn pop! [a])
+(defn show-modal!
+  ([a b])
+  ([a b c]))
+(defn dismiss-modal! [a b])
+(defn get-current-navigator [])

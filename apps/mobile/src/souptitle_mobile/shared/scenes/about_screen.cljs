@@ -40,4 +40,5 @@ by Alexey Savelev and Eugene Bondarev")
 (defn get-about-screen []
   (fn []
     [screen {:navigation-bar {:title "About"}}
-     [ui/view "About"]]))
+     [ui/view
+      [ui/text {:style {:color "white"}} "About"]]]))

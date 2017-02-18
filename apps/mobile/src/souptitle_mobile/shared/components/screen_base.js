@@ -13,9 +13,10 @@ souptitle_mobile.shared.components.screen_base.getScreenComponent = function get
     this.setRouteParams(props.route);
   };
   Screen.prototype.setRouteParams = function setRouteParams(params) {
-    Screen.prototype.route = params;
+    Screen.prototype.navigationOptions = params;
   };
   Screen.prototype.render = function render() {
+    console.log(this)
     return this.props.children;
   };
 

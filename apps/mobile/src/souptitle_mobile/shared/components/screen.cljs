@@ -8,5 +8,6 @@
 (def ExScreen (r/adapt-react-class (screen-base/getScreenComponent (js/require "react"))))
 
 (defn screen [route-params children]
+  (print route-params)
   [ExScreen (transform-params route-params)
    children])
