@@ -34,11 +34,12 @@
 ;;                                             :font-size 30}}}
 ;;      [serials-content activity-indicator]]))
 
+
 (defn get-serials-screen [activity-indicator]
-  (fn []
-    (print "serials-screen render")
-    [screen {:navigation-bar {:title (clojure.string/upper-case "serials")
-                              :title-style {:color "white"
-                                            :font-size 30}}}
-     [ui/view
-      [ui/text {:style {:color "white"}} "Serials"]]]))
+  (nav/create-screen
+   {:navigation-bar {:title (clojure.string/upper-case "serials")
+                     :title-style {:color "white"
+                                   :font-size 30}}
+    :tab-bar {:label "Serials"}}
+   [ui/view
+    [ui/text {:style {:color "white"}} "Serials"]]))

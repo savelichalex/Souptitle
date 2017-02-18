@@ -61,10 +61,10 @@
   [ui/image {:source (get-icon :favorites)}])
 
 (defn get-well-known-screen []
-  (fn []
-    [screen {:navigation-bar {:title "Favorite"
-                              :tintColor "#fff"}
-             :tab-bar {:label "Favorite"
-                       :icon (r/reactify-component well-known-tab-icon)}}
-     [ui/view
-      [ui/text {:style {:color "white"}} "Well known"]]]))
+  (nav/create-screen
+   {:navigation-bar {:title "Favorite"
+                     :tintColor "#fff"}
+    :tab-bar {:label "Favorite"
+              :icon #(r/reactify-component well-known-tab-icon)}}
+   [ui/view
+    [ui/text {:style {:color "white"}} "Well known"]]))

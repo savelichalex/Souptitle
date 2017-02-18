@@ -25,9 +25,9 @@
 
 (def main-tabs
   (create-tab-navigator
-   {:serials {:screen (r/reactify-component serials-screen)}
-    :well-known {:screen (r/reactify-component well-known-screen)}
-    :about {:screen (r/reactify-component about-screen)}}
+   {:serials {:screen serials-screen}
+    :well-known {:screen well-known-screen}
+    :about {:screen about-screen}}
    {:tab-bar-options {:style {:background-color "black"}
                       :active-tint-color "white"
                       :inactive-tint-color "#ccc"}}))

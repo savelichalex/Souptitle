@@ -46,6 +46,14 @@
      (clj->js (transform-params params))
      (clj->js (transform-params tab-config))))))
 
+(defn get-screen-wrapper [child]
+  (fn screen-wrapper [props]
+    child))
+
+(defn create-screen [params content]
+  (let [screen (r/reactify-component (get-screen-wrapper content))]
+    (set! (.-navigationOptions screen) (clj->js (transform-params params)))
+    screen))
 
 (defn push!
   ([a b c]))
