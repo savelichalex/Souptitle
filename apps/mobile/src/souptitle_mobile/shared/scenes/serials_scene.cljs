@@ -12,7 +12,7 @@
 
 (defn serials-content [activity-indicator]
   (let [serials (subscribe [:serials])]
-    (fn serials-content-comp [{:keys [navigator]}]
+    (fn serials-content-comp [{:keys [navigation]}]
       [ui/view {:style {:flex 1
                         :flex-direction "column"
                         :align-items "stretch"
@@ -23,7 +23,7 @@
                                       (row %
                                            (fn [serial]
                                              (dispatch [:seasons-load serial])
-                                             (nav/push! navigator :chapter-screen {:title (:title serial)}))))
+                                             (nav/navigate! navigation :chapter {:title (:title serial)}))))
                         :style      {:flex 1}}]
          [ui/view {:style {:flex 1 :justify-content "center" :align-items "center"}}
           [activity-indicator {:color "rgb(155, 155, 155)"}]])])))

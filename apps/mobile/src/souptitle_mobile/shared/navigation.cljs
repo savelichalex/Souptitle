@@ -2,7 +2,8 @@
   (:refer-clojure :exclude [pop!])
   (:require-macros [reagent.ratom :refer [reaction]])
   (:require [souptitle-mobile.shared.utils :refer [transform-params]]
-            [reagent.core :as r]))
+            [reagent.core :as r]
+            [camel-snake-kebab.core :refer [->camelCase]]))
 
 (def Navigation (js/require "react-navigation"))
 (def StackNavigator (. Navigation -StackNavigator))
@@ -48,14 +49,14 @@
 
 (defn get-screen-wrapper [child]
   (fn screen-wrapper [props]
-    child))
+    [child props]))
 
 (defn create-screen [params content]
   (let [screen (r/reactify-component
                 (get-screen-wrapper
-                 (if (vector? content) ;; check if that reagent component
-                   content             ;; or just hiccup
-                   [content])))]
+                 (if (vector? content)  ;; check if that reagent component
+                   (fn [props] content) ;; or just hiccup
+                   content)))]
     (set! (.-navigationOptions screen) (clj->js (transform-params params)))
     screen))
 
@@ -67,3 +68,9 @@
   ([a b c]))
 (defn dismiss-modal! [a b])
 (defn get-current-navigator [])
+
+(defn navigate! [navigator screen props]
+  (. navigator
+     (navigate
+      (-> screen (->camelCase) (name))
+      (clj->js props))))

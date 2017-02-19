@@ -25,7 +25,8 @@
 
 (def serials-screens
   (nav/create-stack-navigator
-   {:serials-main {:screen serials-screen}}))
+   {:serials-main {:screen serials-screen}
+    :chapter {:screen chapter-screen}}))
 
 (def main-tabs
   (nav/create-tab-navigator

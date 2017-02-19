@@ -241,14 +241,15 @@
     (fn serial-cover-comp [image-uri sort-type]
       [ui/view {:style {:position "relative"}
                 :on-layout on-layout}
-       [ui/image {:source {:uri image-uri}
-                  :resize-mode "cover"
-                  :style {:width (ui/get-device-width)
-                          :height @height
-                          :position "absolute"
-                          :top 0}}]
+       (when (not (nil? image-uri))
+         [ui/image {:source {:uri image-uri}
+                    :resize-mode "cover"
+                    :style {:width (ui/get-device-width)
+                            :height @height
+                            :position "absolute"
+                            :top 0}}])
        [ui/linear-gradient {:colors ["rgba(0,0,0,1)" "rgba(0,0,0,0.3)"]
-                            :start  [0.5 1.0] :end [0.5 0.0]
+                            :start  {:x 0.5 :y 1.0} :end {:x 0.5 :y 0.0}
                             :style  {:width (ui/get-device-width)
                                      :height @height
                                      :position "absolute"
@@ -260,40 +261,41 @@
         sort-type (subscribe [:get-sort-type])
         timeline-list (subscribe [:get-timeline-list])
         cover (subscribe [:get-cover-image])]
-    (fn [{:keys [navigator]}]
-      (. navigator (setOnNavigatorEvent (partial on-navigator-event navigator)))
-      (fn chapters-content-comp [{:keys [navigator]}]
-        [ui/view {:style {:flex 1
-                          :padding-bottom   2
-                          :flex-direction   "column"
-                          :align-items      "stretch"
-                          :background-color "black"
-                          :position "relative"}}
-         [serial-cover @cover @sort-type]
-         [ui/view {:style {:flex     1
-                           :position "relative"}}
-          (if (not (empty? @chapter))
-            [timeline-and-table {:style           {:flex           1
-                                                   :flex-direction "row"}
-                                 :render-row      (fn [index]
-                                                    (if (< index (count @chapter))
-                                                      [term-row
-                                                       (nth @chapter index)
-                                                       #(do
-                                                         (dispatch [:translate-term (:term (nth @chapter index))])
-                                                         (nav/show-modal! navigator :translate-screen (nth @chapter index)))]
-                                                      [term-row
-                                                       {:term ""}]))
-                                 :chapter         @chapter
-                                 :timeline-list   @timeline-list
-                                 :term-row-height const/TERM_ROW_HEIGHT}]
-            [ui/view {:style {:flex             1
-                              :background-color "black"
-                              :justify-content  "center"
-                              :align-items      "center"}}
-             [activity-indicator {:color "rgb(155, 155, 155)"}]])]]))))
+    (fn chapters-content-comp [{:keys [navigation]}]
+      (print @cover)
+      [ui/view {:style {:flex 1
+                        :padding-bottom   2
+                        :flex-direction   "column"
+                        :align-items      "stretch"
+                        :background-color "black"
+                        :position "relative"}}
+       [serial-cover @cover @sort-type]
+       [ui/view {:style {:flex     1
+                         :position "relative"}}
+        (if (not (empty? @chapter))
+          [timeline-and-table {:style           {:flex           1
+                                                 :flex-direction "row"}
+                               :render-row      (fn [index]
+                                                  (if (< index (count @chapter))
+                                                    [term-row
+                                                     (nth @chapter index)
+                                                     #(do
+                                                        (dispatch [:translate-term (:term (nth @chapter index))])
+                                                        (nav/show-modal! navigation :translate-screen (nth @chapter index)))]
+                                                    [term-row
+                                                     {:term ""}]))
+                               :chapter         @chapter
+                               :timeline-list   @timeline-list
+                               :term-row-height const/TERM_ROW_HEIGHT}]
+          [ui/view {:style {:flex             1
+                            :background-color "black"
+                            :justify-content  "center"
+                            :align-items      "center"}}
+           [activity-indicator {:color "rgb(155, 155, 155)"}]])]])))
 
 (defn get-chapter-screen [activity-indicator]
-  (fn []
-    [screen {:navigation-bar {:title ""}}
-     [chapters-content activity-indicator]]))
+  (nav/create-screen
+   {:title #(str (.-title %))
+    :header {:style {:background-color "black"}
+             :title-style {:color "white"}}}
+   (chapters-content activity-indicator)))
