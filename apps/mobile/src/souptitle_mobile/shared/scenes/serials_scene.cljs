@@ -15,7 +15,8 @@
     (fn serials-content-comp [{:keys [navigator]}]
       [ui/view {:style {:flex 1
                         :flex-direction "column"
-                        :align-items "stretch"}}
+                        :align-items "stretch"
+                        :background-color "black"}}
        (if (not (nil? @serials))
          [ui/list-view {:dataSource (.cloneWithRows serials-ds (clj->js @serials))
                         :render-row #(r/as-element
@@ -44,9 +45,8 @@
 (defn get-serials-screen [activity-indicator]
   (nav/create-screen
    {:title (clojure.string/upper-case "serials")
-    :title-style {:color "white"
-                  :font-size 30}
+    :header {:style {:background-color "black"}
+             :title-style {:color "white"}}
     :tab-bar {:label "Serials"
               :icon serials-tab-icon}}
-   [ui/view
-    [ui/text {:style {:color "white"}} "Serials"]]))
+   (serials-content activity-indicator)))

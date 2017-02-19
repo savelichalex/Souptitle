@@ -12,14 +12,15 @@
                 :style {:width (ui/get-device-width)
                         :height 100}}]
      [ui/linear-gradient {:colors ["rgba(0,0,0,0.6)" "rgba(0,0,0,0)"]
-                          :start  [0.0 0.5] :end [1.0 0.5]
+                          :start  {:x 0.0 :y 0.5} :end {:x 1.0 :y 0.5}
                           :style  {:width (ui/get-device-width)
                                    :height 100
                                    :position "absolute"
                                    :top 0}}]
-     [ui/text {:style {:position "absolute"
-                       :font-size 14
-                       :color "white"
-                       :left 16
-                       :bottom 10}}
-      (capitalize (:title data-to-clj))]]))
+     [ui/view {:style {:background-color "transparent"}}
+      [ui/text {:style {:position "absolute"
+                        :font-size 14
+                        :color "white"
+                        :left 16
+                        :bottom 10}}
+       (capitalize (:title data-to-clj))]]]))

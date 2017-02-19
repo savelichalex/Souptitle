@@ -11,7 +11,7 @@
             [souptitle-mobile.shared.scenes.well-known-screen :refer [get-well-known-screen]]
             [souptitle-mobile.shared.scenes.about-screen :refer [get-about-screen]]
             [souptitle-mobile.shared.icons :refer [get-icon]]
-            [souptitle-mobile.shared.navigation :refer [create-tab-navigator]]))
+            [souptitle-mobile.shared.navigation :as nav]))
 
 (enable-console-print!)
 
@@ -23,9 +23,13 @@
 (def translate (translate-creator ios-ui/blur-view ios-ui/activity-indicator))
 (def serial-bars (serial-bars-creator ios-ui/blur-view ios-ui/activity-indicator))
 
+(def serials-screens
+  (nav/create-stack-navigator
+   {:serials-main {:screen serials-screen}}))
+
 (def main-tabs
-  (create-tab-navigator
-   {:serials {:screen serials-screen}
+  (nav/create-tab-navigator
+   {:serials {:screen serials-screens}
     :well-known {:screen well-known-screen}
     :about {:screen about-screen}}
    {:tab-bar-options {:style {:background-color "black"}

@@ -35,7 +35,7 @@
            (render-scene @nav-state)))})))
 
 (defn create-stack-navigator [params]
-  (r/adapt-react-class (StackNavigator (clj->js (transform-params params)))))
+  (StackNavigator (clj->js (transform-params params))))
 
 (defn create-tab-navigator
   ([params]
