@@ -1,8 +1,8 @@
 (ns souptitle-mobile.shared.scenes.about-screen
   (:require [reagent.core :as r]
             [souptitle-mobile.shared.ui :as ui]
-            [souptitle-mobile.shared.components.screen :refer [screen]]
-            [souptitle-mobile.shared.navigation :as nav]))
+            [souptitle-mobile.shared.navigation :as nav]
+            [souptitle-mobile.shared.icons :refer [get-icon]]))
 
 (def about-text "
 Made with love
@@ -38,9 +38,15 @@ by Alexey Savelev and Eugene Bondarev")
 ;;     [screen {:navigation-bar {:title "About"}}
 ;;      [about-comp]]))
 
+(defn about-tab-icon [props]
+  (r/as-element
+   (if (true? (.-focused props))
+     [ui/image {:source (get-icon :information-active)}]
+     [ui/image {:source (get-icon :information)}])))
+
 (defn get-about-screen []
   (nav/create-screen
    {:navigation-bar {:title "About"}
-    :tab-bar {:label "About"}}
-   [ui/view
-    [ui/text {:style {:color "white"}} "About"]]))
+    :tab-bar {:label "About"
+              :icon about-tab-icon}}
+   about-comp))

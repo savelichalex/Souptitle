@@ -8,8 +8,7 @@
             [souptitle-mobile.shared.navigation :as nav]
             [souptitle-mobile.shared.icons :refer [get-icon]]
             [souptitle-mobile.shared.components.term-row :refer [term-row]]
-            [souptitle-mobile.shared.components.timeline-and-table :refer [timeline-and-table]]
-            [souptitle-mobile.shared.components.screen :refer [screen]]))
+            [souptitle-mobile.shared.components.timeline-and-table :refer [timeline-and-table]]))
 
 (defn serial-item [number last-number item active? on-change]
   [ui/touchable-opacity {:style    {:justify-content  "center"

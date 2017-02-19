@@ -51,7 +51,11 @@
     child))
 
 (defn create-screen [params content]
-  (let [screen (r/reactify-component (get-screen-wrapper content))]
+  (let [screen (r/reactify-component
+                (get-screen-wrapper
+                 (if (vector? content) ;; check if that reagent component
+                   content             ;; or just hiccup
+                   [content])))]
     (set! (.-navigationOptions screen) (clj->js (transform-params params)))
     screen))
 

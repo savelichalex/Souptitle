@@ -4,7 +4,7 @@
             [re-frame.core :refer [subscribe dispatch dispatch-sync]]
             [souptitle-mobile.shared.components.row :refer [row]]
             [souptitle-mobile.shared.navigation :as nav]
-            [souptitle-mobile.shared.components.screen :refer [screen]]))
+            [souptitle-mobile.shared.icons :refer [get-icon]]))
 
 (def ReactNative (js/require "react-native"))
 
@@ -34,12 +34,19 @@
 ;;                                             :font-size 30}}}
 ;;      [serials-content activity-indicator]]))
 
+;; TODO: Create function in icons namespace
+(defn serials-tab-icon [props]
+  (r/as-element
+   (if (true? (.-focused props))
+     [ui/image {:source (get-icon :words-active)}]
+     [ui/image {:source (get-icon :words)}])))
 
 (defn get-serials-screen [activity-indicator]
   (nav/create-screen
-   {:navigation-bar {:title (clojure.string/upper-case "serials")
-                     :title-style {:color "white"
-                                   :font-size 30}}
-    :tab-bar {:label "Serials"}}
+   {:title (clojure.string/upper-case "serials")
+    :title-style {:color "white"
+                  :font-size 30}
+    :tab-bar {:label "Serials"
+              :icon serials-tab-icon}}
    [ui/view
     [ui/text {:style {:color "white"}} "Serials"]]))

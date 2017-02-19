@@ -6,7 +6,6 @@
             [souptitle-mobile.shared.components.table-view :refer [table-view]]
             [souptitle-mobile.consts :as const]
             [souptitle-mobile.shared.navigation :as nav]
-            [souptitle-mobile.shared.components.screen :refer [screen]]
             [souptitle-mobile.shared.icons :refer [get-icon]]))
 
 (def empty-text "Here you can see your well known words to repeat them")
@@ -57,14 +56,17 @@
 ;;                               :tintColor "#fff"}}
 ;;      [well-known-words-comp]]))
 
-(defn well-known-tab-icon []
-  [ui/image {:source (get-icon :favorites)}])
+(defn well-known-tab-icon [props]
+  (r/as-element
+   (if (true? (.-focused props))
+     [ui/image {:source (get-icon :favorites-active)}]
+     [ui/image {:source (get-icon :favorites)}])))
 
 (defn get-well-known-screen []
   (nav/create-screen
    {:navigation-bar {:title "Favorite"
                      :tintColor "#fff"}
     :tab-bar {:label "Favorite"
-              :icon #(r/reactify-component well-known-tab-icon)}}
+              :icon well-known-tab-icon}}
    [ui/view
     [ui/text {:style {:color "white"}} "Well known"]]))
