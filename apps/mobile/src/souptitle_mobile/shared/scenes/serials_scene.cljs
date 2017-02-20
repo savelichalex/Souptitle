@@ -42,11 +42,13 @@
      [ui/image {:source (get-icon :words-active)}]
      [ui/image {:source (get-icon :words)}])))
 
+(defn get-serials-options []
+  {:tab-bar {:label "Serials"
+             :icon serials-tab-icon}})
+
 (defn get-serials-screen [activity-indicator]
   (nav/create-screen
    {:title (clojure.string/upper-case "serials")
     :header {:style {:background-color "black"}
-             :title-style {:color "white"}}
-    :tab-bar {:label "Serials"
-              :icon serials-tab-icon}}
+             :title-style {:color "white"}}}
    (serials-content activity-indicator)))

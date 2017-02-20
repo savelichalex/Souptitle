@@ -6,7 +6,7 @@
             [souptitle-mobile.subs]
             [souptitle-mobile.shared.ui :as ui]
             [souptitle-mobile.ios.ui :as ios-ui]
-            [souptitle-mobile.shared.scenes.serials-scene :refer [get-serials-screen]]
+            [souptitle-mobile.shared.scenes.serials-scene :refer [get-serials-screen get-serials-options]]
             [souptitle-mobile.shared.scenes.chapters-scene :refer [get-chapter-screen serial-bars-creator translate-creator]]
             [souptitle-mobile.shared.scenes.well-known-screen :refer [get-well-known-screen]]
             [souptitle-mobile.shared.scenes.about-screen :refer [get-about-screen]]
@@ -30,7 +30,8 @@
 
 (def main-tabs
   (nav/create-tab-navigator
-   {:serials {:screen serials-screens}
+   {:serials {:screen serials-screens
+              :navigation-options (get-serials-options)}
     :well-known {:screen well-known-screen}
     :about {:screen about-screen}}
    {:tab-bar-options {:style {:background-color "black"}
