@@ -69,9 +69,9 @@
              (.then (fn [s]
                       (dispatch [:serials-load-success s])))
              (.catch (fn [err]
-                       (if (= (.-message err) "Network request failed")
-                         (dispatch [:show-network-error])
-                         (print err))))))
+                       (print err)
+                       (when (= (.-message err) "Network request failed")
+                         (dispatch [:show-network-error]))))))
       (-> app-db
           (assoc :remote-db remote-db)))))
 

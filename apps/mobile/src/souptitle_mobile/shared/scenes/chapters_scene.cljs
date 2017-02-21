@@ -295,7 +295,13 @@
 
 (defn get-chapter-screen [activity-indicator]
   (nav/create-screen
-   {:title #(str (.-title %))
-    :header {:style {:background-color "black"}
+   {:title #(str (-> % .-state .-params .-title))
+    :header {:style {:background-color "transparent"
+                     :position "absolute"
+                     :top 20 ;; TODO: Should various depend on platform
+                     :left 0
+                     :right 0
+                     :paddingTop 0
+                     }
              :title-style {:color "white"}}}
    (chapters-content activity-indicator)))

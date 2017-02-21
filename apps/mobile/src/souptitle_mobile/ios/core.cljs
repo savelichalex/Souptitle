@@ -26,7 +26,12 @@
 (def serials-screens
   (nav/create-stack-navigator
    {:serials-main {:screen serials-screen}
-    :chapter {:screen chapter-screen}}))
+    :chapter {:screen chapter-screen}}
+   {:card-style {:position "absolute"
+                 :top 0
+                 :bottom 0
+                 ;:flex 1
+                 }}))
 
 (def main-tabs
   (nav/create-tab-navigator

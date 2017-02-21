@@ -35,8 +35,13 @@
          (when (not (nil? (:route @nav-state)))
            (render-scene @nav-state)))})))
 
-(defn create-stack-navigator [params]
-  (StackNavigator (clj->js (transform-params params))))
+(defn create-stack-navigator
+  ([params]
+   (create-stack-navigator params {}))
+  ([params stack-config]
+   (StackNavigator
+    (clj->js (transform-params params))
+    (clj->js (transform-params stack-config)))))
 
 (defn create-tab-navigator
   ([params]

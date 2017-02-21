@@ -28,13 +28,6 @@
          [ui/view {:style {:flex 1 :justify-content "center" :align-items "center"}}
           [activity-indicator {:color "rgb(155, 155, 155)"}]])])))
 
-;; (defn get-serials-screen [activity-indicator]
-;;   (fn []
-;;     [screen {:navigation-bar {:title (clojure.string/upper-case "serials")
-;;                               :title-style {:color "white"
-;;                                             :font-size 30}}}
-;;      [serials-content activity-indicator]]))
-
 ;; TODO: Create function in icons namespace
 (defn serials-tab-icon [props]
   (r/as-element
