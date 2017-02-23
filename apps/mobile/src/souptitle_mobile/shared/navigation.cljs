@@ -3,7 +3,8 @@
   (:require-macros [reagent.ratom :refer [reaction]])
   (:require [souptitle-mobile.shared.utils :refer [transform-params]]
             [reagent.core :as r]
-            [camel-snake-kebab.core :refer [->camelCase]]))
+            [camel-snake-kebab.core :refer [->camelCase]]
+            [souptitle-mobile.shared.utils :refer [transform-params]]))
 
 (def Navigation (js/require "react-navigation"))
 (def StackNavigator (. Navigation -StackNavigator))
@@ -65,6 +66,12 @@
     (set! (.-navigationOptions screen) (clj->js (transform-params params)))
     screen))
 
+(defn screen-cb [cb]
+  (fn [props]
+    (-> (cb (js->clj props :keywordize-keys true))
+        (transform-params)
+        (clj->js))))
+
 (defn push!
   ([a b c]))
 (defn pop! [a])
@@ -79,3 +86,6 @@
      (navigate
       (-> screen (->camelCase) (name))
       (clj->js props))))
+
+(defn go-back! [navigator]
+  (. navigator (goBack)))

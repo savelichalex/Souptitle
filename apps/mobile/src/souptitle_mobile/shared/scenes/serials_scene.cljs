@@ -16,7 +16,8 @@
       [ui/view {:style {:flex 1
                         :flex-direction "column"
                         :align-items "stretch"
-                        :background-color "black"}}
+                        :background-color "black"
+                        :padding-top 60}}
        (if (not (nil? @serials))
          [ui/list-view {:dataSource (.cloneWithRows serials-ds (clj->js @serials))
                         :render-row #(r/as-element
@@ -42,6 +43,11 @@
 (defn get-serials-screen [activity-indicator]
   (nav/create-screen
    {:title (clojure.string/upper-case "serials")
-    :header {:style {:background-color "black"}
+    :header {:style {:background-color "transparent"
+                     :position "absolute"
+                     :top 20 ;; TODO: Should various depend on platform
+                     :left 0
+                     :right 0
+                     :paddingTop 0}
              :title-style {:color "white"}}}
    (serials-content activity-indicator)))

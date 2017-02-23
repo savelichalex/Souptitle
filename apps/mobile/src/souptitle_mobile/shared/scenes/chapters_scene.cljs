@@ -293,15 +293,34 @@
                             :align-items      "center"}}
            [activity-indicator {:color "rgb(155, 155, 155)"}]])]])))
 
+(defn chapter-nav-left-button [go-back]
+  (r/as-element
+   [ui/touchable-opacity
+    {:on-press #(go-back)
+     :style {:padding-left 20}}
+    [ui/image {:source (get-icon :back)}]]))
+
+(defn chapter-nav-right-button [set-params]
+  (r/as-element
+   [ui/touchable-opacity
+    {:on-press #(set-params #js {})
+     :style {:padding-right 20}}
+    [ui/image {:source (get-icon :episodes)}]]))
+
+(defn get-screen-header [{:keys [goBack setParams]}]
+  {:style {:background-color "transparent"
+           :position "absolute"
+           :top 20 ;; TODO: Should various depend on platform
+           :left 0
+           :right 0
+           :paddingTop 0
+           }
+   :title-style {:color "white"}
+   :left (chapter-nav-left-button goBack)
+   :right (chapter-nav-right-button setParams)})
+
 (defn get-chapter-screen [activity-indicator]
   (nav/create-screen
-   {:title #(str (-> % .-state .-params .-title))
-    :header {:style {:background-color "transparent"
-                     :position "absolute"
-                     :top 20 ;; TODO: Should various depend on platform
-                     :left 0
-                     :right 0
-                     :paddingTop 0
-                     }
-             :title-style {:color "white"}}}
+   {:title #(str (-> % .-state .-params .-title string/capitalize))
+    :header (nav/screen-cb get-screen-header)}
    (chapters-content activity-indicator)))
