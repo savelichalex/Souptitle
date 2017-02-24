@@ -24,6 +24,7 @@
 (def scroll-view (r/adapt-react-class (.-ScrollView ReactNative)))
 (def text-input (r/adapt-react-class (.-TextInput ReactNative)))
 (def status-bar (r/adapt-react-class (.-StatusBar ReactNative)))
+(def modal (r/adapt-react-class (.-Modal ReactNative)))
 
 (def Dimensions (. ReactNative -Dimensions))
 

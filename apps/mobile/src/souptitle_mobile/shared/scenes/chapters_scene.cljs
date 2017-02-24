@@ -144,7 +144,6 @@
     (fn [{:keys [navigator]}]
       (let [seasons (subscribe [:seasons])
             chapters (subscribe [:chapters])]
-        (. navigator (setOnNavigatorEvent (partial on-bars-navigator-event navigator)))
         (fn []
           [serial-items-bar
            @seasons
@@ -156,84 +155,92 @@
              (nav/dismiss-modal! navigator "none"))
            navigator])))))
 
-(defn translate-creator [blur-view activity-view]
-  (fn [{:keys [navigator]}]
-    (let [translate (subscribe [:term-translate])
-          well-known-words (subscribe [:get-raw-well-known-words])]
-      (fn [{:keys [term sentence]}]
+(defn translate-modal [blur-view activity-view]
+  (let [translate (subscribe [:get-translate])
+        well-known-words (subscribe [:get-raw-well-known-words])
+        term (reaction (:term @translate))
+        sentence (reaction (:sentence @translate))
+        translated (reaction (:translate @translate))]
+    (fn []
+      [ui/modal
+       {:visible (:show? @translate)
+        :transparent true
+        :animation-type "fade"}
+       [ui/view {:style {:position "relative"
+                         :flex 1
+                         :align-items "center"
+                         :justify-content "center"}}
         [blur-view {:style {:position "absolute"
                             :top 0
                             :right 0
                             :bottom 0
                             :left 0
-                            :flex 1
-                            :align-items "center"
-                            :justify-content "center"}
-                    :blur-type "dark"}
-         [ui/touchable-opacity {:style {:position "absolute"
-                                        :top 0
-                                        :right 0
-                                        :bottom 0
-                                        :left 0}
-                                :on-press #(nav/dismiss-modal! navigator "none")}]
-         [ui/view {:style {:border-top-color "rgb(155,155,155)"
-                           :border-top-width 1
-                           :border-bottom-color "rgb(155,155,155)"
-                           :border-bottom-width 1
-                           :background-color "black"
-                           :flex-direction "column"
-                           :position "relative"
-                           :width (ui/get-device-width)
-                           :padding-top 10
-                           :padding-bottom 10
-                           :padding-left 15
-                           :padding-right 15}}
-          [ui/view {:style {:flex-direction "row"}}
-           [ui/text {:style {:color "white" :font-size 14 :flex 1}} term]
-           (if (contains? @well-known-words term)
-             [ui/touchable-opacity {:on-press #(dispatch [:remove-from-well-known term])
-                                    :style {:margin-right 26}
-                                    :hit-slop {:top 10
-                                               :right 10
-                                               :bottom 10
-                                               :left 10}}
-              [ui/image {:source (get-icon :favorites-fill)
-                         :style {:width 16
-                                 :height 16}}]]
-             [ui/touchable-opacity {:on-press #(dispatch [:add-to-well-known term sentence])
-                                    :style {:margin-right 26}
-                                    :hit-slop {:top 10
-                                               :right 10
-                                               :bottom 10
-                                               :left 10}}
-              [ui/image {:source (get-icon :favorites-active)
-                         :style {:width 16
-                                 :height 16}}]])
-           [ui/touchable-opacity {:on-press #(nav/dismiss-modal! navigator "none")
-                                  :hit-slop {:top 10
-                                             :right 10
-                                             :bottom 10
-                                             :left 10}}
-            [ui/image {:source (get-icon :close)
-                       :style {:width 16
-                               :height 16}}]]]
-          [ui/view {:style {:margin-top 10
-                            :padding-left 10
-                            :padding-right 10
-                            :border-left-color "white"
-                            :border-left-width 1
-                            :flex-direction "column"}}
-           (if (nil? @translate)
-             [activity-view {:color "rgb(155,155,155)"}]
-             (into [ui/view]
-                   (for [tr-term @translate]
-                     [ui/text {:style {:color "white" :font-size 14}} tr-term])))
-           [ui/text {:style {:color "rgb(155,155,155)"
-                             :font-size 14
-                             :margin-top 10}}
-            "In sentence:"]
-           [sentence-with-term sentence term]]]]))))
-
+                            :flex 1}
+                    :blur-type "dark"
+                    :blur-amount 1}]
+        [ui/touchable-opacity {:style {:position "absolute"
+                                      :top 0
+                                      :right 0
+                                      :bottom 0
+                                      :left 0}
+                              :on-press #(dispatch [:close-translate])}]
+        [ui/view {:style {:border-top-color "rgb(155,155,155)"
+                          :border-top-width 1
+                          :border-bottom-color "rgb(155,155,155)"
+                          :border-bottom-width 1
+                          :background-color "black"
+                          :flex-direction "column"
+                          :position "relative"
+                          :width (ui/get-device-width)
+                          :padding-top 10
+                          :padding-bottom 10
+                          :padding-left 15
+                          :padding-right 15}}
+         [ui/view {:style {:flex-direction "row"}}
+          [ui/text {:style {:color "white" :font-size 14 :flex 1}} @term]
+          (if (contains? @well-known-words @term)
+            [ui/touchable-opacity {:on-press #(dispatch [:remove-from-well-known @term])
+                                   :style {:margin-right 26}
+                                   :hit-slop {:top 10
+                                              :right 10
+                                              :bottom 10
+                                              :left 10}}
+             [ui/image {:source (get-icon :favorites-fill)
+                        :style {:width 16
+                                :height 16}}]]
+            [ui/touchable-opacity {:on-press #(dispatch [:add-to-well-known @term @sentence])
+                                   :style {:margin-right 26}
+                                   :hit-slop {:top 10
+                                              :right 10
+                                              :bottom 10
+                                              :left 10}}
+             [ui/image {:source (get-icon :favorites-active)
+                        :style {:width 16
+                                :height 16}}]])
+          [ui/touchable-opacity {:on-press #(dispatch [:close-translate])
+                                 :hit-slop {:top 10
+                                            :right 10
+                                            :bottom 10
+                                            :left 10}}
+           [ui/image {:source (get-icon :close)
+                      :style {:width 16
+                              :height 16}}]]]
+         [ui/view {:style {:margin-top 10
+                           :padding-left 10
+                           :padding-right 10
+                           :border-left-color "white"
+                           :border-left-width 1
+                           :flex-direction "column"}}
+          (if (nil? @translated)
+            [activity-view {:color "rgb(155,155,155)"}]
+            (into [ui/view]
+                  (for [tr-term @translated]
+                    [ui/text {:style {:color "white" :font-size 14}} tr-term])))
+          [ui/text {:style {:color "rgb(155,155,155)"
+                            :font-size 14
+                            :margin-top 10}}
+             "In sentence:"]
+          [sentence-with-term @sentence @term]]]]])))
 
 (defn serial-cover [image-uri sort-type]
   (let [height (r/atom 0)
@@ -256,13 +263,12 @@
                                      :top 0}}]
        [sort-row sort-type]])))
 
-(defn chapters-content [activity-indicator]
+(defn chapters-content [blur-view activity-indicator]
   (let [chapter (subscribe [:get-chapter])
         sort-type (subscribe [:get-sort-type])
         timeline-list (subscribe [:get-timeline-list])
         cover (subscribe [:get-cover-image])]
     (fn chapters-content-comp [{:keys [navigation]}]
-      (print @cover)
       [ui/view {:style {:flex 1
                         :padding-bottom   2
                         :flex-direction   "column"
@@ -279,9 +285,7 @@
                                                   (if (< index (count @chapter))
                                                     [term-row
                                                      (nth @chapter index)
-                                                     #(do
-                                                        (dispatch [:translate-term (:term (nth @chapter index))])
-                                                        (nav/show-modal! navigation :translate-screen (nth @chapter index)))]
+                                                     #(dispatch [:translate-term (:term (nth @chapter index))])]
                                                     [term-row
                                                      {:term ""}]))
                                :chapter         @chapter
@@ -291,7 +295,8 @@
                             :background-color "black"
                             :justify-content  "center"
                             :align-items      "center"}}
-           [activity-indicator {:color "rgb(155, 155, 155)"}]])]])))
+           [activity-indicator {:color "rgb(155, 155, 155)"}]])]
+       [translate-modal blur-view activity-indicator]])))
 
 (defn chapter-nav-left-button [go-back]
   (r/as-element
@@ -319,8 +324,8 @@
    :left (chapter-nav-left-button goBack)
    :right (chapter-nav-right-button setParams)})
 
-(defn get-chapter-screen [activity-indicator]
+(defn get-chapter-screen [blur-view activity-indicator]
   (nav/create-screen
    {:title #(str (-> % .-state .-params .-title string/capitalize))
     :header (nav/screen-cb get-screen-header)}
-   (chapters-content activity-indicator)))
+   (chapters-content blur-view activity-indicator)))

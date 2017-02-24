@@ -100,9 +100,9 @@
     (reaction (get @db :sort-chapter))))
 
 (register-sub
-  :term-translate
+  :get-translate
   (fn [db _]
-    (reaction (get @db :term-translate))))
+    (reaction (get @db :translate))))
 
 (register-sub
   :serials

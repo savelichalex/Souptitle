@@ -3,8 +3,10 @@
 ;; initial state of app-db
 (def app-db {:chapter nil
              :sort-chapter :by-rank
-             :term-to-translate nil
-             :term-translate nil
+             :translate {:show? false
+                         :term nil
+                         :translate nil
+                         :sentence nil}
              :target-lang "ru"
              :seasons-list nil
              :chapters-list nil
