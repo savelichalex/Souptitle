@@ -46,7 +46,7 @@
              seasons-list))]))
 
 (defn serials-items-bar-creator [blur-view activity-indicator]
-  (fn serial-items-bar [seasons-list chapters-list on-change-season on-change-chapter]
+  (fn serial-items-bar [seasons-list chapters-list on-close on-change-season on-change-chapter]
     [ui/view {:style {:position       "absolute"
                       :top            0
                       :bottom         0
@@ -54,10 +54,32 @@
                       :right          0
                       :flex           1
                       :flex-direction "column"}}
-     [ui/view {:style {:margin-left         13
-                       :margin-right        13
-                       :border-bottom-width 1
-                       :border-bottom-color "rgb(155,155,155)"}}]
+     [ui/view
+      {:style {:background-color "black"
+               :flex-direction "row"
+               :height 64
+               :padding-top 20
+               :align-items "center"}}
+      [ui/touchable-opacity
+       {:style {:padding-left 15
+                :width 44}
+        :on-press on-close}
+       [ui/image {:source (get-icon :close)}]]
+      [ui/view
+       {:style {:flex 1
+                :flex-direction "row"
+                :justify-content "center"}}
+       [ui/text
+        {:style {:font-size 18
+                 :color "white"}}
+        "Episode selection"]]
+      [ui/view
+       {:style {:width 44}}]]
+     [ui/view {:style {:background-color "black"}}
+      [ui/view {:style {:margin-left         13
+                        :margin-right        13
+                        :border-bottom-width 1
+                        :border-bottom-color "rgb(155,155,155)"}}]]
      [ui/view {:style {:background-color "black"}}
       [ui/view {:style {:margin-top  17
                         :align-items "center"}}
@@ -125,35 +147,25 @@
                       :background-color "transparent"}}
      "Alphabet"]]])
 
-(defn on-navigator-event [nav event]
-  (when (= (.-type event) "NavBarButtonPress")
-    (when (= (.-id event) "toggle")
-      (dispatch [:save-seasons-and-chapters])
-      (nav/show-modal! nav :serial-bars-screen {}))
-    (when (= (.-id event) "back")
-      (nav/pop! nav))))
-
-(defn on-bars-navigator-event [nav event]
-  (when (= (.-type event) "NavBarButtonPress")
-    (when (= (.-id event) "close")
-      (dispatch [:reset-seasons-and-chapter])
-      (nav/dismiss-modal! nav "none"))))
-
-(defn serial-bars-creator [blur-view activity-view]
-  (let [serial-items-bar (serials-items-bar-creator blur-view activity-view)]
-    (fn [{:keys [navigator]}]
-      (let [seasons (subscribe [:seasons])
-            chapters (subscribe [:chapters])]
-        (fn []
-          [serial-items-bar
-           @seasons
-           @chapters
-           #(do
-             (dispatch [:chapters-load %1 %2]))
-           #(do
-             (dispatch [:chapter-load %1 %2])
-             (nav/dismiss-modal! navigator "none"))
-           navigator])))))
+(defn serial-bars-modal [blur-view activity-view]
+  (let [serial-items-bar (serials-items-bar-creator blur-view activity-view)
+        seasons (subscribe [:seasons])
+        chapters (subscribe [:chapters])
+        show-bars? (subscribe [:show-serial-bars?])]
+    (fn []
+      [ui/modal
+       {:visible @show-bars?
+        :transparent true
+        :animation-type "fade"}
+       [serial-items-bar
+        @seasons
+        @chapters
+        #(dispatch [:toggle-serials-bars])
+        #(do
+           (dispatch [:chapters-load %1 %2]))
+        #(do
+           (dispatch [:chapter-load %1 %2])
+           (dispatch [:toggle-serials-bars]))]])))
 
 (defn translate-modal [blur-view activity-view]
   (let [translate (subscribe [:get-translate])
@@ -296,6 +308,7 @@
                             :justify-content  "center"
                             :align-items      "center"}}
            [activity-indicator {:color "rgb(155, 155, 155)"}]])]
+       [serial-bars-modal blur-view activity-indicator]
        [translate-modal blur-view activity-indicator]])))
 
 (defn chapter-nav-left-button [go-back]
@@ -305,14 +318,14 @@
      :style {:padding-left 20}}
     [ui/image {:source (get-icon :back)}]]))
 
-(defn chapter-nav-right-button [set-params]
+(defn chapter-nav-right-button []
   (r/as-element
    [ui/touchable-opacity
-    {:on-press #(set-params #js {})
+    {:on-press #(dispatch [:toggle-serials-bars])
      :style {:padding-right 20}}
     [ui/image {:source (get-icon :episodes)}]]))
 
-(defn get-screen-header [{:keys [goBack setParams]}]
+(defn get-screen-header [{:keys [goBack]}]
   {:style {:background-color "transparent"
            :position "absolute"
            :top 20 ;; TODO: Should various depend on platform
@@ -322,7 +335,7 @@
            }
    :title-style {:color "white"}
    :left (chapter-nav-left-button goBack)
-   :right (chapter-nav-right-button setParams)})
+   :right (chapter-nav-right-button)})
 
 (defn get-chapter-screen [blur-view activity-indicator]
   (nav/create-screen
