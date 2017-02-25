@@ -315,14 +315,14 @@
   (r/as-element
    [ui/touchable-opacity
     {:on-press #(go-back)
-     :style {:padding-left 20}}
+     :style {:padding-left 15}}
     [ui/image {:source (get-icon :back)}]]))
 
 (defn chapter-nav-right-button []
   (r/as-element
    [ui/touchable-opacity
     {:on-press #(dispatch [:toggle-serials-bars])
-     :style {:padding-right 20}}
+     :style {:padding-right 15}}
     [ui/image {:source (get-icon :episodes)}]]))
 
 (defn get-screen-header [{:keys [goBack]}]
@@ -340,5 +340,6 @@
 (defn get-chapter-screen [blur-view activity-indicator]
   (nav/create-screen
    {:title #(str (-> % .-state .-params .-title string/capitalize))
-    :header (nav/screen-cb get-screen-header)}
+    :header (nav/screen-cb get-screen-header)
+    :card-stack {:gestures-enabled false}}
    (chapters-content blur-view activity-indicator)))

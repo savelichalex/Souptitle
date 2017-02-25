@@ -28,9 +28,7 @@
     :chapter {:screen chapter-screen}}
    {:card-style {:position "absolute"
                  :top 0
-                 :bottom 0
-                 ;:flex 1
-                 }}))
+                 :bottom 0}}))
 
 (def main-tabs
   (nav/create-tab-navigator

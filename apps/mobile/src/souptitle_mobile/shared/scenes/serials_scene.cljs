@@ -50,5 +50,6 @@
                      :left 0
                      :right 0
                      :paddingTop 0}
-             :title-style {:color "white"}}}
+             :title-style {:color "white"}}
+    :card-stack {:gestures-enabled false}}
    (serials-content activity-indicator)))

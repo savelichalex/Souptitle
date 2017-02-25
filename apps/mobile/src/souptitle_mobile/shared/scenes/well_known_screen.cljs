@@ -41,7 +41,7 @@
 (defn well-known-tab-icon [props]
   (r/as-element
    (if (true? (.-focused props))
-     [ui/image {:source (get-icon :favorites-active)}]
+     [ui/image {:source (get-icon :favorites-fill)}]
      [ui/image {:source (get-icon :favorites)}])))
 
 (defn get-well-known-screen []

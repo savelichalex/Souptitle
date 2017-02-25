@@ -18,10 +18,25 @@
     (ui/animated-set-value tPosition timeline-y)
     (ui/animated-set-value table-margin-top words-list-y)))
 
-(defn update-timeline-position [tPosition fullHeight visibleHeight event]
+(def guard (atom false))
+
+(defn grab-guard []
+  (swap! guard (fn [] true)))
+
+(defn release-guard []
+  (swap! guard (fn [] false)))
+
+(defn guard-fn [cb]
+  (fn [& args]
+    (when (= @guard false)
+      (apply cb args))))
+
+(defn update-timeline-position [tPosition fullHeight visibleHeight use-guard? event]
   (let [words-list-y (aget event "nativeEvent" "contentOffset" "y")
         y-ratio (/ words-list-y @fullHeight)
         timeline-y (* @visibleHeight y-ratio)]
+    (when (true? use-guard?)
+      (grab-guard))
     (ui/animated-set-value tPosition timeline-y)))
 
 (defn update-timeline-position-with-label
@@ -50,6 +65,7 @@
     (ui/animated-set-value label (nth @timeline-list line-position))))
 
 (defn close-label [show-label]
+  (release-guard)
   (swap! show-label (fn [_] false)))
 
 (defn calc-words-list-height [chapter term-row-height]
@@ -65,7 +81,8 @@
         label (ui/animated-value "")
         timeline-label-top (ui/animated-value 50)
         timeline-list-atom (atom nil)
-        update-timeline-position-compiled (partial update-timeline-position t-position wordsListHeight visibleHeight)
+        update-timeline-position-compiled-with-guard (partial update-timeline-position t-position wordsListHeight visibleHeight true)
+        update-timeline-position-compiled (partial update-timeline-position t-position wordsListHeight visibleHeight false)
         update-timeline-position-with-label-compiled
           (partial update-timeline-position-with-label t-position table-margin-top wordsListHeight visibleHeight label show-timeline-label? timeline-label-top timeline-label-height timeline-list-atom)
         update-table-position-compiled (partial update-positions t-position table-margin-top wordsListHeight visibleHeight)
@@ -74,10 +91,10 @@
                                                 :onStartShouldSetPanResponderCapture (fn [_ _] true)
                                                 :onMoveShouldSetPanResponder         (fn [_ _] true)
                                                 :onMoveShouldSetPanResponderCapture  (fn [_ _] true)
-                                                :onPanResponderTerminationRequest    (fn [_ _] true)
-                                                :onPanResponderGrant                 update-table-position-compiled
+                                                :onPanResponderTerminationRequest    (fn [_ _] false)
+                                                :onPanResponderGrant                 update-table-position-compiled-with-guard
                                                 :onPanResponderMove                  update-timeline-position-with-label-compiled
-                                                :onPanResponderEnd                   close-label-compiled
+                                                :onPanResponderRelease               close-label-compiled
                                                 :onPanResponderTerminate             close-label-compiled})]
     (r/create-class
       {:component-will-receive-props
@@ -90,7 +107,7 @@
                               (assoc :position "relative"))}
           [table-view {:ref        "wordsList"
                        :on-layout  (fn [event _] (swap! visibleHeight (fn [_] (.. event -nativeEvent -layout -height))))
-                       :on-scroll  update-timeline-position-compiled
+                       :on-scroll  (guard-fn update-timeline-position-compiled)
                        :margin-top table-margin-top
                        :num-rows   (count chapter)
                        :row-height term-row-height
