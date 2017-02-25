@@ -129,25 +129,26 @@
 
 (register-handler
   :translate-term
-  (fn [db [_ term]]
-    (if (= (get-in db [:translate :term]) term)
-      (-> db
-          (assoc-in [:translate :show?] true))
-      (do
-        (api-proxy
-         #(-> (js/fetch (get-query-string-for-translate term (:target-lang db)))
-              (rdb/parse-response)
-              (rdb/response-from-json)
-              (.then (fn [translate] (dispatch [:term-translate-success term (:text translate)])))
-              (.catch (fn [err]
-                        (if (= (.-message err) "Network request failed")
-                          (dispatch [:show-network-error])
-                          (print err))))))
+  (fn [db [_ term-object]]
+    (let [term (:term term-object)]
+      (if (= (get-in db [:translate :term]) term)
         (-> db
-            (assoc-in [:translate :show?] true)
-            (assoc-in [:translate :term] term)
-            (assoc-in [:translate :translate] nil)
-            (assoc-in [:translate :sentence] nil))))))
+            (assoc-in [:translate :show?] true))
+        (do
+          (api-proxy
+           #(-> (js/fetch (get-query-string-for-translate term (:target-lang db)))
+                (rdb/parse-response)
+                (rdb/response-from-json)
+                (.then (fn [translate] (dispatch [:term-translate-success term (:text translate)])))
+                (.catch (fn [err]
+                          (if (= (.-message err) "Network request failed")
+                            (dispatch [:show-network-error])
+                            (print err))))))
+          (-> db
+              (assoc-in [:translate :show?] true)
+              (assoc-in [:translate :term] term)
+              (assoc-in [:translate :translate] nil)
+              (assoc-in [:translate :sentence] (:sentence term-object))))))))
 
 (register-handler
   :term-translate-success

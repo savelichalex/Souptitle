@@ -295,7 +295,7 @@
                                                   (if (< index (count @chapter))
                                                     [term-row
                                                      (nth @chapter index)
-                                                     #(dispatch [:translate-term (:term (nth @chapter index))])]
+                                                     #(dispatch [:translate-term (nth @chapter index)])]
                                                     [term-row
                                                      {:term ""}]))
                                :chapter         @chapter
