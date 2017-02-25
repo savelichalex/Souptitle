@@ -14,6 +14,4 @@
  :heads-up-display false
  :jsload-callback #(swap! cnt inc))
 
-(print "sdfsdf")
-
 (core/init)

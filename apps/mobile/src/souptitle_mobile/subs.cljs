@@ -100,9 +100,9 @@
     (reaction (get @db :sort-chapter))))
 
 (register-sub
-  :term-translate
+  :get-translate
   (fn [db _]
-    (reaction (get @db :term-translate))))
+    (reaction (get @db :translate))))
 
 (register-sub
   :serials
@@ -150,7 +150,12 @@
                    (sort-by :term)))))
 
 ;; Network error
-(register-sub
+(register-sub ;; TODO: maybe this is unneeded?
   :get-network-error
   (fn [db _]
     (reaction (get @db :network-error))))
+
+(register-sub
+ :show-network-error?
+ (fn [db _]
+   (reaction (:show-network-error? @db))))

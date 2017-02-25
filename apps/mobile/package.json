@@ -11,7 +11,7 @@
     "react-native": "^0.41.2",
     "react-native-blur": "^2.0.0",
     "react-native-linear-gradient": "^2.0.0",
-    "react-navigation": "^1.0.0-beta.3"
+    "react-navigation": "^1.0.0-beta.5"
   },
   "devDependencies": {
     "babel-plugin-transform-es2015-block-scoping": "6.15.0",

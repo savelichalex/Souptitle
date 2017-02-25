@@ -69,9 +69,9 @@
              (.then (fn [s]
                       (dispatch [:serials-load-success s])))
              (.catch (fn [err]
-                       (if (= (.-message err) "Network request failed")
-                         (dispatch [:show-network-error])
-                         (print err))))))
+                       (print err)
+                       (when (= (.-message err) "Network request failed")
+                         (dispatch [:show-network-error]))))))
       (-> app-db
           (assoc :remote-db remote-db)))))
 
@@ -129,29 +129,40 @@
 
 (register-handler
   :translate-term
-  (fn [db [_ term]]
-    (api-proxy
-      #(-> (js/fetch (get-query-string-for-translate term (:target-lang db)))
-           (rdb/parse-response)
-           (rdb/response-from-json)
-           (.then (fn [translate] (dispatch [:term-translate-success term translate])))
-           (.catch (fn [err]
-                     (if (= (.-message err) "Network request failed")
-                       (dispatch [:show-network-error])
-                       (print err))))))
-    (-> db
-        (assoc :term-translate nil))))
+  (fn [db [_ term-object]]
+    (let [term (:term term-object)]
+      (if (= (get-in db [:translate :term]) term)
+        (-> db
+            (assoc-in [:translate :show?] true))
+        (do
+          (api-proxy
+           #(-> (js/fetch (get-query-string-for-translate term (:target-lang db)))
+                (rdb/parse-response)
+                (rdb/response-from-json)
+                (.then (fn [translate] (dispatch [:term-translate-success term (:text translate)])))
+                (.catch (fn [err]
+                          (if (= (.-message err) "Network request failed")
+                            (dispatch [:show-network-error])
+                            (print err))))))
+          (-> db
+              (assoc-in [:translate :show?] true)
+              (assoc-in [:translate :term] term)
+              (assoc-in [:translate :translate] nil)
+              (assoc-in [:translate :sentence] (:sentence term-object))))))))
 
 (register-handler
   :term-translate-success
   (fn [db [_ term translate]]
-    (-> db
-        (assoc :term-translate (:text translate)))))
+    (if (= (get-in db [:translate :term]) term)
+      (-> db
+          (assoc-in [:translate :translate] translate))
+      db)))
 
 (register-handler
-  :nav/pop-term
+  :close-translate
   (fn [db _]
-    (assoc db :term-translate nil)))
+    (-> db
+        (assoc-in [:translate :show?] false))))
 
 (register-handler
   :reset-seasons-and-chapter
@@ -283,11 +294,12 @@
 (register-handler
   :show-network-error
   (fn [db _]
-    (nav/show-modal! (nav/get-current-navigator) :network-error-screen)
-    db))
+    (-> db
+        (assoc :show-network-error? true))))
 
 (register-handler
   :call-last-api
   (fn [db _]
     (apply-last-api-call)
-    db))
+    (-> db
+        (assoc :show-network-error? false))))

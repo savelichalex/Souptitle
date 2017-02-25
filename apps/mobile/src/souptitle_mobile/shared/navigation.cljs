@@ -1,5 +1,10 @@
 (ns souptitle-mobile.shared.navigation
-  (:require [souptitle-mobile.shared.utils :refer [transform-params]]))
+  (:refer-clojure :exclude [pop!])
+  (:require-macros [reagent.ratom :refer [reaction]])
+  (:require [souptitle-mobile.shared.utils :refer [transform-params]]
+            [reagent.core :as r]
+            [camel-snake-kebab.core :refer [->camelCase]]
+            [souptitle-mobile.shared.utils :refer [transform-params]]))
 
 (def Navigation (js/require "react-navigation"))
 (def StackNavigator (. Navigation -StackNavigator))
@@ -31,8 +36,58 @@
          (when (not (nil? (:route @nav-state)))
            (render-scene @nav-state)))})))
 
-(defn create-stack-navigator [params]
-  (StackNavigator (transform-params params)))
+(defn create-stack-navigator
+  ([params]
+   (create-stack-navigator params {}))
+  ([params stack-config]
+   (StackNavigator
+    (clj->js (transform-params params))
+    (clj->js (transform-params stack-config)))))
 
-(defn create-tab-navigator [params]
-  (TabNavigator (transform-params params)))
+(defn create-tab-navigator
+  ([params]
+   (create-tab-navigator params {}))
+  ([params tab-config]
+   (TabNavigator
+    (clj->js (transform-params params))
+    (clj->js (transform-params tab-config)))))
+
+(defn get-screen-wrapper [child]
+  (fn screen-wrapper [props]
+    [child props]))
+
+(defn create-screen
+  ([content]
+   (create-screen {} content))
+  ([params content]
+   (let [screen (r/reactify-component
+                 (get-screen-wrapper
+                  (if (vector? content)  ;; check if that reagent component
+                    (fn [props] content) ;; or just hiccup
+                    content)))]
+     (set! (.-navigationOptions screen) (clj->js (transform-params params)))
+     screen)))
+
+(defn screen-cb [cb]
+  (fn [props]
+    (-> (cb (js->clj props :keywordize-keys true))
+        (transform-params)
+        (clj->js))))
+
+(defn push!
+  ([a b c]))
+(defn pop! [a])
+(defn show-modal!
+  ([a b])
+  ([a b c]))
+(defn dismiss-modal! [a b])
+(defn get-current-navigator [])
+
+(defn navigate! [navigator screen props]
+  (. navigator
+     (navigate
+      (-> screen (->camelCase) (name))
+      (clj->js props))))
+
+(defn go-back! [navigator]
+  (. navigator (goBack)))
