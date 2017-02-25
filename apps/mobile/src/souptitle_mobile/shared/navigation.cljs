@@ -48,23 +48,25 @@
   ([params]
    (create-tab-navigator params {}))
   ([params tab-config]
-   (r/adapt-react-class
-    (TabNavigator
-     (clj->js (transform-params params))
-     (clj->js (transform-params tab-config))))))
+   (TabNavigator
+    (clj->js (transform-params params))
+    (clj->js (transform-params tab-config)))))
 
 (defn get-screen-wrapper [child]
   (fn screen-wrapper [props]
     [child props]))
 
-(defn create-screen [params content]
-  (let [screen (r/reactify-component
-                (get-screen-wrapper
-                 (if (vector? content)  ;; check if that reagent component
-                   (fn [props] content) ;; or just hiccup
-                   content)))]
-    (set! (.-navigationOptions screen) (clj->js (transform-params params)))
-    screen))
+(defn create-screen
+  ([content]
+   (create-screen {} content))
+  ([params content]
+   (let [screen (r/reactify-component
+                 (get-screen-wrapper
+                  (if (vector? content)  ;; check if that reagent component
+                    (fn [props] content) ;; or just hiccup
+                    content)))]
+     (set! (.-navigationOptions screen) (clj->js (transform-params params)))
+     screen)))
 
 (defn screen-cb [cb]
   (fn [props]

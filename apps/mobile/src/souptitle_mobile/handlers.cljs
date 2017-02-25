@@ -293,11 +293,12 @@
 (register-handler
   :show-network-error
   (fn [db _]
-    (nav/show-modal! (nav/get-current-navigator) :network-error-screen)
-    db))
+    (-> db
+        (assoc :show-network-error? true))))
 
 (register-handler
   :call-last-api
   (fn [db _]
     (apply-last-api-call)
-    db))
+    (-> db
+        (assoc :show-network-error? false))))

@@ -10,6 +10,7 @@
             [souptitle-mobile.shared.scenes.chapters-scene :refer [get-chapter-screen]]
             [souptitle-mobile.shared.scenes.well-known-screen :refer [get-well-known-screen]]
             [souptitle-mobile.shared.scenes.about-screen :refer [get-about-screen]]
+            [souptitle-mobile.shared.scenes.network-error :refer [get-network-error-screen]]
             [souptitle-mobile.shared.icons :refer [get-icon]]
             [souptitle-mobile.shared.navigation :as nav]))
 
@@ -19,6 +20,7 @@
 (def chapter-screen (get-chapter-screen ios-ui/blur-view ios-ui/activity-indicator))
 (def serials-screen (get-serials-screen ios-ui/activity-indicator))
 (def well-known-screen (get-well-known-screen))
+(def network-error-screen (get-network-error-screen))
 
 (def serials-screens
   (nav/create-stack-navigator
@@ -40,8 +42,16 @@
                       :active-tint-color "white"
                       :inactive-tint-color "#ccc"}}))
 
+(def main-wrapper
+  (r/adapt-react-class
+   (nav/create-tab-navigator
+    {:index {:screen main-tabs}
+     :network-error {:screen network-error-screen}}
+    {:lazy-load false
+     :navigation-options {:tab-bar {:visible false}}})))
+
 (defn app-root []
-  [main-tabs])
+  [main-wrapper])
 
 (defn init []
   (.registerComponent

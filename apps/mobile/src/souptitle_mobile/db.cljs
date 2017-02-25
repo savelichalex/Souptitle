@@ -15,4 +15,5 @@
              :show-serial-bars? false
              :well-known-terms {}
              :nav {:route :serials
-                   :props nil}})
+                   :props nil}
+             :show-network-error? false})
