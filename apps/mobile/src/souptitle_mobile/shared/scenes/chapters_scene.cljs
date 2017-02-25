@@ -38,9 +38,7 @@
      (into [ui/scroll-view {:padding-top 10
                             :padding-bottom 10
                             :horizontal                     true
-                            :showsHorizontalScrollIndicator false
-                            :content-container-style        {:flex        1
-                                                             :align-items "stretch"}}]
+                            :showsHorizontalScrollIndicator false}]
            (map-indexed
              (fn [index item] [serial-item index last-number item (:active? item) on-change])
              seasons-list))]))
@@ -341,5 +339,7 @@
   (nav/create-screen
    {:title #(str (-> % .-state .-params .-title string/capitalize))
     :header (nav/screen-cb get-screen-header)
-    :card-stack {:gestures-enabled false}}
+    :card-stack {:gestures-enabled false}
+    :gestures-enabled false ;; TODO: looks like it is old version of config
+    }
    (chapters-content blur-view activity-indicator)))

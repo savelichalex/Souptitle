@@ -51,5 +51,7 @@
                      :right 0
                      :paddingTop 0}
              :title-style {:color "white"}}
-    :card-stack {:gestures-enabled false}}
+    :card-stack {:gestures-enabled false}
+    :gestures-enabled false ;; TODO: looks like it is old version of config
+    }
    (serials-content activity-indicator)))
