@@ -18,6 +18,7 @@
                         :align-items "stretch"
                         :background-color "black"
                         :padding-top 60}}
+       [ui/status-bar {:bar-style "light-content"}]
        (if (not (nil? @serials))
          [ui/list-view {:dataSource (.cloneWithRows serials-ds (clj->js @serials))
                         :render-row #(r/as-element
