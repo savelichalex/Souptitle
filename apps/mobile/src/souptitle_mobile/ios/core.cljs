@@ -28,10 +28,8 @@
     :chapter {:screen chapter-screen}}
    {:card-style {:position "absolute"
                  :top 0
-                 :bottom 0}
-    :navigation-options {:gestures-enabled false ;; TODO: looks like it is old version of config
-                         }
-    }))
+                 :bottom 0
+                 :background-color "black"}}))
 
 (def main-tabs
   (nav/create-tab-navigator
