@@ -13,6 +13,7 @@
              :show-search? false
              :search-predicate ""
              :show-serial-bars? false
+             :content nil
              :well-known-terms {}
              :nav {:route :serials
                    :props nil}

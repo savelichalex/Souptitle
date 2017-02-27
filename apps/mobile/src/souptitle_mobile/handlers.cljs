@@ -75,6 +75,35 @@
       (-> app-db
           (assoc :remote-db remote-db)))))
 
+(defn create-node [title path]
+  {:active nil
+   :title title
+   :path path
+   :content []})
+
+(defn create-leaf [title src]
+  (-> (create-node title src)
+      (dissoc :active)
+      (dissoc :content)))
+
+(defn parse-serial [{:keys [title path]}]
+  (create-node title path))
+
+(defn parse-serials [serials]
+  (->> serials (map parse-serial)))
+
+(defn parse-season [{:keys [title path]}]
+  (create-node title path))
+
+(defn parse-seasons [seasons]
+  (->> seasons (map parse-season)))
+
+(defn parse-chapter [{:keys [title path]}]
+  (create-leaf title path))
+
+(defn parse-chapters [chapters]
+  (->> chapters (map parse-chapter)))
+
 (register-handler
   :serials-load-success
   (fn [db [_ serials]]

@@ -19,7 +19,15 @@
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+  
+  // Setup nsurlcache
 
+  NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:4 * 1024 * 1024
+                                                       diskCapacity:20 * 1024 * 1024
+                                                           diskPath:nil];
+  [NSURLCache setSharedURLCache:URLCache];
+  
+  // Setup app root view
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                moduleName:@"Souptitle"
                                                initialProperties:nil
