@@ -75,40 +75,70 @@
       (-> app-db
           (assoc :remote-db remote-db)))))
 
-(defn create-node [title path]
-  {:active nil
-   :title title
-   :path path
-   :content []})
+(defn create-node
+  ([id {path :path, :as all}]
+   {:id id
+    :meta (dissoc all :path)
+    :path path
+    :content []}))
 
-(defn create-leaf [title src]
-  (-> (create-node title src)
-      (dissoc :active)
+(defn create-leaf [id raw]
+  (-> (create-node id raw)
       (dissoc :content)))
 
-(defn parse-serial [{:keys [title path]}]
-  (create-node title path))
-
 (defn parse-serials [serials]
-  (->> serials (map parse-serial)))
-
-(defn parse-season [{:keys [title path]}]
-  (create-node title path))
+  (->> serials (map create-node)))
 
 (defn parse-seasons [seasons]
-  (->> seasons (map parse-season)))
-
-(defn parse-chapter [{:keys [title path]}]
-  (create-leaf title path))
+  (->> seasons (map-indexed create-node)))
 
 (defn parse-chapters [chapters]
-  (->> chapters (map parse-chapter)))
+  (->> chapters (map-indexed create-leaf)))
+
+(defn set-active-serial [serial-id active-content-index]
+  (assoc active-content-index 0 serial-id))
+
+;; TODO: think about lenses
+
+(defn get-serial-by-index [content index]
+  (-> content
+      (nth (first index))))
+
+(defn get-seasons-by-index [content index]
+  (-> (get-serial-by-index content index)
+      (:content)))
+
+(defn get-season-by-index [content index]
+  (-> (get-seasons-by-index content index)
+      (nth (-> index (rest) (first)))))
+
+(defn get-chapters-by-index [content index]
+  (-> (get-season-by-index content index)
+      (:content)))
+
+(defn get-chapter-by-index [content index]
+  (-> (get-chapters-by-index content index)
+      (nth (-> index (rest) (rest) (first)))))
+
+(defn load-if-not-exist
+  ([getter load-fn on-loaded]
+   (if-let [entity (getter)]
+     (promise.resolve entity)
+     (-> (load-fn)
+         (.then on-loaded))))
+  ([promise getter load-fn on-loaded]
+   (if-let [entity (getter)]
+     (-> promise
+         (.then #(identity entity)))
+     (-> promise
+         (.then load-fn)
+         (.then on-loaded)))))
 
 (register-handler
   :serials-load-success
   (fn [db [_ serials]]
     (-> db
-        (assoc :serials-list serials))))
+        (assoc :content (parse-serials serials)))))
 
 (register-handler
   :serials-load-error
@@ -116,27 +146,35 @@
     (print error)
     db))
 
+(defn load-serial-content [content active-content remote-db seasons-path]
+  (-> (load-if-not-exist
+       (partial get-seasons-by-index content active-content)
+       (partial rdb/download-json remote-db seasons-path)
+       (fn [s]
+         (dispatch [:seasons-load-success s])
+         s))
+      (load-if-not-exist
+       (partial get-chapters-by-index active-content)
+       (fn [[_ {path :path}]]
+         (rdb/download-json remote-db path)))
+      (.catch (fn [err]
+                (if (= (.-message err) "Network request failed")
+                  (dispatch [:show-network-error])
+                  (print err))))))
+
 (register-handler
   :seasons-load
-  (fn [db [_ {seasons :path title :title cover :cover}]]
-    (let [remote-db (get db :remote-db)]
+  (fn [{:keys [content active-content remote-db] :as db}
+       [_ {id :id seasons-path :path}]]
+    (let [new-active-content (set-active-serial id active-content)]
       (api-proxy
-        #(-> (rdb/download-json remote-db seasons)
-             (.then (fn [s]
-                      (dispatch [:seasons-load-success s])
-                      (rdb/download-json remote-db (:path (first (rest s))))))
-             (.then (fn [chapters]
-                      (dispatch [:chapter-load 0 (nth chapters 0)])
-                      (dispatch [:chapters-load-success chapters])))
-             (.catch (fn [err]
-                       (if (= (.-message err) "Network request failed")
-                         (dispatch [:show-network-error])
-                         (print err))))))
+       (partial load-serial-content
+                content
+                new-active-content
+                remote-db
+                seasons-path))
       (-> db
-          (assoc :serial-cover-image cover)
-          (assoc :chapter nil)
-          (assoc :seasons-list nil)
-          (assoc :chapters-list nil)))))
+          (assoc :active-content new-active-content)))))
 
 (register-handler
   :seasons-load-success
