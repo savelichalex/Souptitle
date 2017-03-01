@@ -100,9 +100,15 @@
 
 ;; TODO: think about lenses
 
+(defn save-apply [& args]
+  (try
+    (apply (first args) (rest args))
+    (catch js/Object _
+      nil)))
+
 (defn get-serial-by-index [content index]
   (-> content
-      (nth (first index))))
+      (save-apply nth (first index))))
 
 (defn get-seasons-by-index [content index]
   (-> (get-serial-by-index content index)
@@ -110,7 +116,7 @@
 
 (defn get-season-by-index [content index]
   (-> (get-seasons-by-index content index)
-      (nth (-> index (rest) (first)))))
+      (save-apply nth (-> index (rest) (first)))))
 
 (defn get-chapters-by-index [content index]
   (-> (get-season-by-index content index)
@@ -118,7 +124,7 @@
 
 (defn get-chapter-by-index [content index]
   (-> (get-chapters-by-index content index)
-      (nth (-> index (rest) (rest) (first)))))
+      (save-nth (-> index (rest) (rest) (first)))))
 
 (defn load-if-not-exist
   ([getter load-fn on-loaded]
@@ -156,7 +162,10 @@
       (load-if-not-exist
        (partial get-chapters-by-index active-content)
        (fn [[_ {path :path}]]
-         (rdb/download-json remote-db path)))
+         (rdb/download-json remote-db path))
+       (fn [chapters]
+         (dispatch [:chapter-load 0 (nth chapters 0)])
+         (dispatch [:chapters-load-success chapters])))
       (.catch (fn [err]
                 (if (= (.-message err) "Network request failed")
                   (dispatch [:show-network-error])
