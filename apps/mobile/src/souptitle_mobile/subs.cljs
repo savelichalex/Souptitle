@@ -2,7 +2,10 @@
   (:require-macros [reagent.ratom :refer [reaction]])
   (:require [re-frame.core :refer [register-sub subscribe]]
             [souptitle-mobile.consts :as const]
-            [clojure.string :as string]))
+            [clojure.string :as string]
+            [souptitle-mobile.handlers :reder [get-seasons-by-index
+                                               get-chapters-by-index
+                                               get-chapter-by-index]]))
 
 (defmulti chapter-word-list (fn [type _] type))
 (defmethod chapter-word-list :by-rank
@@ -78,11 +81,51 @@
     (->> terms
          (filter #(not (contains? well-known-terms (:term %)))))))
 
+;; ---- Content subscribes -----
+
+(register-sub
+ :serials
+ (fn [db _]
+   (reaction (reaction (:content @db)))))
+
+(defn mark-active-entity [id seasons active-content]
+  (let [active-index (nth active-content id)]
+    (->> entities
+         (map (fn [entity]
+                (-> entity
+                    (assoc :active?
+                           (= (:id entity) active-index))))))))
+
+(register-sub
+ :seasons
+ (fn [db _]
+   (let [content (reaction (:content @db))
+         active-content (reaction (:active-content @db))])
+   (reaction
+    (mark-active-entity
+     1 ;; TODO: change to getter from index path
+     (get-seasons-by-index @content @active-content)
+     @active-content))))
+
+(register-sub
+ :chapters
+ (fn [db _]
+   (let [content (reaction (:content @db))
+         active-content (reaction (:active-content @db))])
+   (reaction
+    (mark-active-entity
+     2
+     (get-chapters-by-index @content @active-content)
+     @active-content))))
+
 (register-sub
   :get-chapter
   (fn [db _]
     (let [sort-type (reaction (:sort-chapter @db))
-          terms (reaction (chapter-word-list @sort-type (get @db :chapter)))
+          ;; get terms from db
+          content (reaction (:content @db))
+          active-content (reaction (:active-content @db))
+          terms (reaction (get-chapter-by-index @content @active-content))
           well-known-terms (reaction (get @db :well-known-terms))
           filter-by-well-known-terms (reaction (filter-well-known-words @terms @well-known-terms))
           search-predicate (reaction (get @db :search-predicate))]
@@ -103,21 +146,6 @@
   :get-translate
   (fn [db _]
     (reaction (get @db :translate))))
-
-(register-sub
-  :serials
-  (fn [db _]
-    (reaction (get @db :serials-list))))
-
-(register-sub
-  :seasons
-  (fn [db _]
-    (reaction (get @db :seasons-list))))
-
-(register-sub
-  :chapters
-  (fn [db _]
-    (reaction (get @db :chapters-list))))
 
 (register-sub
   :show-search?
