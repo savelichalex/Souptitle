@@ -98,6 +98,12 @@
 (defn set-active-serial [serial-id active-content-index]
   (assoc active-content-index 0 serial-id))
 
+(defn set-active-season [season-id active-content-index]
+  (assoc active-content-index 1 season-id))
+
+(defn set-active-chapter [chapter-id active-content-index]
+  (assoc active-content-index 2 chapter-id))
+
 ;; TODO: think about lenses
 
 (defn save-apply [& args]
@@ -160,6 +166,8 @@
    (fn [chapters]
      (-> chapters
          (update (-> index (rest) (rest) (first)) updater)))))
+
+;; -------- Content loading -----------
 
 (defn load-if-not-exist
   ([getter load-fn on-loaded]
@@ -229,13 +237,95 @@
 (register-handler
   :seasons-load-error
   (fn [db [_ error]]
-    (print error)
+    (if (= (.-message err) "Network request failed")
+      (dispatch [:show-network-error])
+      (print err))
     db))
 
+(defn load-chapters-content [content active-content remote-db chapters-path]
+  (-> (load-if-not-exist
+       (partial get-chapters-by-index content active-content)
+       (partial rdb/download-json remote-db chapters-path)
+       (fn [chapters]
+         (dispatch [:chapters-load-success chapters])))
+      (.catch
+       (fn [err]
+         (dispatch [:chapters-load-error err])))))
+
 (register-handler
-  :resort-chapter
-  (fn [db [_ sort-type]]
-    (assoc db :sort-chapter sort-type)))
+  :chapters-load
+  (fn [{:keys [content active-content remote-db] :as db}
+       [_ {id :id chapters-path :path}]]
+    (let [new-active-content (set-active-season id active-content)]
+      (api-proxy
+       (partial load-chapters-content
+                content
+                active-content
+                remote-db
+                chapters-path))
+      (-> db
+          (assoc :active-content new-active-content)))))
+
+(register-handler
+  :chapters-load-success
+  (fn [{:keys [content active-content] :as db} [_ chapters]]
+    (-> db
+        (assoc :content (update-chapters
+                         content
+                         active-content
+                         #(parse-chapters chapters))))))
+
+(register-handler
+  :chapters-load-error
+  (fn [db [_ error]]
+    (if (= (.-message err) "Network request failed")
+      (dispatch [:show-network-error])
+      (print err))
+    db))
+
+(defn load-srt-content [content active-content remote-db srt-path]
+  (-> (load-if-not-exist
+       (partial get-chapter-by-index content active-content)
+       (partial rdb/download remote-db srt-path)
+       (fn [srt]
+         (dispatch [:srt-load-success srt])))
+      (.catch
+       (fn [err]
+         (dispatch [:srt-load-error err])))))
+
+(register-handler
+  :chapter-load
+  (fn [{:keys [content active-content remote-db] :as db}
+       [_ {id :id srt-path :path}]]
+    (let [new-active-content (set-active-chapter id active-content)]
+      (api-proxy
+       (partial load-srt-content
+                content
+                active-content
+                remote-db
+                srt-path))
+      (-> db
+          (assoc :active-content new-active-content)))))
+
+(register-handler
+  :srt-load-success
+  (fn [{:keys [content active-content] :as db} [_ chapter]]
+    (-> db
+        (assoc :content (update-chapter
+                         content
+                         active-content
+                         #(parse-srt chapter))))))
+
+(register-handler
+  :srt-load-error
+  (fn [db [_ error]]
+    (if (= (.-message err) "Network request failed")
+      (dispatch [:show-network-error])
+      (print err))
+    db))
+
+;; ------ Translate -------
+;; TODO: need to cache translations
 
 (register-handler
   :translate-term
@@ -274,6 +364,14 @@
     (-> db
         (assoc-in [:translate :show?] false))))
 
+;; ------- Other --------
+
+(register-handler
+ :resort-chapter
+ (fn [db [_ sort-type]]
+   (assoc db :sort-chapter sort-type)))
+
+;; TODO: what is it???
 (register-handler
   :reset-seasons-and-chapter
   (fn [db _]
@@ -282,7 +380,7 @@
       (-> db
           (assoc :seasons-list saved-seasons)
           (assoc :chapters-list saved-chapters)))))
-
+;; TODO: what is it???
 (register-handler
   :save-seasons-and-chapters
   (fn [db _]
@@ -291,65 +389,6 @@
       (-> db
           (assoc :saved-seasons-list seasons)
           (assoc :saved-chapters-list chapters)))))
-
-(register-handler
-  :chapters-load
-  (fn [db [_ season-number {chapters :path}]]
-    (api-proxy
-      #(-> (rdb/download-json (get db :remote-db) chapters)
-           (.then (fn [chts] (dispatch [:chapters-load-success chts])))
-           (.catch (fn [err]
-                     (if (= (.-message err) "Network request failed")
-                       (dispatch [:show-network-error])
-                       (print err))))))
-    (-> db
-        (update :seasons-list #(->> %
-                                    (map-indexed (fn [index season]
-                                                   (assoc season :active? (= index season-number))))))
-        (assoc :chapters-list nil))))
-
-(register-handler
-  :chapters-load-success
-  (fn [db [_ chapters]]
-    (-> db
-        (assoc :chapters-list (->> chapters
-                                   (map-indexed #(assoc %2 :active? (= %1 0))))))))
-
-(register-handler
-  :chapters-load-error
-  (fn [db [_ error]]
-    (-> db
-        (assoc :chapters-list nil))))
-
-(register-handler
-  :chapter-load
-  (fn [db [_ number {srt :path}]]
-    (api-proxy
-      #(-> (rdb/download (get db :remote-db) srt)
-           (.then (fn [srt] (dispatch [:srt-load-success (parse-srt srt)])))
-           (.catch (fn [err]
-                     (if (= (.-message err) "Network request failed")
-                       (dispatch [:show-network-error])
-                       (print err))))))
-    (-> db
-        (update :chapters-list #(->> %
-                                     (map-indexed (fn [index chapter]
-                                                    (assoc chapter :active? (= index number))))))
-        (assoc :chapter nil)
-        (assoc :sort-chapter :by-rank))))
-
-(register-handler
-  :srt-load-success
-  (fn [db [_ chapter]]
-    (-> db
-        (assoc :chapter chapter))))
-
-(register-handler
-  :srt-load-error
-  (fn [db [_ error]]
-    (print error)
-    (-> db
-        (assoc :chapter nil))))
 
 (register-handler
   :toggle-search
