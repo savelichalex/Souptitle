@@ -110,21 +110,56 @@
   (-> content
       (save-apply nth (first index))))
 
+(defn update-serial [content index updater]
+  (updater (nth (first index))))
+
 (defn get-seasons-by-index [content index]
   (-> (get-serial-by-index content index)
       (:content)))
+
+(defn update-seasons [content index updater]
+  (update-serial
+   content
+   index
+   (fn [serial]
+     (-> serial
+         (update :content updater)))))
 
 (defn get-season-by-index [content index]
   (-> (get-seasons-by-index content index)
       (save-apply nth (-> index (rest) (first)))))
 
+(defn update-season [content index updater]
+  (update-seasons
+   content
+   index
+   (fn [seasons]
+     (-> seasons
+         (update (-> index (rest) (first)) updater)))))
+
 (defn get-chapters-by-index [content index]
   (-> (get-season-by-index content index)
       (:content)))
 
+(defn update-chapters [content index updater]
+  (update-season
+   content
+   index
+   (fn [season]
+     (-> season
+         (update :content updater)))))
+
 (defn get-chapter-by-index [content index]
   (-> (get-chapters-by-index content index)
       (save-nth (-> index (rest) (rest) (first)))))
+
+(defn update-chapter [content index updater]
+  (update-chapters
+   content
+   index
+   (fn [chapters]
+     (-> chapters
+         (update (-> index (rest) (rest) (first)) updater)))))
 
 (defn load-if-not-exist
   ([getter load-fn on-loaded]
@@ -187,10 +222,9 @@
 
 (register-handler
   :seasons-load-success
-  (fn [db [_ seasons]]
+  (fn [{:keys [content active-content] :as db} [_ seasons]]
     (-> db
-        (assoc :seasons-list (->> seasons
-                                  (map-indexed #(assoc %2 :active? (= %1 0))))))))
+        (assoc :content (update-seasons content active-content #(parse-seasons %))))))
 
 (register-handler
   :seasons-load-error
