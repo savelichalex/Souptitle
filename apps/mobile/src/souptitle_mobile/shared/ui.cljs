@@ -29,13 +29,13 @@
 (defn list-view []
   (let [list-ds (ReactNative.ListView.DataSource. #js {:rowHasChanged not=})]
     (fn [{:keys [render-row source] :as props}]
-      [list-view
+      [list-view-default
        (-> props
            (dissoc :source)
            (assoc
             :render-row
             #(r/as-element [render-row (js->clj % :keywordize-keys true)]))
-           (assoc :data-source (.cloneWithRows list-ds (clj->js source))))])))
+           (assoc :dataSource (.cloneWithRows list-ds (clj->js source))))])))
 
 (def Dimensions (. ReactNative -Dimensions))
 

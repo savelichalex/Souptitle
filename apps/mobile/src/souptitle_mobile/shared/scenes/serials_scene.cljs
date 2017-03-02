@@ -10,11 +10,13 @@
 
 (def serials-ds (ReactNative.ListView.DataSource. #js{:rowHasChanged not=}))
 
-(defn serial-row-lv [navigation serial]
-  [serial-row serial
-   (fn [serial]
-     (dispatch [:seasons-load serial])
-     (nav/navigate! navigation :chapter {:title (-> serial (:meta) (:title))}))])
+(defn serial-row-lv [navigation]
+  (fn [serial]
+    [serial-row serial
+     (fn [serial]
+       (print serial)
+       (dispatch [:seasons-load serial])
+       (nav/navigate! navigation :chapter {:title (-> serial (:meta) (:title))}))]))
 
 (defn serials-content [activity-indicator]
   (let [serials (subscribe [:serials])]
@@ -27,7 +29,7 @@
        [ui/status-bar {:bar-style "light-content"}]
        (if (not (nil? @serials))
          [ui/list-view {:source @serials
-                        :render-row (partial serial-row-lv navigation)
+                        :render-row (serial-row-lv navigation)
                         :style      {:flex 1}}]
          [ui/view {:style {:flex 1 :justify-content "center" :align-items "center"}}
           [activity-indicator {:color "rgb(155, 155, 155)"}]])])))

@@ -87,7 +87,7 @@
       (dissoc :content)))
 
 (defn parse-serials [serials]
-  (->> serials (map create-node)))
+  (->> serials (map-indexed create-node)))
 
 (defn parse-seasons [seasons]
   (->> seasons (map-indexed create-node)))
@@ -112,12 +112,20 @@
     (catch js/Object _
       nil)))
 
+(defn update-serials [content index updater]
+  (updater content))
+
 (defn get-serial-by-index [content index]
   (-> content
       (save-apply nth (first index))))
 
 (defn update-serial [content index updater]
-  (updater (nth (first index))))
+  (update-serials
+   content
+   index
+   (fn [serials]
+     (-> (vec serials)
+         (update (first index) updater)))))
 
 (defn get-seasons-by-index [content index]
   (-> (get-serial-by-index content index)
@@ -140,7 +148,7 @@
    content
    index
    (fn [seasons]
-     (-> seasons
+     (-> (vec seasons)
          (update (-> index (rest) (first)) updater)))))
 
 (defn get-chapters-by-index [content index]
@@ -157,14 +165,14 @@
 
 (defn get-chapter-by-index [content index]
   (-> (get-chapters-by-index content index)
-      (save-nth (-> index (rest) (rest) (first)))))
+      (save-apply nth (-> index (rest) (rest) (first)))))
 
 (defn update-chapter [content index updater]
   (update-chapters
    content
    index
    (fn [chapters]
-     (-> chapters
+     (-> (vec chapters)
          (update (-> index (rest) (rest) (first)) updater)))))
 
 ;; -------- Content loading -----------
@@ -207,7 +215,7 @@
        (fn [[_ {path :path}]]
          (rdb/download-json remote-db path))
        (fn [chapters]
-         (dispatch [:chapter-load 0 (nth chapters 0)])
+         (dispatch [:chapter-load (create-leaf 0 (nth chapters 0))])
          (dispatch [:chapters-load-success chapters])))
       (.catch (fn [err]
                 (if (= (.-message err) "Network request failed")
@@ -232,11 +240,11 @@
   :seasons-load-success
   (fn [{:keys [content active-content] :as db} [_ seasons]]
     (-> db
-        (assoc :content (update-seasons content active-content #(parse-seasons %))))))
+        (assoc :content (update-seasons content active-content #(parse-seasons seasons))))))
 
 (register-handler
   :seasons-load-error
-  (fn [db [_ error]]
+  (fn [db [_ err]]
     (if (= (.-message err) "Network request failed")
       (dispatch [:show-network-error])
       (print err))
@@ -277,7 +285,7 @@
 
 (register-handler
   :chapters-load-error
-  (fn [db [_ error]]
+  (fn [db [_ err]]
     (if (= (.-message err) "Network request failed")
       (dispatch [:show-network-error])
       (print err))
@@ -314,11 +322,11 @@
         (assoc :content (update-chapter
                          content
                          active-content
-                         #(parse-srt chapter))))))
+                         #(assoc % :content (parse-srt chapter)))))))
 
 (register-handler
   :srt-load-error
-  (fn [db [_ error]]
+  (fn [db [_ err]]
     (if (= (.-message err) "Network request failed")
       (dispatch [:show-network-error])
       (print err))

@@ -3,7 +3,7 @@
   (:require [re-frame.core :refer [register-sub subscribe]]
             [souptitle-mobile.consts :as const]
             [clojure.string :as string]
-            [souptitle-mobile.handlers :reder [get-seasons-by-index
+            [souptitle-mobile.handlers :refer [get-seasons-by-index
                                                get-chapters-by-index
                                                get-chapter-by-index]]))
 
@@ -86,9 +86,9 @@
 (register-sub
  :serials
  (fn [db _]
-   (reaction (reaction (:content @db)))))
+   (reaction (:content @db))))
 
-(defn mark-active-entity [id seasons active-content]
+(defn mark-active-entity [id entities active-content]
   (let [active-index (nth active-content id)]
     (->> entities
          (map (fn [entity]
@@ -100,23 +100,23 @@
  :seasons
  (fn [db _]
    (let [content (reaction (:content @db))
-         active-content (reaction (:active-content @db))])
-   (reaction
-    (mark-active-entity
-     1 ;; TODO: change to getter from index path
-     (get-seasons-by-index @content @active-content)
-     @active-content))))
+         active-content (reaction (:active-content @db))]
+     (reaction
+      (mark-active-entity
+       1 ;; TODO: change to getter from index path
+       (get-seasons-by-index @content @active-content)
+       @active-content)))))
 
 (register-sub
  :chapters
  (fn [db _]
    (let [content (reaction (:content @db))
-         active-content (reaction (:active-content @db))])
-   (reaction
-    (mark-active-entity
-     2
-     (get-chapters-by-index @content @active-content)
-     @active-content))))
+         active-content (reaction (:active-content @db))]
+     (reaction
+      (mark-active-entity
+       2
+       (get-chapters-by-index @content @active-content)
+       @active-content)))))
 
 (register-sub
   :get-chapter
@@ -125,7 +125,8 @@
           ;; get terms from db
           content (reaction (:content @db))
           active-content (reaction (:active-content @db))
-          terms (reaction (get-chapter-by-index @content @active-content))
+          terms (reaction
+                 (:content (get-chapter-by-index @content @active-content)))
           well-known-terms (reaction (get @db :well-known-terms))
           filter-by-well-known-terms (reaction (filter-well-known-words @terms @well-known-terms))
           search-predicate (reaction (get @db :search-predicate))]

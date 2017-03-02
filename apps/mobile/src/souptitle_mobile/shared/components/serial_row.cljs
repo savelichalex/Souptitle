@@ -2,7 +2,7 @@
   (:require [souptitle-mobile.shared.ui :as ui]
             [clojure.string :refer [capitalize]]))
 
-(defn serial-row [{{{:keys [cover title]} :meta} :as data} press-handler]
+(defn serial-row [{{:keys [cover title]} :meta :as data} press-handler]
   [ui/touchable-opacity {:style    {:position "relative"
                                     :height 100}
                          :on-press (partial press-handler data)}

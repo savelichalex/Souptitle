@@ -279,6 +279,7 @@
         timeline-list (subscribe [:get-timeline-list])
         cover (subscribe [:get-cover-image])]
     (fn chapters-content-comp [{:keys [navigation]}]
+      (print @chapter)
       [ui/view {:style {:flex 1
                         :padding-bottom   2
                         :flex-direction   "column"
