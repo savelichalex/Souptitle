@@ -32,7 +32,9 @@
       [list-view
        (-> props
            (dissoc :source)
-           (assoc :render-row #(r/as-element [render-row %]))
+           (assoc
+            :render-row
+            #(r/as-element [render-row (js->clj % :keywordize-keys true)]))
            (assoc :data-source (.cloneWithRows list-ds (clj->js source))))])))
 
 (def Dimensions (. ReactNative -Dimensions))

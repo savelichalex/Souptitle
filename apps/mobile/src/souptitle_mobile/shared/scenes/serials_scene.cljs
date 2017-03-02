@@ -2,7 +2,7 @@
   (:require [souptitle-mobile.shared.ui :as ui :refer [DataSource]]
             [reagent.core :as r]
             [re-frame.core :refer [subscribe dispatch dispatch-sync]]
-            [souptitle-mobile.shared.components.row :refer [row]]
+            [souptitle-mobile.shared.components.serial-row :refer [serial-row]]
             [souptitle-mobile.shared.navigation :as nav]
             [souptitle-mobile.shared.icons :refer [get-icon]]))
 
@@ -10,11 +10,11 @@
 
 (def serials-ds (ReactNative.ListView.DataSource. #js{:rowHasChanged not=}))
 
-(defn serial-row [serial]
-  [row serial
+(defn serial-row-lv [navigation serial]
+  [serial-row serial
    (fn [serial]
      (dispatch [:seasons-load serial])
-     (nav/navigate! navigation :chapter {:title (:title serial)}))])
+     (nav/navigate! navigation :chapter {:title (-> serial (:meta) (:title))}))])
 
 (defn serials-content [activity-indicator]
   (let [serials (subscribe [:serials])]
@@ -27,7 +27,7 @@
        [ui/status-bar {:bar-style "light-content"}]
        (if (not (nil? @serials))
          [ui/list-view {:source @serials
-                        :render-row serial-row
+                        :render-row (partial serial-row-lv navigation)
                         :style      {:flex 1}}]
          [ui/view {:style {:flex 1 :justify-content "center" :align-items "center"}}
           [activity-indicator {:color "rgb(155, 155, 155)"}]])])))
