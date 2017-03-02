@@ -20,11 +20,20 @@
 (def image (r/adapt-react-class (.-Image ReactNative)))
 (def touchable-highlight (r/adapt-react-class (.-TouchableHighlight ReactNative)))
 (def touchable-opacity (r/adapt-react-class (.-TouchableOpacity ReactNative)))
-(def list-view (r/adapt-react-class (.-ListView ReactNative)))
+(def list-view-default (r/adapt-react-class (.-ListView ReactNative)))
 (def scroll-view (r/adapt-react-class (.-ScrollView ReactNative)))
 (def text-input (r/adapt-react-class (.-TextInput ReactNative)))
 (def status-bar (r/adapt-react-class (.-StatusBar ReactNative)))
 (def modal (r/adapt-react-class (.-Modal ReactNative)))
+
+(defn list-view []
+  (let [list-ds (ReactNative.ListView.DataSource. #js {:rowHasChanged not=})]
+    (fn [{:keys [render-row source] :as props}]
+      [list-view
+       (-> props
+           (dissoc :source)
+           (assoc :render-row #(r/as-element [render-row %]))
+           (assoc :data-source (.cloneWithRows list-ds (clj->js source))))])))
 
 (def Dimensions (. ReactNative -Dimensions))
 

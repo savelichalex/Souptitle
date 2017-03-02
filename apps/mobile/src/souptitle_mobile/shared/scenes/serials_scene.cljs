@@ -10,6 +10,12 @@
 
 (def serials-ds (ReactNative.ListView.DataSource. #js{:rowHasChanged not=}))
 
+(defn serial-row [serial]
+  [row serial
+   (fn [serial]
+     (dispatch [:seasons-load serial])
+     (nav/navigate! navigation :chapter {:title (:title serial)}))])
+
 (defn serials-content [activity-indicator]
   (let [serials (subscribe [:serials])]
     (fn serials-content-comp [{:keys [navigation]}]
@@ -20,12 +26,8 @@
                         :padding-top 60}}
        [ui/status-bar {:bar-style "light-content"}]
        (if (not (nil? @serials))
-         [ui/list-view {:dataSource (.cloneWithRows serials-ds (clj->js @serials))
-                        :render-row #(r/as-element
-                                      (row %
-                                           (fn [serial]
-                                             (dispatch [:seasons-load serial])
-                                             (nav/navigate! navigation :chapter {:title (:title serial)}))))
+         [ui/list-view {:source @serials
+                        :render-row serial-row
                         :style      {:flex 1}}]
          [ui/view {:style {:flex 1 :justify-content "center" :align-items "center"}}
           [activity-indicator {:color "rgb(155, 155, 155)"}]])])))
