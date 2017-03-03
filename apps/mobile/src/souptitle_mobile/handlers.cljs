@@ -106,18 +106,17 @@
 
 ;; TODO: think about lenses
 
-(defn save-apply [& args]
-  (try
-    (apply (first args) (rest args))
-    (catch js/Object _
-      nil)))
+(defn save-nth [arr el-num]
+  (if (>= el-num (count arr))
+    nil
+    (nth arr el-num)))
 
 (defn update-serials [content index updater]
   (updater content))
 
 (defn get-serial-by-index [content index]
   (-> content
-      (save-apply nth (first index))))
+      (save-nth (first index))))
 
 (defn update-serial [content index updater]
   (update-serials
@@ -141,7 +140,7 @@
 
 (defn get-season-by-index [content index]
   (-> (get-seasons-by-index content index)
-      (save-apply nth (-> index (rest) (first)))))
+      (save-nth (-> index (rest) (first)))))
 
 (defn update-season [content index updater]
   (update-seasons
@@ -165,7 +164,11 @@
 
 (defn get-chapter-by-index [content index]
   (-> (get-chapters-by-index content index)
-      (save-apply nth (-> index (rest) (rest) (first)))))
+      (save-nth (-> index (rest) (rest) (first)))))
+
+(defn get-chapter-content-by-index [content index]
+  (-> (get-chapter-by-index content index)
+      (:content)))
 
 (defn update-chapter [content index updater]
   (update-chapters
@@ -179,12 +182,12 @@
 
 (defn load-if-not-exist
   ([getter load-fn on-loaded]
-   (if-let [entity (getter)]
-     (promise.resolve entity)
+   (if-let [entity (not-empty (getter))]
+     (js/Promise.resolve entity)
      (-> (load-fn)
          (.then on-loaded))))
   ([promise getter load-fn on-loaded]
-   (if-let [entity (getter)]
+   (if-let [entity (not-empty (getter))]
      (-> promise
          (.then #(identity entity)))
      (-> promise
@@ -211,7 +214,7 @@
          (dispatch [:seasons-load-success s])
          s))
       (load-if-not-exist
-       (partial get-chapters-by-index active-content)
+       (partial get-chapters-by-index content active-content)
        (fn [[_ {path :path}]]
          (rdb/download-json remote-db path))
        (fn [chapters]
@@ -268,7 +271,7 @@
       (api-proxy
        (partial load-chapters-content
                 content
-                active-content
+                new-active-content
                 remote-db
                 chapters-path))
       (-> db
@@ -293,7 +296,7 @@
 
 (defn load-srt-content [content active-content remote-db srt-path]
   (-> (load-if-not-exist
-       (partial get-chapter-by-index content active-content)
+       (partial get-chapter-content-by-index content active-content)
        (partial rdb/download remote-db srt-path)
        (fn [srt]
          (dispatch [:srt-load-success srt])))
@@ -309,7 +312,7 @@
       (api-proxy
        (partial load-srt-content
                 content
-                active-content
+                new-active-content
                 remote-db
                 srt-path))
       (-> db

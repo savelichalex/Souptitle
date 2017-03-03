@@ -27,7 +27,7 @@
                                     :margin-right     (when (not= (dec last-number) number)
                                                         25)
                                     :background-color "transparent"}
-                         :on-press #(on-change number item)}
+                         :on-press #(on-change item)}
    [ui/text {:style {:font-size 14
                      :color (if active? "white" "rgb(155,155,155)")}}
     (inc number)]])
@@ -82,7 +82,7 @@
       [ui/view {:style {:margin-top  17
                         :align-items "center"}}
        [ui/text {:style {:color "white" :font-size 13}} "Season"]]
-      (if (nil? seasons-list)
+      (if (empty? seasons-list)
         [ui/view {:style {:height 64
                           :align-items "center"
                           :justify-content "center"}}
@@ -95,7 +95,7 @@
       [ui/view {:style {:margin-top  17
                         :align-items "center"}}
        [ui/text {:style {:color "white" :font-size 13}} "Episode"]]
-      (if (nil? chapters-list)
+      (if (empty? chapters-list)
         [ui/view {:style {:height 64
                           :align-items "center"
                           :justify-content "center"}}
@@ -160,9 +160,9 @@
         @chapters
         #(dispatch [:toggle-serials-bars])
         #(do
-           (dispatch [:chapters-load %1 %2]))
+           (dispatch [:chapters-load %]))
         #(do
-           (dispatch [:chapter-load %1 %2])
+           (dispatch [:chapter-load %])
            (dispatch [:toggle-serials-bars]))]])))
 
 (defn translate-modal [blur-view activity-view]
@@ -279,7 +279,6 @@
         timeline-list (subscribe [:get-timeline-list])
         cover (subscribe [:get-cover-image])]
     (fn chapters-content-comp [{:keys [navigation]}]
-      (print @chapter)
       [ui/view {:style {:flex 1
                         :padding-bottom   2
                         :flex-direction   "column"

@@ -14,7 +14,6 @@
   (fn [serial]
     [serial-row serial
      (fn [serial]
-       (print serial)
        (dispatch [:seasons-load serial])
        (nav/navigate! navigation :chapter {:title (-> serial (:meta) (:title))}))]))
 

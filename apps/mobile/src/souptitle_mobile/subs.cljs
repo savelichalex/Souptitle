@@ -126,7 +126,9 @@
           content (reaction (:content @db))
           active-content (reaction (:active-content @db))
           terms (reaction
-                 (:content (get-chapter-by-index @content @active-content)))
+                 (chapter-word-list
+                  @sort-type
+                  (:content (get-chapter-by-index @content @active-content))))
           well-known-terms (reaction (get @db :well-known-terms))
           filter-by-well-known-terms (reaction (filter-well-known-words @terms @well-known-terms))
           search-predicate (reaction (get @db :search-predicate))]
