@@ -6,7 +6,8 @@
             [souptitle-mobile.shared.components.table-view :refer [table-view]]
             [souptitle-mobile.consts :as const]
             [souptitle-mobile.shared.navigation :as nav]
-            [souptitle-mobile.shared.icons :refer [get-icon]]))
+            [souptitle-mobile.shared.icons :refer [get-icon]]
+            [souptitle-mobile.shared.components.translate-modal :refer [translate-modal]]))
 
 (def empty-text "Here you can see your well known words to repeat them")
 
@@ -15,10 +16,11 @@
                     :font-size 14}}
    empty-text])
 
-(defn well-known-words-comp []
+(defn well-known [blur-view activity-indicator]
   (let [well-known-words (subscribe [:get-well-known-words])]
-    (fn [{:keys [navigator]}]
+    (fn well-known-words-comp []
       (let [words-empty? (or (nil? @well-known-words) (empty? @well-known-words))]
+        (print @well-known-words)
         [ui/view {:style {:flex 1
                           :flex-direction "column"
                           :align-items (if words-empty? "center" "stretch")
@@ -32,11 +34,10 @@
                                       [term-row
                                        (nth @well-known-words index)
                                        #(do
-                                         (dispatch [:translate-term (:term (nth @well-known-words index))])
-                                         (nav/show-modal! navigator :translate-screen (-> (nth @well-known-words index)
-                                                                                          (assoc :show-add-to-favorite? false))))])
+                                          (dispatch [:translate-term (nth @well-known-words index)]))])
                         :back-color "black"
-                        :style      {:flex 1}}])]))))
+                        :style      {:flex 1}}])
+         [translate-modal blur-view activity-indicator]]))))
 
 (defn well-known-tab-icon [props]
   (r/as-element
@@ -44,10 +45,10 @@
      [ui/image {:source (get-icon :favorites-fill)}]
      [ui/image {:source (get-icon :favorites)}])))
 
-(defn get-well-known-screen []
+(defn get-well-known-screen [blur-view activity-indicator]
   (nav/create-screen
    {:navigation-bar {:title "Favorite"
                      :tintColor "#fff"}
     :tab-bar {:label "Favorite"
               :icon well-known-tab-icon}}
-   well-known-words-comp))
+   (well-known blur-view activity-indicator)))
