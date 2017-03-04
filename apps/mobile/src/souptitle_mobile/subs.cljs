@@ -3,7 +3,8 @@
   (:require [re-frame.core :refer [register-sub subscribe]]
             [souptitle-mobile.consts :as const]
             [clojure.string :as string]
-            [souptitle-mobile.handlers :refer [get-seasons-by-index
+            [souptitle-mobile.handlers :refer [get-serial-by-index
+                                               get-seasons-by-index
                                                get-chapters-by-index
                                                get-chapter-by-index]]))
 
@@ -165,7 +166,11 @@
 (register-sub
   :get-cover-image
   (fn [db _]
-    (reaction (get @db :serial-cover-image))))
+    (let [serials (subscribe [:serials])
+          active-content (reaction (:active-content @db))]
+      (reaction (-> (get-serial-by-index @serials @active-content)
+                    :meta
+                    :cover)))))
 
 ;; Well known words
 (register-sub
