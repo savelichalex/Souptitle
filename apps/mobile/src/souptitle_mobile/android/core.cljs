@@ -1,7 +1,6 @@
 (ns souptitle-mobile.android.core
   (:require [reagent.core :as r]
             [re-frame.core :refer [dispatch]]
-            [clojure.string :refer [capitalize]]
             [souptitle-mobile.handlers]
             [souptitle-mobile.subs]
             [souptitle-mobile.shared.ui :as ui]
@@ -16,9 +15,11 @@
 (enable-console-print!)
 
 (def about-screen (get-about-screen))
-(def chapter-screen (get-chapter-screen android-ui/blur-view  android-ui/activity-indicator))
+(def chapter-screen
+  (get-chapter-screen android-ui/blur-view  android-ui/activity-indicator))
 (def serials-screen (get-serials-screen android-ui/activity-indicator))
-(def well-known-screen (get-well-known-screen))
+(def well-known-screen
+  (get-well-known-screen android-ui/blur-view  android-ui/activity-indicator))
 
 (def main-tabs
   (create-tab-navigator {:Serials #(r/reactify-component serials-screen)

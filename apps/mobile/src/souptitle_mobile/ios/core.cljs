@@ -1,7 +1,6 @@
 (ns souptitle-mobile.ios.core
   (:require [reagent.core :as r]
             [re-frame.core :refer [dispatch]]
-            [clojure.string :refer [capitalize]]
             [souptitle-mobile.handlers]
             [souptitle-mobile.subs]
             [souptitle-mobile.shared.ui :as ui]
@@ -19,7 +18,7 @@
 (def about-screen (get-about-screen))
 (def chapter-screen (get-chapter-screen ios-ui/blur-view ios-ui/activity-indicator))
 (def serials-screen (get-serials-screen ios-ui/activity-indicator))
-(def well-known-screen (get-well-known-screen))
+(def well-known-screen (get-well-known-screen ios-ui/blur-view ios-ui/activity-indicator))
 (def network-error-screen (get-network-error-screen))
 
 (def serials-screens
