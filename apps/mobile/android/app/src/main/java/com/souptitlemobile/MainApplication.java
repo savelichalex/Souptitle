@@ -27,7 +27,8 @@ public class MainApplication extends Application implements ReactApplication {
         new BlurViewPackage(),
         new LinearGradientPackage(),
         new SecretConfigManagerPackage(SecretConfig.class),
-        new STTimelinePackage(),
+        new TimelineViewPackage(),
+        new TableViewPackage(),
       );
     }
   };
