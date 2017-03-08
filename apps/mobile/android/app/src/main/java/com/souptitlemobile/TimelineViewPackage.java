@@ -1,4 +1,4 @@
-package com.teachbyfriends;
+package com.souptitlemobile;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;

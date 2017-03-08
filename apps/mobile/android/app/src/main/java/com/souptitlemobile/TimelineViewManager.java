@@ -1,4 +1,4 @@
-package com.teachbyfriends;
+package com.souptitlemobile;
 
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;

@@ -1,4 +1,4 @@
-package com.teachbyfriends;
+package com.souptitlemobile;
 
 import android.content.Context;
 import android.graphics.Canvas;
