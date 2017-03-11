@@ -7,6 +7,7 @@
                  [org.clojure/clojurescript "1.9.473" :exclusions [org.apache.ant/ant]]
                  [org.clojure/core.async "0.2.395"]
                  [reagent "0.6.0"]
+                 [re-frame "0.9.0"]
                  [ring/ring-core "1.5.1"]
                  [figwheel "0.5.9"]]
   :plugins [[lein-cljsbuild "1.1.5"]
@@ -78,7 +79,7 @@
                                              ;;:source-map "app/dev/js/test.js.map"
                                              :pretty-print true
                                              :output-wrapper true}}
-                       :dev-front {:source-paths ["src_front" "src_front_profile/souptitledesktop/dev"]
+                       :dev-front {:source-paths ["src_front" "src_front_profile/souptitle_desktop/dev"]
                                    :incremental true
                                    :jar true
                                    :assert true
@@ -126,7 +127,7 @@
                                               ;;:source-map "app/prod/js/test.js.map"
                                               :pretty-print true
                                               :output-wrapper true}}
-                       :prod-front {:source-paths ["src_front" "src_front_profile/souptitledesktop/prod"]
+                       :prod-front {:source-paths ["src_front" "src_front_profile/souptitle_desktop/prod"]
                                     :incremental true
                                     :jar true
                                     :assert true
