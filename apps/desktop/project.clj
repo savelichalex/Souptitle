@@ -1,4 +1,4 @@
-(defproject desktop "0.1.0-SNAPSHOT"
+(defproject souptitle/desktop "0.1.0-SNAPSHOT"
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
@@ -9,7 +9,8 @@
                  [reagent "0.6.0"]
                  [re-frame "0.9.0"]
                  [ring/ring-core "1.5.1"]
-                 [figwheel "0.5.9"]]
+                 [figwheel "0.5.9"]
+                 [serials-model "0.1.0"]]
   :plugins [[lein-cljsbuild "1.1.5"]
             [lein-externs "0.1.6"]
             [lein-shell "0.5.0"]
