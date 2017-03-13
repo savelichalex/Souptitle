@@ -1,6 +1,6 @@
 (ns souptitle-desktop.manager.main
-  (:require [souptitle-desktop.manager.views.tree :refer [tree]]
-            [serials-model.core :refer [foo]]))
+  (:require [souptitle-desktop.manager.views.tree :refer [tree node]]
+            [re-frame.core :refer [subscribe]]))
 
 (defn layout [left right]
   [:div {:style {:display "flex"
@@ -10,4 +10,8 @@
    [:div {:style {:flex 3 :border "1px solid #000"}} right]])
 
 (defn manager []
-  [layout [tree] [:span (foo)]])
+  (let [tree-structure (subscribe [:get-content])]
+    [layout
+     [tree {:content @tree-structure
+            :node-comp node}]
+     [:span "Content"]]))

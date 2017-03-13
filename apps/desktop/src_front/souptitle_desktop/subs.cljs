@@ -5,3 +5,8 @@
  :get-message
  (fn [db _]
    (:message db)))
+
+(reg-sub
+ :get-content
+ (fn [db _]
+   (:content db)))

@@ -1,4 +1,4 @@
-(defproject souptitle-mobile "0.1.0-SNAPSHOT"
+(defproject souptitle/mobile "0.1.0-SNAPSHOT"
             :description "FIXME: write description"
             :url "http://example.com/FIXME"
             :license {:name "Eclipse Public License"
@@ -8,7 +8,8 @@
                            [reagent "0.6.0-alpha" :exclusions [cljsjs/react cljsjs/react-dom cljsjs/react-dom-server]]
                            [re-frame "0.7.0"]
                            [com.cognitect/transit-cljs "0.8.239"]
-                           [camel-snake-kebab "0.4.0"]]
+                           [camel-snake-kebab "0.4.0"]
+                           [serials-model "0.1.0"]]
             :plugins [[lein-cljsbuild "1.1.4"]
                       [lein-figwheel "0.5.8"]]
             :clean-targets ["target/" "index.ios.js" "index.android.js"]

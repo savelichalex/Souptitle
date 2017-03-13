@@ -7,7 +7,8 @@
     [souptitle-mobile.remote-db-service :as rdb]
     [souptitle-mobile.consts :as const]
     [souptitle-mobile.shared.well-known-words-service :as wservice]
-    [souptitle-mobile.shared.navigation :as nav]))
+    [souptitle-mobile.shared.navigation :as nav]
+    [serials-model.core :as sm]))
 
 ;; -- Middleware ------------------------------------------------------------
 ;;
@@ -75,109 +76,6 @@
       (-> app-db
           (assoc :remote-db remote-db)))))
 
-(defn create-node
-  ([id {path :path, :as all}]
-   {:id id
-    :meta (dissoc all :path)
-    :path path
-    :content []}))
-
-(defn create-leaf [id raw]
-  (-> (create-node id raw)
-      (dissoc :content)))
-
-(defn parse-serials [serials]
-  (->> serials (map-indexed create-node)))
-
-(defn parse-seasons [seasons]
-  (->> seasons (map-indexed create-node)))
-
-(defn parse-chapters [chapters]
-  (->> chapters (map-indexed create-leaf)))
-
-(defn set-active-serial [serial-id active-content-index]
-  (assoc active-content-index 0 serial-id))
-
-(defn set-active-season [season-id active-content-index]
-  (assoc active-content-index 1 season-id))
-
-(defn set-active-chapter [chapter-id active-content-index]
-  (assoc active-content-index 2 chapter-id))
-
-;; TODO: think about lenses
-
-(defn save-nth [arr el-num]
-  (if (>= el-num (count arr))
-    nil
-    (nth arr el-num)))
-
-(defn update-serials [content index updater]
-  (updater content))
-
-(defn get-serial-by-index [content index]
-  (-> content
-      (save-nth (first index))))
-
-(defn update-serial [content index updater]
-  (update-serials
-   content
-   index
-   (fn [serials]
-     (-> (vec serials)
-         (update (first index) updater)))))
-
-(defn get-seasons-by-index [content index]
-  (-> (get-serial-by-index content index)
-      (:content)))
-
-(defn update-seasons [content index updater]
-  (update-serial
-   content
-   index
-   (fn [serial]
-     (-> serial
-         (update :content updater)))))
-
-(defn get-season-by-index [content index]
-  (-> (get-seasons-by-index content index)
-      (save-nth (-> index (rest) (first)))))
-
-(defn update-season [content index updater]
-  (update-seasons
-   content
-   index
-   (fn [seasons]
-     (-> (vec seasons)
-         (update (-> index (rest) (first)) updater)))))
-
-(defn get-chapters-by-index [content index]
-  (-> (get-season-by-index content index)
-      (:content)))
-
-(defn update-chapters [content index updater]
-  (update-season
-   content
-   index
-   (fn [season]
-     (-> season
-         (update :content updater)))))
-
-(defn get-chapter-by-index [content index]
-  (-> (get-chapters-by-index content index)
-      (save-nth (-> index (rest) (rest) (first)))))
-
-(defn get-chapter-content-by-index [content index]
-  (-> (get-chapter-by-index content index)
-      (:content)))
-
-(defn update-chapter [content index updater]
-  (update-chapters
-   content
-   index
-   (fn [chapters]
-     (-> (vec chapters)
-         (update (-> index (rest) (rest) (first)) updater)))))
-
 ;; -------- Content loading -----------
 
 (defn load-if-not-exist
@@ -198,7 +96,7 @@
   :serials-load-success
   (fn [db [_ serials]]
     (-> db
-        (assoc :content (parse-serials serials)))))
+        (assoc :content (sm/parse-serials serials)))))
 
 (register-handler
   :serials-load-error
@@ -208,17 +106,17 @@
 
 (defn load-serial-content [content active-content remote-db seasons-path]
   (-> (load-if-not-exist
-       (partial get-seasons-by-index content active-content)
+       (partial sm/get-seasons-by-index content active-content)
        (partial rdb/download-json remote-db seasons-path)
        (fn [s]
          (dispatch [:seasons-load-success s])
          s))
       (load-if-not-exist
-       (partial get-chapters-by-index content active-content)
+       (partial sm/get-chapters-by-index content active-content)
        (fn [[_ {path :path}]]
          (rdb/download-json remote-db path))
        (fn [chapters]
-         (dispatch [:chapter-load (create-leaf 0 (nth chapters 0))])
+         (dispatch [:chapter-load (sm/create-leaf 0 (nth chapters 0))])
          (dispatch [:chapters-load-success chapters])))
       (.catch (fn [err]
                 (if (= (.-message err) "Network request failed")
@@ -229,7 +127,7 @@
   :seasons-load
   (fn [{:keys [content active-content remote-db] :as db}
        [_ {id :id seasons-path :path}]]
-    (let [new-active-content (set-active-serial id active-content)]
+    (let [new-active-content (sm/set-active-serial id active-content)]
       (api-proxy
        (partial load-serial-content
                 content
@@ -243,7 +141,7 @@
   :seasons-load-success
   (fn [{:keys [content active-content] :as db} [_ seasons]]
     (-> db
-        (assoc :content (update-seasons content active-content #(parse-seasons seasons))))))
+        (assoc :content (sm/update-seasons content active-content #(parse-seasons seasons))))))
 
 (register-handler
   :seasons-load-error
@@ -255,7 +153,7 @@
 
 (defn load-chapters-content [content active-content remote-db chapters-path]
   (-> (load-if-not-exist
-       (partial get-chapters-by-index content active-content)
+       (partial sm/get-chapters-by-index content active-content)
        (partial rdb/download-json remote-db chapters-path)
        (fn [chapters]
          (dispatch [:chapters-load-success chapters])))
@@ -267,7 +165,7 @@
   :chapters-load
   (fn [{:keys [content active-content remote-db] :as db}
        [_ {id :id chapters-path :path}]]
-    (let [new-active-content (set-active-season id active-content)]
+    (let [new-active-content (sm/set-active-season id active-content)]
       (api-proxy
        (partial load-chapters-content
                 content
@@ -281,10 +179,10 @@
   :chapters-load-success
   (fn [{:keys [content active-content] :as db} [_ chapters]]
     (-> db
-        (assoc :content (update-chapters
+        (assoc :content (sm/update-chapters
                          content
                          active-content
-                         #(parse-chapters chapters))))))
+                         #(sm/parse-chapters chapters))))))
 
 (register-handler
   :chapters-load-error
@@ -296,7 +194,7 @@
 
 (defn load-srt-content [content active-content remote-db srt-path]
   (-> (load-if-not-exist
-       (partial get-chapter-content-by-index content active-content)
+       (partial sm/get-chapter-content-by-index content active-content)
        (partial rdb/download remote-db srt-path)
        (fn [srt]
          (dispatch [:srt-load-success srt])))
@@ -308,7 +206,7 @@
   :chapter-load
   (fn [{:keys [content active-content remote-db] :as db}
        [_ {id :id srt-path :path}]]
-    (let [new-active-content (set-active-chapter id active-content)]
+    (let [new-active-content (sm/set-active-chapter id active-content)]
       (api-proxy
        (partial load-srt-content
                 content
@@ -322,7 +220,7 @@
   :srt-load-success
   (fn [{:keys [content active-content] :as db} [_ chapter]]
     (-> db
-        (assoc :content (update-chapter
+        (assoc :content (sm/update-chapter
                          content
                          active-content
                          #(assoc % :content (parse-srt chapter)))))))
