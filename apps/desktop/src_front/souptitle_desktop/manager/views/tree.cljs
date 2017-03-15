@@ -1,4 +1,5 @@
-(ns souptitle-desktop.manager.views.tree)
+(ns souptitle-desktop.manager.views.tree
+  (:require [re-frame.core :refer [dispatch]]))
 
 (defn tree-node [{:keys [content] :as node} node-comp tree]
   [:div
@@ -11,16 +12,25 @@
         (->> content
              (map #(identity [tree-node % node-comp tree-comp])))))
 
-(defn tree [{:keys [content node-comp]}]
-  [tree-comp content node-comp nil])
+(defn tree [{:keys [content label-comp]}]
+  [tree-comp content label-comp nil])
 
 (defmulti node (fn [el] (-> el :meta :type)))
 
-(defmethod node :serial [{{:keys [title]} :meta}]
-  [:span (str "Serial: " title)])
+(defmethod node :serial [{{:keys [title]} :meta id :id active? :active?}]
+  [:span
+   {:on-click #(dispatch [:set-active-serial id])
+    :style {:color (if active? "red" "black")}}
+   (str "Serial: " title)])
 
-(defmethod node :season [{{:keys [title]} :meta}]
-  [:span (str "Season: " title)])
+(defmethod node :season [{{:keys [title]} :meta id :id active? :active?}]
+  [:span
+   {:on-click #(dispatch [:set-active-season id])
+    :style {:color (if active? "red" "black")}}
+   (str "Season: " title)])
 
-(defmethod node :chapter [{{:keys [title]} :meta}]
-  [:span (str "Chapter: " title)])
+(defmethod node :chapter [{{:keys [title]} :meta id :id active? :active?}]
+  [:span
+   {:on-click #(dispatch [:set-active-chapter id])
+    :style {:color (if active? "red" "black")}}
+   (str "Chapter: " title)])

@@ -13,5 +13,5 @@
   (let [tree-structure (subscribe [:get-content])]
     [layout
      [tree {:content @tree-structure
-            :node-comp node}]
+            :label-comp node}]
      [:span "Content"]]))
