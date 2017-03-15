@@ -18,11 +18,13 @@
 
 (defstyle style
   [".node" {:font-size "14px"
+            :font-family "Roboto"
+            :padding "8px"
             :cursor "pointer"}
    ["&:hover" {:background-color "#ccc"}]]
   [".active" {:background-color "#eee"}]
-  [".season" {:padding-left "10px"}]
-  [".chapter" {:padding-left "20px"}])
+  [".season" {:padding-left "18px"}]
+  [".chapter" {:padding-left "28px"}])
 
 (defmulti node (fn [el] (-> el :meta :type)))
 
