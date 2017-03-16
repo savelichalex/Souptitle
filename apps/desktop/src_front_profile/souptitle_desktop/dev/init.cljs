@@ -1,7 +1,7 @@
-(ns desktop-front.init
+(ns souptitle-desktop.init
   (:require [figwheel.client :as fw :include-macros true]
-            [desktop-front.core :as core]
-            [desktop-front.conf :as conf]))
+            [souptitle-desktop.core :as core]
+            [souptitle-desktop.conf :as conf]))
 
 (enable-console-print!)
 

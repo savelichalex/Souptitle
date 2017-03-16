@@ -13,3 +13,5 @@ node_modules/*
 *.ipr
 *.iws
 electron/*
+app/dev/js/*
+app/prod/js/*

@@ -1,1 +1,4 @@
-var TopLevel = {}
+var TopLevel = {
+"document" : function () {},
+"getElementById" : function () {}
+}
