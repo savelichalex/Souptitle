@@ -1,5 +1,6 @@
 (ns souptitle-desktop.subs
-  (:require [re-frame.core :refer [reg-sub]]))
+  (:require [re-frame.core :refer [reg-sub]]
+            [serials-model.core :as sm]))
 
 (reg-sub
  :get-message
@@ -53,3 +54,14 @@
  (fn [[content active-content] _]
    (-> content
        (mark-active-content active-content))))
+
+(reg-sub
+ :get-active-content
+ :<- [:get-raw-content]
+ :<- [:get-active-content-idx]
+ (fn [[content active-content-index] _]
+   (condp = (count active-content-index)
+     0 {:meta {:type :nothing-active}}
+     1 (sm/get-serial-by-index content active-content-index)
+     2 (sm/get-season-by-index content active-content-index)
+     3 (sm/get-chapter-by-index content active-content-index))))
