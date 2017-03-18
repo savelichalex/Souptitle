@@ -5,16 +5,13 @@
             [souptitle-desktop.subs]
             [souptitle-desktop.manager.main :refer [manager]]))
 
-(defonce state (r/atom {:message "Hello from Souptitle!"}))
-
-(defn root-component []
-  (let [message @(subscribe [:get-message])]
-    [:h1 message]))
+(defn app-root [settings]
+  [manager])
 
 (defn mount-root [settings]
-  (dispatch-sync [:initialize-db])
-  (r/render [manager]
+  (r/render [app-root settings]
             (.getElementById js/document "app")))
 
 (defn init! [settings]
+  (dispatch-sync [:initialize-db])
   (mount-root settings))

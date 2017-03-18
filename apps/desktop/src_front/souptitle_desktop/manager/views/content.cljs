@@ -11,5 +11,14 @@
 (defmethod content :season [{{:keys [title]} :meta}]
   [:span (str "This is season: " title)])
 
-(defmethod content :chapter [{{:keys [title]} :meta}]
-  [:span (str "This is chapter: " title)])
+(defmethod content :chapter [{{:keys [title src]} :meta}]
+  [:div {:style {:display "flex"
+                 :flex-direction "column"
+                 :padding "10px 20px"}}
+   [:h1 {:style {:font-size "18px"
+                 :font-family "Roboto"}} title]
+   [:div {:style {:display "flex" :flex-direction "row"}}
+    [:input {:style {:flex 3}}]
+    [:button {:style {:flex 1}} "Load"]]
+   [:textarea {:style {:flex 1}
+               :value src}]])
