@@ -12,7 +12,8 @@
   [:span (str "This is season: " title)])
 
 (defmethod content :chapter [{{:keys [title src]} :meta}]
-  [:div {:style {:display "flex"
+  [:div {:style {:flex 1
+                 :display "flex"
                  :flex-direction "column"
                  :padding "10px 20px"}}
    [:h1 {:style {:font-size "18px"
