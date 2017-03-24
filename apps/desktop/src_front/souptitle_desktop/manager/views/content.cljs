@@ -1,4 +1,6 @@
-(ns souptitle-desktop.manager.views.content)
+(ns souptitle-desktop.manager.views.content
+  (:require [re-frame.core :refer [dispatch]]
+            [reagent.core :as r]))
 
 (defmulti content (fn [el] (-> el :meta :type)))
 
@@ -11,6 +13,19 @@
 (defmethod content :season [{{:keys [title]} :meta}]
   [:span (str "This is season: " title)])
 
+(defn textview [{:keys [value]}]
+  (let [state (r/atom (or value ""))]
+    (r/create-class
+     {:component-will-receive-props
+      (fn [_ [_ {:keys [value]}]]
+        (reset! state value))
+      :reagent-render
+      (fn [{:keys [style on-blur]}]
+        [:textarea {:style style
+                    :value @state
+                    :on-change #(reset! state (.. % -target -value))
+                    :on-blur #(on-blur @state)}])})))
+
 (defmethod content :chapter [{{:keys [title src]} :meta}]
   [:div {:style {:flex 1
                  :display "flex"
@@ -21,5 +36,6 @@
    [:div {:style {:display "flex" :flex-direction "row"}}
     [:input {:style {:flex 3}}]
     [:button {:style {:flex 1}} "Load"]]
-   [:textarea {:style {:flex 1}
-               :value src}]])
+   [textview {:style {:flex 1}
+               :value src
+               :on-blur #(dispatch [:update-chapter-raw-srt %])}]])
