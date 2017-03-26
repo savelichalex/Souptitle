@@ -28,14 +28,21 @@
    (-> db
        (assoc :active-content id))))
 
+(defn update-chapter-meta [key]
+  (fn [{:keys [content active-content] :as db} [_ val]]
+    (-> db
+        (assoc
+         :content
+         (sm/update-chapter
+          content
+          active-content
+          (fn [chapter]
+            (assoc-in chapter [:meta key] val)))))))
+
+(reg-event-db
+ :update-chapter-title
+ (update-chapter-meta :title))
+
 (reg-event-db
  :update-chapter-raw-srt
- (fn [{:keys [content active-content] :as db} [_ new-srt]]
-   (-> db
-       (assoc
-        :content
-        (sm/update-chapter
-         content
-         active-content
-         (fn [chapter]
-           (assoc-in chapter [:meta :src] new-srt)))))))
+ (update-chapter-meta :srt))
