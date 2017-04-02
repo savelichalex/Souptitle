@@ -39,6 +39,19 @@
                  :on-change #(reset! state (.. % -target -value))
                  :on-blur #(on-blur @state)}])})))
 
+(defn srt-link []
+  (let [link (r/atom "")]
+    (fn []
+      [:div {:style {:display "flex" :flex-direction "row"}}
+       [:input {:style {:flex 3}
+                :value @link
+                :on-change #(reset! link (.. % -target -value))}]
+       [:button {:style {:flex 1}
+                 :on-click #(when (not (empty? @link))
+                              (dispatch [:load-link-with-srt @link])
+                              (reset! link ""))}
+        "Load"]])))
+
 (defmethod content :chapter [{{:keys [title src]} :meta}]
   [:div {:style {:flex 1
                  :display "flex"
@@ -48,9 +61,7 @@
                        :font-family "Roboto"}
                :value title
                :on-blur #(dispatch [:update-chapter-title %])}]
-   [:div {:style {:display "flex" :flex-direction "row"}}
-    [:input {:style {:flex 3}}]
-    [:button {:style {:flex 1}} "Load"]]
+   [srt-link]
    [textview {:style {:flex 1}
-               :value src
-               :on-blur #(dispatch [:update-chapter-raw-srt %])}]])
+              :value src
+              :on-blur #(dispatch [:update-chapter-raw-srt %])}]])

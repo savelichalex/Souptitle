@@ -1,7 +1,8 @@
 (ns souptitle-desktop.events
   (:require [souptitle-desktop.db :refer [default-db]]
-            [re-frame.core :refer [reg-event-db]]
-            [serials-model.core :as sm]))
+            [re-frame.core :refer [reg-event-db reg-event-fx reg-fx dispatch]]
+            [serials-model.core :as sm]
+            [souptitle-desktop.common.utils.load-srt :refer [load-srt]]))
 
 ;; ----- Event Handlers -------
 
@@ -46,3 +47,15 @@
 (reg-event-db
  :update-chapter-raw-srt
  (update-chapter-meta :srt))
+
+(reg-fx
+ :load-srt
+ (fn load-srt-effect [{:keys [url on-load-event]}]
+   (-> (load-srt url)
+       (.then #(dispatch [on-load-event %]))
+       (.catch #(print %)))))
+
+(reg-event-fx
+ :load-link-with-srt
+ (fn [_ [_ url]]
+   {:load-srt {:url url :on-load-event :update-chapter-raw-srt}}))
