@@ -24,10 +24,10 @@
                        :content
                        [(create-leaf
                          0
-                         {:path "" :title "First chapter" :type :chapter})
+                         {:path "" :title "First chapter" :src "asd" :type :chapter})
                         (create-leaf
                          1
-                         {:path "" :title "Second chapter" :type :chapter})]))))))))
+                         {:path "" :title "Second chapter" :src "fgh" :type :chapter})]))))))))
 
 (def default-db
   {:message "Hello from Souptitle db"
