@@ -4,6 +4,15 @@
             [serials-model.core :as sm]
             [souptitle-desktop.common.utils.load-srt :refer [load-srt]]))
 
+;; ----- Effects -------------
+
+(reg-fx
+ :load-srt
+ (fn load-srt-effect [{:keys [url on-load]}]
+   (-> (load-srt url)
+       (.then #(dispatch [on-load %]))
+       (.catch #(print %)))))
+
 ;; ----- Event Handlers -------
 
 (reg-event-db
@@ -46,16 +55,9 @@
 
 (reg-event-db
  :update-chapter-raw-srt
- (update-chapter-meta :srt))
-
-(reg-fx
- :load-srt
- (fn load-srt-effect [{:keys [url on-load-event]}]
-   (-> (load-srt url)
-       (.then #(dispatch [on-load-event %]))
-       (.catch #(print %)))))
+ (update-chapter-meta :src))
 
 (reg-event-fx
  :load-link-with-srt
  (fn [_ [_ url]]
-   {:load-srt {:url url :on-load-event :update-chapter-raw-srt}}))
+   {:load-srt {:url url :on-load :update-chapter-raw-srt}}))
