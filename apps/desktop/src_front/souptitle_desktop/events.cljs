@@ -57,6 +57,44 @@
  :update-chapter-raw-srt
  (update-chapter-meta :src))
 
+;; TODO: make new entity active
+
+(reg-event-db
+ :add-new-serial
+ (fn [{:keys [content active-content] :as db} [_ val]]
+   (-> db
+       (update
+        :content
+        (fn [content]
+          (-> content
+              (conj (sm/create-node {:title "New serial"}))))))))
+
+(reg-event-db
+ :add-new-season
+ (fn [{:keys [content active-content] :as db} [_ val]]
+   (-> db
+       (update
+        :content
+        (sm/update-seasons
+         content
+         active-content
+         (fn [seasons]
+           (-> seasons
+               (conj (sm/create-node {:title "New season"})))))))))
+
+(reg-event-db
+ :add-new-chapter
+ (fn [{:keys [content active-content] :as db} [_ val]]
+   (-> db
+       (update
+        :content
+        (sm/update-chapters
+         content
+         active-content
+         (fn [chapters]
+           (-> chapters
+               (conj (sm/create-leaf {:title "New season"})))))))))
+
 (reg-event-fx
  :load-link-with-srt
  (fn [_ [_ url]]
