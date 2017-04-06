@@ -66,34 +66,40 @@
        (update
         :content
         (fn [content]
-          (-> content
-              (conj (sm/create-node {:title "New serial"}))))))))
+          (-> (vec content)
+              (conj (sm/create-node
+                     (count content)
+                     {:title "New serial" :type :serial}))))))))
 
 (reg-event-db
  :add-new-season
  (fn [{:keys [content active-content] :as db} [_ val]]
    (-> db
-       (update
+       (assoc
         :content
         (sm/update-seasons
          content
          active-content
          (fn [seasons]
-           (-> seasons
-               (conj (sm/create-node {:title "New season"})))))))))
+           (-> (vec seasons)
+               (conj (sm/create-node
+                      (count seasons)
+                      {:title "New season" :type :season})))))))))
 
 (reg-event-db
  :add-new-chapter
  (fn [{:keys [content active-content] :as db} [_ val]]
    (-> db
-       (update
+       (assoc
         :content
         (sm/update-chapters
          content
          active-content
          (fn [chapters]
-           (-> chapters
-               (conj (sm/create-leaf {:title "New season"})))))))))
+           (-> (vec chapters)
+               (conj (sm/create-leaf
+                      (count chapters)
+                      {:title "New chapter" :src "" :type :chapter})))))))))
 
 (reg-event-fx
  :load-link-with-srt

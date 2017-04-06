@@ -7,7 +7,7 @@
   [:div {:style {:display "flex"
                  :flex-direction "row"
                  :height "100%"}}
-   [:div {:style {:flex 1}} left]
+   [:div {:style {:flex 1 :display "flex"}} left]
    [:div {:style {:flex 3 :display "flex"}} right]])
 
 (defn manager []
