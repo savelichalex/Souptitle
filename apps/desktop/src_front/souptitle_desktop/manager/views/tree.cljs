@@ -26,11 +26,6 @@
         (->> content
              (map #(identity [tree-node % node-comp tree-comp])))))
 
-(defn tree [{:keys [content label-comp]}]
-  [:div {:style {:background-color "#303945"
-                 :height "100%"}}
-   [tree-comp content label-comp true]])
-
 (defstyle style
   [".node" {:font-size "14px"
             :font-family "Roboto"
@@ -42,10 +37,39 @@
             :align-items "center"
             :color "#aabac7"}
    ["&:hover" {:background-color "#1c232d"}]]
+  [".node-inner" {:flex 1
+                  :display "flex"
+                  :flex-direction "row"}]
   [".active" {:background-color "#242d3a"
               :color "#fff"}]
   [".season" {:padding-left "18px"}]
-  [".chapter" {:padding-left "38px"}])
+  [".chapter" {:padding-left "38px"}]
+  [".settings" {:display "flex"
+                :flex-direction "row"
+                :padding "5px 8px"}]
+  [".add-icon" {:color "#aabac7"
+                :font-size "14px"}
+   ["&:hover" {:color "#fff"
+               :cursor "pointer"}]])
+
+(defn add-icon [type]
+  [:div {:class (:add-icon style)
+         :on-click #(dispatch [type])}
+   [icon :plus]])
+
+(defn settings-bar []
+  [:div {:class (:settings style)}
+   [:div {:style {:flex 1}}]
+   [add-icon :add-new-serial]])
+
+(defn tree [{:keys [content label-comp]}]
+  (print content)
+  [:div {:style {:background-color "#303945"
+                 :display "flex"
+                 :flex 1
+                 :flex-direction "column"}}
+   [settings-bar]
+   [tree-comp content label-comp true]])
 
 (defmulti node (fn [el] (-> el :meta :type)))
 
@@ -53,16 +77,21 @@
   [:div
    {:on-click #(dispatch [:set-active-serial id])
     :class (str (:node style) " " (when active? (:active style)))}
-   shevron
-   ;; [icon :television {:style {:padding-right "5px"}}]
-   title])
+   [:div {:class (:node-inner style)}
+    shevron
+    title]
+   (when active?
+     [add-icon :add-new-season])])
 
 (defmethod node :season [{{:keys [title]} :meta id :id active? :active?} shevron]
   [:div
    {:on-click #(dispatch [:set-active-season id])
     :class (str (:node style) " " (:season style) " " (when active? (:active style)))}
-   shevron
-   title])
+   [:div {:class (:node-inner style)}
+    shevron
+    title]
+   (when active?
+     [add-icon :add-new-chapter])])
 
 (defmethod node :chapter [{{:keys [title]} :meta id :id active? :active?} shevron]
   [:div
