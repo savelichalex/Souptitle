@@ -45,10 +45,6 @@
                  :display "flex"
                  :flex-direction "column"
                  :padding "10px 20px"}}
-   [inputview {:style {:font-size "18px"
-                       :font-family "Roboto"}
-               :value title
-               :on-blur #(dispatch [:update-chapter-title %])}]
    [srt-link]
    [textview {:style {:flex 1}
               :value src
