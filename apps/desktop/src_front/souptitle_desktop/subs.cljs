@@ -37,6 +37,16 @@
                       active-content)))
                   (assoc :active? (= (:id el) active-content)))))))
 
+(defn sort-content-by-title [content]
+  (->> content
+       (map (fn [entity]
+              (if (empty? (:content entity))
+                entity
+                (-> entity
+                    (assoc :content
+                           (sort-content-by-title (:content entity)))))))
+       (sort-by #(-> % :meta :title))))
+
 (reg-sub
  :get-raw-content
  (fn [db _]
@@ -53,7 +63,8 @@
  :<- [:get-active-content-idx]
  (fn [[content active-content] _]
    (-> content
-       (mark-active-content active-content))))
+       (mark-active-content active-content)
+       (sort-content-by-title))))
 
 (reg-sub
  :get-active-content
