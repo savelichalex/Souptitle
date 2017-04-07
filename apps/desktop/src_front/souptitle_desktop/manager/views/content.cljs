@@ -1,6 +1,7 @@
 (ns souptitle-desktop.manager.views.content
   (:require [re-frame.core :refer [dispatch]]
-            [reagent.core :as r]))
+            [reagent.core :as r]
+            [souptitle-desktop.common.components.inputview :refer [inputview]]))
 
 (defmulti content (fn [el] (-> el :meta :type)))
 
@@ -25,19 +26,6 @@
                     :value @state
                     :on-change #(reset! state (.. % -target -value))
                     :on-blur #(on-blur @state)}])})))
-
-(defn inputview [{:keys [value]}]
-  (let [state (r/atom (or value ""))]
-    (r/create-class
-     {:component-will-receive-props
-      (fn [_ [_ {:keys [value]}]]
-        (reset! state value))
-      :reagent-render
-      (fn [{:keys [style on-blur]}]
-        [:input {:style style
-                 :value @state
-                 :on-change #(reset! state (.. % -target -value))
-                 :on-blur #(on-blur @state)}])})))
 
 (defn srt-link []
   (let [link (r/atom "")]

@@ -2,7 +2,8 @@
   (:require [reagent.core :as r]
             [re-frame.core :refer [dispatch]]
             [cljs-css-modules.macro :refer-macros [defstyle]]
-            [souptitle-desktop.common.components.icon :refer [icon]]))
+            [souptitle-desktop.common.components.icon :refer [icon]]
+            [souptitle-desktop.common.components.inputview :refer [inputview]]))
 
 (defn tree-node [{:keys [content] :as node} node-comp tree]
   (let [toggled? (r/atom false)]
@@ -70,6 +71,27 @@
    [settings-bar]
    [tree-comp content label-comp true]])
 
+(defn node-title [{:keys [change-event-type title]}]
+  (let [as-input? (r/atom false)]
+    (fn [{:keys [change-event-type title]}]
+      (if @as-input?
+        [:div {:style {:flex 1}}
+         [inputview {:style {:border "none"
+                             :background "transparent"
+                             :color "#fff"
+                             :font-size "14px"
+                             :outline "none"
+                             :width "100%"
+                             :height "14px"}
+                     :on-blur #(do
+                                 (dispatch [change-event-type %])
+                                 (reset! as-input? false))
+                     :value title
+                     :autofocus true}]]
+        [:span
+         {:on-double-click #(reset! as-input? true)}
+         title]))))
+
 (defmulti node (fn [el] (-> el :meta :type)))
 
 (defmethod node :serial [{{:keys [title]} :meta id :id active? :active?} shevron]
@@ -78,7 +100,8 @@
     :class (str (:node style) " " (when active? (:active style)))}
    [:div {:class (:node-inner style)}
     shevron
-    title]
+    [node-title {:change-event-type :update-serial-title
+                 :title title}]]
    (when active?
      [add-icon :add-new-season])])
 
@@ -88,7 +111,8 @@
     :class (str (:node style) " " (:season style) " " (when active? (:active style)))}
    [:div {:class (:node-inner style)}
     shevron
-    title]
+    [node-title {:change-event-type :update-season-title
+                 :title title}]]
    (when active?
      [add-icon :add-new-chapter])])
 
@@ -97,4 +121,5 @@
    {:on-click #(dispatch [:set-active-chapter id])
     :class (str (:node style) " " (:chapter style) " " (when active? (:active style)))}
    shevron
-   title])
+   [node-title {:change-event-type :update-chapter-title
+                :title title}]])
