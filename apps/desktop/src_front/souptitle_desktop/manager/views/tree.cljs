@@ -63,7 +63,6 @@
    [add-icon :add-new-serial]])
 
 (defn tree [{:keys [content label-comp]}]
-  (print content)
   [:div {:style {:background-color "#303945"
                  :display "flex"
                  :flex 1

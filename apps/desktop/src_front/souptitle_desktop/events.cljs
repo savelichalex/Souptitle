@@ -84,7 +84,7 @@
            (-> (vec seasons)
                (conj (sm/create-node
                       (count seasons)
-                      {:title "New season" :type :season})))))))))
+                      {:title (str (inc (count seasons))) :type :season})))))))))
 
 (reg-event-db
  :add-new-chapter
@@ -99,7 +99,7 @@
            (-> (vec chapters)
                (conj (sm/create-leaf
                       (count chapters)
-                      {:title "New chapter" :src "" :type :chapter})))))))))
+                      {:title (str (inc (count chapters))) :src "" :type :chapter})))))))))
 
 (reg-event-fx
  :load-link-with-srt
