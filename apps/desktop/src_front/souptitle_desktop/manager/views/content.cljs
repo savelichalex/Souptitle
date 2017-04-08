@@ -10,7 +10,7 @@
                        :border-radius "5px"
                        :width "50%"
                        :padding-top "50%"}]
-  [".dropzone-active" {:border "2px dashed #9cf49c"}]
+  [".dropzone-accepted" {:border "2px dashed #9cf49c"}]
   [".dropzone-rejected" {:border "2px dashed #f39389"}])
 
 (defmulti content (fn [el] (-> el :meta :type)))
@@ -27,7 +27,12 @@
                   :display "flex"
                   :align-items "center"
                   :justify-content "center"}}
-    [dropzone {:class (:dropzone-outter style)}]]])
+    [dropzone {:class (:dropzone-outter style)
+               :accepted-class (:dropzone-accepted style)
+               :rejected-class (:dropzone-rejected style)
+               :accepted? #(-> (re-find #"png|jpeg" %)
+                               (some?))
+               :on-drop #(dispatch [:load-serial-cover %])}]]])
 
 (defmethod content :season [{{:keys [title]} :meta}]
   [:span (str "This is season: " title)])

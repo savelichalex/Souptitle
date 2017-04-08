@@ -113,3 +113,9 @@
  :load-link-with-srt
  (fn [_ [_ url]]
    {:load-srt {:url url :on-load :update-chapter-raw-srt}}))
+
+(reg-event-fx
+ :load-serial-cover
+ (fn [{:keys [content active-content] :as db} [_ file-reader]]
+   ;; https://github.com/remy/html5demos/blob/master/demos/file-api.html
+   ))

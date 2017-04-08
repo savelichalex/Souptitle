@@ -1,6 +1,6 @@
 (ns souptitle-desktop.common.components.dropzone
   (:require [reagent.core :as r]
-            [souptitle-desktop.common.utils.maybe :refer [just nothing]]))
+            [souptitle-desktop.common.utils.maybe :refer [>>= just nothing]]))
 
 (defn- open-file-dialog [file-input-el]
   (set! (. file-input-el -value) nil)
@@ -21,12 +21,12 @@
 (defn- get-from-data-transfer [dt]
   (let [files (. dt -files)
         items (. dt -items)]
-    (if (and (not (nil? files))
-             (> 0 (. files -length)))
-      (just (first files))
-      (if (and (not (nil? items))
-               (> 0 (. items -length)))
-        (just (first items))
+    (if (and (some? files)
+             (> (. files -length) 0))
+      (just (-> files array-seq first))
+      (if (and (some? items)
+               (> (. items -length) 0))
+        (just (-> items array-seq first))
         (nothing)))))
 
 (defn- get-from-target [target]
@@ -38,16 +38,28 @@
 
 (defn- get-file-from-event [event]
   (cond
-    (not (nil? (. event -dataTransfer))) (get-from-data-transfer (. event -dataTransfer))
-    (not (nil? (. event -target))) (get-from-target (. event -target))
+    (some? (. event -dataTransfer)) (get-from-data-transfer (. event -dataTransfer))
+    (some? (. event -target)) (get-from-target (. event -target))
     :else (nothing)))
 
-(defn- on-drag-enter [state event]
+(defn- check-file-type [accepted? file]
+  (if (and (fn? accepted?)
+           (accepted? (. file -type)))
+    (just [:accepted file])
+    (just [:rejected file])))
+
+(defn- file-accepted? [[status file]]
+  (if (= status :accepted)
+    (just file)
+    (nothing)))
+
+(defn- on-drag-enter [state props event]
   (prevent-default! event)
   ;; check file type and choose accept or reject (and set state)
   (-> (get-file-from-event event)
-      (>>= (fn [file]
-             )))
+      (>>= (partial check-file-type (:accepted? props)))
+      (>>= (fn [[status _]]
+             (swap! state #(-> % (assoc :status status))))))
   )
 
 (defn- on-drag-over [_ event]
@@ -62,9 +74,16 @@
   (prevent-default! event)
   (swap! state #(-> % (assoc :status :usual))))
 
-(defn- on-drop [state event]
+(defn- on-drop [state props event]
+  (prevent-default! event)
   ;; get file from event
-  (swap! state #(-> % (assoc :status :usual)))))
+  (-> (get-file-from-event event)
+      (>>= (partial check-file-type (:accepted? props)))
+      (>>= file-accepted?)
+      (>>= (fn [file]
+             (when-let [on-drop-prop (:on-drop props)]
+               (on-drop-prop file)))))
+  (swap! state #(-> % (assoc :status :usual))))
 
 (defmulti get-class-by-status (fn [_ {status :status}] status))
 
@@ -88,11 +107,14 @@
         -on-drop (partial on-drop state)]
     (fn [props]
       [:div (-> props
+                (dissoc :accepted?)
+                (dissoc :accepted-class)
+                (dissoc :rejected-class)
                 (merge
                  {:class (get-class-by-status props @state)
                   :on-click -on-click
                   :on-drag-start -on-drag-start
-                  :on-drag-enter -on-drag-enter
+                  :on-drag-enter (partial -on-drag-enter props)
                   :on-drag-over -on-drag-over
                   :on-drag-leave -on-drag-leave
                   :on-drop -on-drop}))
