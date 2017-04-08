@@ -1,7 +1,17 @@
 (ns souptitle-desktop.manager.views.content
   (:require [re-frame.core :refer [dispatch]]
             [reagent.core :as r]
-            [souptitle-desktop.common.components.inputview :refer [inputview]]))
+            [cljs-css-modules.macro :refer-macros [defstyle]]
+            [souptitle-desktop.common.components.inputview :refer [inputview]]
+            [souptitle-desktop.common.components.dropzone :refer [dropzone]]))
+
+(defstyle style
+  [".dropzone-outter" {:border "2px dashed #ccc"
+                       :border-radius "5px"
+                       :width "50%"
+                       :padding-top "50%"}]
+  [".dropzone-active" {:border "2px dashed #9cf49c"}]
+  [".dropzone-rejected" {:border "2px dashed #f39389"}])
 
 (defmulti content (fn [el] (-> el :meta :type)))
 
@@ -9,7 +19,15 @@
   [:span (str "Choose some in tree")])
 
 (defmethod content :serial [{{:keys [title]} :meta}]
-  [:span (str "This is serial: " title)])
+  [:div {:style {:flex 1
+                 :display "flex"
+                 :flex-direction "column"}}
+   [:span (str "This is serial: " title)]
+   [:div {:style {:flex 1
+                  :display "flex"
+                  :align-items "center"
+                  :justify-content "center"}}
+    [dropzone {:class (:dropzone-outter style)}]]])
 
 (defmethod content :season [{{:keys [title]} :meta}]
   [:span (str "This is season: " title)])
