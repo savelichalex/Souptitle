@@ -74,15 +74,50 @@
   (prevent-default! event)
   (swap! state #(-> % (assoc :status :usual))))
 
+(defn- get-onload-data [type event]
+  (if-let [data (.. event -target -result)]
+    (just [type data])
+    (nothing)))
+
+(defn- check-onload-data [result [type data]]
+  (let [res (-> @result (assoc type data))]
+    (if (and (some? (:url res))
+             (some? (:binary res)))
+      (just res)
+      (do (reset! result res)
+          (nothing)))))
+
+(defn- reader-onload [type result on-file-loaded event]
+  (-> (get-onload-data type event)
+      (>>= (partial check-onload-data result))
+      (>>= (fn [data]
+             (on-file-loaded data)))))
+
+(defn- load-droppped-file [on-file-will-load on-file-loaded file]
+  (let [reader-url (js/FileReader.)
+        reader-binary (js/FileReader.)
+        result (atom {})]
+    (on-file-will-load)
+    (set!
+     (. reader-url -onload)
+     (partial reader-onload :url result on-file-loaded))
+    (set!
+     (. reader-binary -onload)
+     (partial reader-onload :binary result on-file-loaded))
+    (. reader-url (readAsBinaryString file))
+    (. reader-binary (readAsDataURL file))))
+
 (defn- on-drop [state props event]
+  (stop-propagation! event)
   (prevent-default! event)
   ;; get file from event
   (-> (get-file-from-event event)
       (>>= (partial check-file-type (:accepted? props)))
       (>>= file-accepted?)
-      (>>= (fn [file]
-             (when-let [on-drop-prop (:on-drop props)]
-               (on-drop-prop file)))))
+      (>>= (partial
+            load-droppped-file
+            (:on-file-will-load props)
+            (:on-file-loaded props))))
   (swap! state #(-> % (assoc :status :usual))))
 
 (defmulti get-class-by-status (fn [_ {status :status}] status))
@@ -96,7 +131,7 @@
 (defmethod get-class-by-status :rejected [{:keys [class rejected-class]} _]
   (str class " " (or rejected-class "")))
 
-(defn dropzone [props]
+(defn dropzone [props children]
   (let [file-input (atom nil)
         state (r/atom {:status :usual})
         -on-click (partial on-click file-input)
@@ -105,11 +140,13 @@
         -on-drag-over (partial on-drag-over state)
         -on-drag-leave (partial on-drag-leave state)
         -on-drop (partial on-drop state)]
-    (fn [props]
+    (fn [props children]
       [:div (-> props
                 (dissoc :accepted?)
                 (dissoc :accepted-class)
                 (dissoc :rejected-class)
+                (dissoc :on-file-will-load)
+                (dissoc :on-file-loaded)
                 (merge
                  {:class (get-class-by-status props @state)
                   :on-click -on-click
@@ -117,10 +154,11 @@
                   :on-drag-enter (partial -on-drag-enter props)
                   :on-drag-over -on-drag-over
                   :on-drag-leave -on-drag-leave
-                  :on-drop -on-drop}))
+                  :on-drop (partial -on-drop props)}))
+       children
        [:input {:style {:display "none"}
                 :accept true
                 :type "file"
                 :multiple false
-                :on-change -on-drop
+                :on-change (partial -on-drop props)
                 :ref #(reset! file-input %)}]])))

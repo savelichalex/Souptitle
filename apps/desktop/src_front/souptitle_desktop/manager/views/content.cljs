@@ -9,30 +9,52 @@
   [".dropzone-outter" {:border "2px dashed #ccc"
                        :border-radius "5px"
                        :width "50%"
-                       :padding-top "50%"}]
+                       :padding-top "50%"
+                       :position "relative"}]
   [".dropzone-accepted" {:border "2px dashed #9cf49c"}]
-  [".dropzone-rejected" {:border "2px dashed #f39389"}])
+  [".dropzone-rejected" {:border "2px dashed #f39389"}]
+  [".dropzone-inner" {:position "absolute"
+                      :top 0
+                      :left 0
+                      :right 0
+                      :bottom 0
+                      :display "flex"
+                      :align-items "center"
+                      :justify-content "center"}])
 
 (defmulti content (fn [el] (-> el :meta :type)))
 
 (defmethod content :nothing-active [{{:keys [title]} :meta}]
   [:span (str "Choose some in tree")])
 
-(defmethod content :serial [{{:keys [title]} :meta}]
+(defn serial-dropzone []
+  (let [loading? (r/atom false)]
+    (fn []
+      [:div {:style {:flex 1
+                     :display "flex"
+                     :align-items "center"
+                     :justify-content "center"}}
+       [dropzone {:class (:dropzone-outter style)
+                  :accepted-class (:dropzone-accepted style)
+                  :rejected-class (:dropzone-rejected style)
+                  :accepted? #(-> (re-find #"png|jpeg" %)
+                                  (some?))
+                  :on-file-will-load #(reset! loading? true)
+                  :on-file-loaded #(dispatch [:loaded-serial-cover %])}
+        [:div {:class (:dropzone-inner style)}
+         [:span
+          (if @loading?
+            "Loading..."
+            "Drop file here")]]]])))
+
+(defmethod content :serial [{{:keys [title cover]} :meta}]
   [:div {:style {:flex 1
                  :display "flex"
                  :flex-direction "column"}}
    [:span (str "This is serial: " title)]
-   [:div {:style {:flex 1
-                  :display "flex"
-                  :align-items "center"
-                  :justify-content "center"}}
-    [dropzone {:class (:dropzone-outter style)
-               :accepted-class (:dropzone-accepted style)
-               :rejected-class (:dropzone-rejected style)
-               :accepted? #(-> (re-find #"png|jpeg" %)
-                               (some?))
-               :on-drop #(dispatch [:load-serial-cover %])}]]])
+   (if (some? cover)
+     [:img {:src (:url cover)}]
+     [serial-dropzone])])
 
 (defmethod content :season [{{:keys [title]} :meta}]
   [:span (str "This is season: " title)])
