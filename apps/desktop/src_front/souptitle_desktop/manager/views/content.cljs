@@ -53,7 +53,9 @@
                  :flex-direction "column"}}
    [:span (str "This is serial: " title)]
    (if (some? cover)
-     [:img {:src (:url cover)}]
+     [:img {:src (:url cover)
+            :style {:width "100px"
+                    :height "100px"}}]
      [serial-dropzone])])
 
 (defmethod content :season [{{:keys [title]} :meta}]

@@ -65,6 +65,10 @@
  :update-chapter-raw-srt
  (update-entity-meta sm/update-chapter :src))
 
+(reg-event-db
+ :loaded-serial-cover
+ (update-entity-meta sm/update-serial :cover))
+
 ;; TODO: make new entity active
 
 (reg-event-db
@@ -113,7 +117,3 @@
  :load-link-with-srt
  (fn [_ [_ url]]
    {:load-srt {:url url :on-load :update-chapter-raw-srt}}))
-
-(reg-event-fx
- :loaded-serial-cover
- (update-entity-meta sm/update-serial :cover))

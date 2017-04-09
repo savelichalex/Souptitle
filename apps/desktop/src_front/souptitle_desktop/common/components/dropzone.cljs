@@ -104,8 +104,8 @@
     (set!
      (. reader-binary -onload)
      (partial reader-onload :binary result on-file-loaded))
-    (. reader-url (readAsBinaryString file))
-    (. reader-binary (readAsDataURL file))))
+    (. reader-url (readAsDataURL file))
+    (. reader-binary (readAsBinaryString file))))
 
 (defn- on-drop [state props event]
   (stop-propagation! event)
