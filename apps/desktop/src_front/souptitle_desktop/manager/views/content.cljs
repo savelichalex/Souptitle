@@ -46,6 +46,7 @@
    [:span (str "This is serial: " title)]
    (if (some? cover)
      [centered-box
+      {:space 80}
       [cropper {:src (:url cover)
                 :on-crop #(print %)}]]
      [serial-dropzone])])

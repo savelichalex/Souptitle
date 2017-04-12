@@ -6,9 +6,7 @@
                :display "flex"
                :align-items "center"
                :justify-content "center"}]
-  [".outter" {:width "50%"
-              :padding-top "50%"
-              :position "relative"}]
+  [".outter" {:position "relative"}]
   [".inner" {:position "absolute"
              :top 0
              :left 0
@@ -20,9 +18,12 @@
 (defn centered-box
   ([children]
    (centered-box {} children))
-  ([props & children]
+  ([props children]
    [:div {:class (:wrapper style)}
-    [:div {:class (:outter style)}
+    [:div {:class (:outter style)
+           :style {:width (-> props :space (or 50) (str "%"))
+                   :padding-top (-> props :space (or 50) (str "%"))}}
      [:div (-> props
+               (dissoc :space)
                (merge {:class (:inner style)}))
       children]]]))
