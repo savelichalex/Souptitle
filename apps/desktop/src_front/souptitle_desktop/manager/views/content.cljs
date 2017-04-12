@@ -3,24 +3,19 @@
             [reagent.core :as r]
             [cljs-css-modules.macro :refer-macros [defstyle]]
             [souptitle-desktop.common.components.inputview :refer [inputview]]
-            [souptitle-desktop.common.components.dropzone :refer [dropzone]]))
+            [souptitle-desktop.common.components.centered-box :refer [centered-box]]
+            [souptitle-desktop.common.components.dropzone :refer [dropzone]]
+            [souptitle-desktop.common.components.cropper :refer [cropper]]))
 
 (defstyle style
-  [".dropzone-outter" {:border "2px dashed #ccc"
-                       :border-radius "5px"
-                       :width "50%"
-                       :padding-top "50%"
-                       :position "relative"}]
+  [".dropzone" {:border "2px dashed #ccc"
+                :border-radius "5px"
+                :flex 1
+                :display "flex"
+                :align-items "center"
+                :justify-content "center"}]
   [".dropzone-accepted" {:border "2px dashed #9cf49c"}]
-  [".dropzone-rejected" {:border "2px dashed #f39389"}]
-  [".dropzone-inner" {:position "absolute"
-                      :top 0
-                      :left 0
-                      :right 0
-                      :bottom 0
-                      :display "flex"
-                      :align-items "center"
-                      :justify-content "center"}])
+  [".dropzone-rejected" {:border "2px dashed #f39389"}])
 
 (defmulti content (fn [el] (-> el :meta :type)))
 
@@ -30,18 +25,15 @@
 (defn serial-dropzone []
   (let [loading? (r/atom false)]
     (fn []
-      [:div {:style {:flex 1
-                     :display "flex"
-                     :align-items "center"
-                     :justify-content "center"}}
-       [dropzone {:class (:dropzone-outter style)
+      [centered-box
+       [dropzone {:class (:dropzone style)
                   :accepted-class (:dropzone-accepted style)
                   :rejected-class (:dropzone-rejected style)
                   :accepted? #(-> (re-find #"png|jpeg" %)
                                   (some?))
                   :on-file-will-load #(reset! loading? true)
                   :on-file-loaded #(dispatch [:loaded-serial-cover %])}
-        [:div {:class (:dropzone-inner style)}
+        [:div
          [:span
           (if @loading?
             "Loading..."
@@ -53,9 +45,9 @@
                  :flex-direction "column"}}
    [:span (str "This is serial: " title)]
    (if (some? cover)
-     [:img {:src (:url cover)
-            :style {:width "100px"
-                    :height "100px"}}]
+     [centered-box
+      [cropper {:src (:url cover)
+                :on-crop #(print %)}]]
      [serial-dropzone])])
 
 (defmethod content :season [{{:keys [title]} :meta}]
