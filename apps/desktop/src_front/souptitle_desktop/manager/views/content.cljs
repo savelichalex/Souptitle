@@ -39,6 +39,7 @@
             "Loading..."
             "Drop file here")]]]])))
 
+
 (defmethod content :serial [{{:keys [title cover]} :meta}]
   [:div {:style {:flex 1
                  :display "flex"
@@ -48,7 +49,7 @@
      [centered-box
       {:space 80}
       [cropper {:src (:url cover)
-                :on-crop #(print %)}]]
+                :on-crop #(dispatch [:update-serial-crop-data %])}]]
      [serial-dropzone])])
 
 (defmethod content :season [{{:keys [title]} :meta}]

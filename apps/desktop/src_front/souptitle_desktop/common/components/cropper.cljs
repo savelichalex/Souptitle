@@ -3,6 +3,11 @@
             [reagent.core :as r]
             [souptitle-desktop.common.utils.debounce :refer [debounce]]))
 
+(defn get-crop-data-from-event [event]
+  (-> event
+      .-detail
+      (js->clj :keywordize-keys true)))
+
 (def cropper
   (let [image-ref (atom nil)]
     (r/create-class
@@ -12,7 +17,12 @@
           (js/Cropper.
            @image-ref
            (-> (or crop-props {})
-               (assoc :crop (debounce #(when (fn? on-crop) (on-crop %)) 500))
+               (assoc
+                :crop
+                (debounce
+                 #(when (fn? on-crop)
+                    (on-crop (get-crop-data-from-event %)))
+                 500))
                (clj->js)))))
       :reagent-render
       (fn [{:keys [src style]}]
