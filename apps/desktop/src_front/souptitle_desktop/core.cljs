@@ -5,6 +5,22 @@
             [souptitle-desktop.subs]
             [souptitle-desktop.manager.main :refer [manager]]))
 
+(. js/document
+   (addEventListener
+    "dragover"
+    (fn [event]
+      (. event (preventDefault))
+      false)
+    false))
+
+(. js/document
+   (addEventListener
+    "drop"
+    (fn [event]
+      (. event (preventDefault))
+      false)
+    false))
+
 (defn app-root [settings]
   [manager])
 

@@ -38,16 +38,23 @@
    (-> db
        (assoc :active-content id))))
 
-(defn update-entity-meta [updater key]
+(defn update-entity-meta-by
+  [content-updater key entity-updater]
   (fn [{:keys [content active-content] :as db} [_ val]]
     (-> db
         (assoc
          :content
-         (updater
+         (content-updater
           content
           active-content
           (fn [chapter]
-            (assoc-in chapter [:meta key] val)))))))
+            (update-in chapter [:meta key] (partial entity-updater val))))))))
+
+(defn update-entity-meta
+  ([content-updater key]
+   (update-entity-meta-by content-updater key identity))
+  ([content-updater key entity-updater]
+   (update-entity-meta-by content-updater key entity-updater)))
 
 (reg-event-db
  :update-serial-title
@@ -64,6 +71,17 @@
 (reg-event-db
  :update-chapter-raw-srt
  (update-entity-meta sm/update-chapter :src))
+
+(reg-event-db
+ :loaded-serial-cover
+ (update-entity-meta sm/update-serial :cover))
+
+(reg-event-db
+ :update-serial-crop-data
+ (update-entity-meta sm/update-serial :cover
+                     (fn [crop-data current-cover]
+                       (-> current-cover
+                           (assoc :crop-data crop-data)))))
 
 ;; TODO: make new entity active
 
