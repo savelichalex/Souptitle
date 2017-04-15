@@ -49,7 +49,8 @@
      [centered-box
       {:space 80}
       [cropper {:src (:url cover)
-                :on-crop #(dispatch [:update-serial-crop-data %])}]]
+                :on-crop #(dispatch [:update-serial-crop-data %])
+                :crop-props {:data (clj->js (:crop-data cover))}}]]
      [serial-dropzone])])
 
 (defmethod content :season [{{:keys [title]} :meta}]
