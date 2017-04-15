@@ -50,7 +50,8 @@
       {:space 80}
       [cropper {:src (:url cover)
                 :on-crop #(dispatch [:update-serial-crop-data %])
-                :crop-props {:data (clj->js (:crop-data cover))}}]]
+                :crop-props {:data (clj->js (:crop-data cover))
+                             :aspectRatio 1.9}}]]
      [serial-dropzone])])
 
 (defmethod content :season [{{:keys [title]} :meta}]
